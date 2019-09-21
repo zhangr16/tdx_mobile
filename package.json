@@ -1,0 +1,43 @@
+{
+  "name": "taodaxiong",
+  "version": "1.0.0",
+  "private": false,
+  "author": "zhangr16",
+  "scripts": {
+    "dev": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "analyze": "vue-cli-service build"
+  },
+  "dependencies": {
+    "@nutui/nutui": "^2.1.5",
+    "axios": "^0.19.0",
+    "dayjs": "^1.8.15",
+    "fastclick": "^1.0.6",
+    "js-cookie": "2.2.0",
+    "lib-flexible": "^0.3.2",
+    "vant": "^2.2.2",
+    "vue": "^2.5.17",
+    "vue-router": "^3.0.1",
+    "vuex": "^3.0.1"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "^3.0.0",
+    "@vue/cli-service": "^3.0.0",
+    "babel-plugin-import": "^1.12.1",
+    "node-sass": "^4.9.3",
+    "postcss-pxtorem": "^4.0.1",
+    "sass-loader": "^7.1.0",
+    "vue-template-compiler": "^2.5.17",
+    "webpack-bundle-analyzer": "^3.3.2"
+  },
+  "postcss": {
+    "plugins": {
+      "autoprefixer": {}
+    }
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not ie <= 8"
+  ]
+}
