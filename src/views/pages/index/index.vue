@@ -39,7 +39,31 @@
       </ul>
       <div class="ul_wrapper">
         <ul v-if="active_type == 0">
-          <li v-for="item in 6" :key="item"></li>
+          <li v-for="item in 6" :key="item">
+            <item-card-small />
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <section>
+      <img src="@/assets/404_images/404.png" alt="" />
+      <div class="ul_wrapper">
+        <ul>
+          <li v-for="item in 6" :key="item">
+            <item-card-small />
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <section style="padding:0">
+      <header><span>精选免单</span></header>
+      <div class="ul_free">
+        <ul>
+          <li :class="{'margin_right': index%2 == 0}" v-for="(item, index) in 4" :key="index">
+            <item-card-mid />
+          </li>
         </ul>
       </div>
     </section>
@@ -47,9 +71,12 @@
 </template>
 <script>
 import { Toast } from "vant";
+import itemCardSmall from "@/components/item_card_small"
+import itemCardMid from "@/components/item_card_mid"
 
 export default {
   name: "home",
+  components: { itemCardSmall, itemCardMid },
   data() {
     return {
       active_type: 0,
@@ -94,6 +121,7 @@ export default {
       height: 100px;
       border-bottom: 1px solid #ccc;
       display: flex;
+      font-size: 12px;
       li {
         text-align: center;
         flex: 1;
@@ -126,6 +154,8 @@ export default {
   & > section {
     background: #fff;
     padding: 10px 15px;
+    margin-bottom: 15px;
+    // 三个选项卡
     .top_ul {
       width: 100%;
       overflow: hidden;
@@ -146,19 +176,54 @@ export default {
         color: #fff;
       }
     }
-
+    // 类别大图
+    & > img {
+      width: 100%;
+      background: red;
+      height: 105px;
+      margin-bottom: 10px;
+    }
+    
+    // 子项目item
     .ul_wrapper {
       width: calc(100vw - 30px);
       overflow-x: scroll;
       ul {
-        width: 200vw;
+        width: 200%;
         overflow-x: scroll;
         display: flex;
         li {
           flex: 1;
           margin-right: 4px;
-          border: 1px solid red;
-          height: 200px;
+          &:last-child {
+            margin-right: 0;
+          }
+        }
+      }
+    }
+
+    // 精选免单
+    & > header {
+      padding: 10px 15px;
+      span {
+        font-size: 14px;
+        padding: 0 8px;
+        border-left: 3px solid #ff5500;
+      }
+    }
+    .ul_free {
+      width: 100%;
+      ul {
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap; 
+        li {
+          width: calc((100% - 6px)/2);
+          // height: 250px;
+          margin-bottom: 5px;
+        }
+        .margin_right {
+          margin-right: 5px 
         }
       }
     }
