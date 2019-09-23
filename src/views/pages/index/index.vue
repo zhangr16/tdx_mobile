@@ -47,7 +47,7 @@
     </section>
 
     <section>
-      <img src="@/assets/404_images/404.png" alt="" />
+      <img src="@/assets/404_images/404.png" alt />
       <div class="ul_wrapper">
         <ul>
           <li v-for="item in 6" :key="item">
@@ -58,7 +58,9 @@
     </section>
 
     <section style="padding:0">
-      <header><span>精选免单</span></header>
+      <header>
+        <span>精选免单</span>
+      </header>
       <div class="ul_free">
         <ul>
           <li :class="{'margin_right': index%2 == 0}" v-for="(item, index) in 4" :key="index">
@@ -71,8 +73,8 @@
 </template>
 <script>
 import { Toast } from "vant";
-import itemCardSmall from "@/components/item_card_small"
-import itemCardMid from "@/components/item_card_mid"
+import itemCardSmall from "@/components/item_card_small";
+import itemCardMid from "@/components/item_card_mid";
 
 export default {
   name: "home",
@@ -107,6 +109,8 @@ export default {
 </script>
 <style lang="scss" scope>
 .home {
+  width: 100%;
+  overflow: auto;
   & > header {
     // 轮播
     .banner {
@@ -122,6 +126,7 @@ export default {
       border-bottom: 1px solid #ccc;
       display: flex;
       font-size: 12px;
+      background: #fff;
       li {
         text-align: center;
         flex: 1;
@@ -183,7 +188,7 @@ export default {
       height: 105px;
       margin-bottom: 10px;
     }
-    
+
     // 子项目item
     .ul_wrapper {
       width: calc(100vw - 30px);
@@ -216,14 +221,14 @@ export default {
       ul {
         width: 100%;
         display: flex;
-        flex-wrap: wrap; 
+        flex-wrap: wrap;
         li {
-          width: calc((100% - 6px)/2);
+          width: calc((100% - 6px) / 2);
           // height: 250px;
           margin-bottom: 5px;
         }
         .margin_right {
-          margin-right: 5px 
+          margin-right: 5px;
         }
       }
     }

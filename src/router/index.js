@@ -13,13 +13,13 @@ export default [
       {
         path: '/limitFree',
         name: 'limitFree',
-        component: () => import('@/views/pages/limitFree'),
+        component: () => import('@/views/pages/classify'),
         meta: { title: '限量免单' }
       },
       {
         path: '/bearBuy',
         name: 'bearBuy',
-        component: () => import('@/views/pages/bearBuy'),
+        component: () => import('@/views/pages/classify'),
         meta: { title: '熊抢购' }
       },
       {

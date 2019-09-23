@@ -1,9 +1,10 @@
 <template>
   <div class="index">
+    <nut-backtop :duration="1000" :bottom="60"></nut-backtop>
     <transition name="fade-transform" mode="out-in">
       <router-view style="margin-bottom:50px" />
     </transition>
-
+    
     <van-tabbar route>
       <van-tabbar-item replace to="/index" icon="home-o">首页</van-tabbar-item>
       <van-tabbar-item replace to="/limitFree" icon="star-o">限量免单</van-tabbar-item>
