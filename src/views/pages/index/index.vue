@@ -1,20 +1,45 @@
 <template>
   <div class="home">
-    <header style="margin-bottom:15px">
-      <van-search placeholder="搜索你喜欢的宝贝" shape="round" v-model="value">
-        <div slot="left-icon"></div>
-        <div slot="right-icon" @click="onSearch">
-          <van-icon name="search" />
-        </div>
-      </van-search>
-      <van-tabs>
-        <van-tab v-for="index in types" :title="index" :key="index"></van-tab>
-      </van-tabs>
-      <van-swipe class="banner" :autoplay="3000">
-        <van-swipe-item>1</van-swipe-item>
-        <van-swipe-item>2</van-swipe-item>
-        <van-swipe-item>3</van-swipe-item>
-        <van-swipe-item>4</van-swipe-item>
+    <header>
+      <van-swipe class="banner1" :autoplay="112000" ref="swiper1" :show-indicators="false">
+        <van-swipe-item>
+          <div style="background:yellow;height: 100px;"></div>
+        </van-swipe-item>
+        <van-swipe-item>
+          <div style="background:gold;height: 100px;"></div>
+        </van-swipe-item>
+        <van-swipe-item>
+          <div style="background:silver;height: 100px;"></div>
+        </van-swipe-item>
+      </van-swipe>
+      <div class="fixer">
+        <van-search placeholder="搜索你喜欢的宝贝" shape="round" v-model="value">
+          <div slot="left-icon"></div>
+          <div slot="right-icon" @click="onSearch">
+            <van-icon name="search" />
+          </div>
+        </van-search>
+        <van-tabs>
+          <van-tab v-for="index in types" :title="index" :key="index"></van-tab>
+        </van-tabs>
+      </div>
+      <van-swipe
+        :loop="false"
+        class="banner"
+        :autoplay="2000"
+        :show-indicators="true"
+        ref="swiper"
+        @change="onChange"
+      >
+        <van-swipe-item>
+          <img style="background:yellow" src="@/assets/404_images/404.png" alt />
+        </van-swipe-item>
+        <van-swipe-item>
+          <img style="background:gold" src="@/assets/404_images/404.png" alt />
+        </van-swipe-item>
+        <van-swipe-item>
+          <img style="background:silver" src="@/assets/404_images/404.png" alt />
+        </van-swipe-item>
       </van-swipe>
       <ul class="two_parts">
         <li>
@@ -81,6 +106,7 @@ export default {
   components: { itemCardSmall, itemCardMid },
   data() {
     return {
+      bgImg: "",
       active_type: 0,
       value: "",
       types: [
@@ -102,6 +128,11 @@ export default {
   methods: {
     onSearch() {
       Toast.success(this.value);
+    },
+    onChange(i) {
+      let el = this.$refs["swiper"];
+      let current = el.active
+      this.$refs["swiper1"].swipeTo(current)
     }
   },
   mounted() {}
@@ -112,13 +143,16 @@ export default {
   width: 100%;
   overflow: auto;
   & > header {
+    position: relative;
+    margin-bottom: 15px;
     // 轮播
     .banner {
       width: 100%;
-      background: skyblue;
       text-align: center;
-      height: 142px;
-      line-height: 142px;
+      img {
+        width: 100%;
+        height: 220px;
+      }
     }
     // 限量免单+熊抢购
     .two_parts {
@@ -241,11 +275,24 @@ export default {
     font-size: 19px;
   }
   .van-search {
+    background: none !important;
     padding-right: 30px;
     padding-left: 30px;
   }
   .van-notice-bar__content {
     color: #333;
+  }
+  .van-tabs__wrap::after {
+    border: none;
+  }
+  .van-tabs__nav {
+    background: none !important;
+  }
+  .fixer {
+    top: 0;
+    width: 100%;
+    z-index: 9999;
+    position: absolute;
   }
 }
 </style>

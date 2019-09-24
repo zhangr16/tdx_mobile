@@ -1,5 +1,5 @@
 <template>
-  <div class="item_card_small">
+  <div class="item_card_small" @click="$router.push('/getSoon')">
     <img src="@/assets/404_images/404.png" alt />
     <main>
       <div class="title">纯棉加厚搜索棉袄</div>
@@ -19,6 +19,7 @@
   </div>
 </template>
 <script>
+// 首页推荐小卡片
 export default {
   name: "item_card_small",
   data() {

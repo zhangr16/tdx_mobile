@@ -1,0 +1,239 @@
+<template>
+  <div class="getStart">
+    <header>
+      <van-icon class="left_arrow" name="arrow-left" @click="$router.go(-1)" />开始任务
+    </header>
+    <nav>禁止联系卖家咨询任务相关情况，如有疑问请联系平台客服</nav>
+    <!-- 注意事项 -->
+    <section>
+      <header>注意事项</header>
+      <ul class="note">
+        <li>1、与商家旺旺聊天时禁止提及“淘大熊、试客、试单、刷单”等信息，否则取消平台任务合作机会!</li>
+        <li>2、禁止使用信用卡、花呗、淘金币、优惠券、红包、天猫积分等淘宝商家使用的官方优惠渠道</li>
+        <li>3、禁止通过淘客网、返利网、-淘等返现返利链接下单!</li>
+      </ul>
+      <div class="scale">
+        <span>* 以上由于买家违规下单所产生的费用，由买家承担。淘大熊有权冻结其帐号,限制提现操作，IP列入黑名单。</span>
+      </div>
+    </section>
+    <!-- 流程 -->
+    <section>
+      <ul class="step">
+        <li>
+          <header>
+            <span>1</span>搜索宝贝
+          </header>
+          <article>
+            <ul>
+              <li style="color:#666">请打开淘宝APP使用账号小熊登录。如果已登录请点击“我的淘宝”“头像”，确认会员名是否一致</li>
+              <li>* 复制关键词切换到淘宝APP搜索</li>
+              <li>
+                * 关键词：
+                <span class="change_keyword">更换关键词</span>
+              </li>
+              <li>
+                <input type="text" class="inp" />
+                <span class="search1">搜索</span>
+              </li>
+              <li>
+                找不到商品?
+                <span class="report">举报</span>
+              </li>
+            </ul>
+          </article>
+        </li>
+        <li>
+          <header>
+            <span>2</span>搜索宝贝
+          </header>
+          <article>
+            <ul>
+              <li style="color:#666">货比三家，每个商品页从上到下浏览三分钟左右</li>
+            </ul>
+          </article>
+        </li>
+        <li>
+          <header>
+            <span>3</span>核对宝贝
+          </header>
+          <article style="border:none">
+            <ul>
+              <li style="color:#666">货比三家，每个商品页从上到下浏览三分钟左右</li>
+              <li>* 店铺名称：老板的店</li>
+              <li>* 商品价格：合计18元（18元/*1件）</li>
+              <li>* 发货地</li>
+              <li>* 价格区间</li>
+              <li>* 注意事项：麻烦货比三家后下单。海外，港澳台，新疆，西藏，内蒙，青海，海南，宁夏不发。</li>
+              <li>* 商品主图：</li>
+              <li>* 核对宝贝，请提交宝贝链接或淘口令</li>
+              <li>
+                <input type="text" class="inp" />
+                <span class="search2">验证</span>
+              </li>
+              <li class="scale_li">1、获取链接方法：长按宝贝标题获取宝贝链接</li>
+              <li class="scale_li">2、淘口令获取方法：宝贝标题右边点击“分享”-左下角点击复制链接-粘贴至空格点击验证</li>
+            </ul>
+          </article>
+        </li>
+      </ul>
+    </section>
+    <!-- 3tip -->
+    <section>
+      <ul class="tips">
+        <li> * 进店浏览至少三款其他宝贝，每个宝贝浏览2分钟左右。</li>
+        <li> * 回到主宝贝，仔细浏览至少5分钟，收藏宝贝和店铺。</li>
+        <li> * 再次确认后付款并提交订单号到后台。</li>
+      </ul>
+    </section>
+    <!-- 注意 -->
+    <section>
+      <div class="attention">
+        注意 ：收到货后再确认收货，五星好评，然后上传好评截图到平台，等待商家审核之后申请提现返款
+      </div>
+    </section>
+  </div>
+</template> 
+<script>
+import itemCardLarge from "@/components/item_card_large";
+
+export default {
+  name: "getStart",
+  components: { itemCardLarge },
+  methods: {}
+};
+</script>
+<style lang="scss" scope>
+.getStart {
+  position: relative;
+  & > header {
+    width: 100%;
+    position: fixed;
+    z-index: 999999;
+    height: 30px;
+    line-height: 30px;
+    background: #fff;
+    text-align: center;
+    font-size: 14px;
+    .left_arrow {
+      position: absolute;
+      left: 15px;
+      top: 7.5px;
+    }
+  }
+  & > nav {
+    color: #fff;
+    padding-top: 30px;
+    font-size: 12px;
+    // height: 30px;
+    text-align: center;
+    line-height: 30px;
+    background: linear-gradient(-90deg, #fc5303 0%, #fa8f05 100%);
+  }
+  & > section {
+    padding: 10px 15px;
+    background: #fff;
+    margin-top: 10px;
+    & > header {
+      margin-bottom: 10px;
+      font-size: 13px;
+    }
+    // 注意事项
+    & > .note {
+      li {
+        line-height: 2;
+        font-size: 12px;
+        color: #666;
+        margin-bottom: 10px;
+      }
+    }
+    .scale {
+      transform: scale(0.9);
+      margin-left: calc(-10vw + 20px);
+    }
+    // 步骤
+    & > .step {
+      li {
+        font-size: 13px;
+        & > header {
+          display: flex;
+          align-items: center;
+          span {
+            margin-right: 5px;
+            font-size: 12px;
+            width: 14px;
+            height: 14px;
+            line-height: 14px;
+            border-radius: 50%;
+            border: 1px solid #333;
+            text-align: center;
+          }
+        }
+        & > article {
+          padding: 5px 12px;
+          margin-left: 6.5px;
+          border-left: 1px dashed #999;
+          li {
+            padding: 5px 0;
+            line-height: 1.5;
+            font-size: 12px;
+            .inp {
+              width: 245px;
+              height: 25px;
+              line-height: 25px;
+              border: 1px solid #ccc;
+              border-right: 0;
+              outline: none;
+            }
+            .search1 {
+              display: inline-block;
+              text-align: center;
+              background: linear-gradient(-90deg, #fc5504 0%, #fa8d05 100%);
+              color: #fff;
+              width: 50px;
+              height: 25px;
+              line-height: 25px;
+            }
+            .search2 {
+              display: inline-block;
+              text-align: center;
+              background: linear-gradient(-90deg, #fb243f 0%, #f7687c 100%);
+              color: #fff;
+              width: 50px;
+              height: 25px;
+              line-height: 25px;
+            }
+            .change_keyword {
+              padding: 5px;
+              color: #fff;
+              background: linear-gradient(-90deg, #fc5403 0%, #fa8e05 100%);
+              border-radius: 5px;
+            }
+            .report {
+              padding: 1px 3px;
+              color: #4178ee;
+              border-radius: 5px;
+              border: solid 1px #4178ee;
+            }
+          }
+          .scale_li {
+            padding: 0;
+            line-height: 1;
+            margin-left: -5%;
+            color: #999;
+            transform: scale(.9)
+          }
+        }
+      }
+    }
+    // tips
+    & > .tips {
+      line-height: 2;
+      font-size: 12px;
+    }
+    // 注意
+    & > .attention {
+      font-size: 13px;
+    }
+  }
+}
+</style>

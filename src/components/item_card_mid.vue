@@ -1,5 +1,5 @@
 <template>
-  <div class="item_card_mid">
+  <div class="item_card_mid" @click="$router.push('/getSoon')">
     <!-- 图片 -->
     <img src="@/assets/404_images/404.png" alt />
     <!-- 内容部分 -->
@@ -20,6 +20,7 @@
   </div>
 </template>
 <script>
+// 首页精选免单中卡片
 export default {
   name: "item_card_mid",
   data() {

@@ -37,6 +37,24 @@ export default [
     ]
   },
   {
+    path: '/getSoon',
+    name: 'getSoon',
+    component: () => import('@/views/pages/index/getSoon'),
+    meta: { title: '' }
+  },
+  {
+    path: '/getStart',
+    name: 'getStart',
+    component: () => import('@/views/pages/index/getStart'),
+    meta: { title: '开始任务' }
+  },
+  {
+    path: '/purchase',
+    name: 'purchase',
+    component: () => import('@/views/pages/index/purchase'),
+    meta: { title: '抢购' }
+  },
+  {
     path: '/404',
     component: () => import('@/views/404')
   },
