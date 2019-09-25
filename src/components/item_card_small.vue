@@ -30,7 +30,6 @@ export default {
 <style lang="scss" scope>
 .item_card_small {
   width: 100%;
-  border: 1px solid red;
   & > img {
     width: 100%;
     height: calc((100vw - 46px) / 3);

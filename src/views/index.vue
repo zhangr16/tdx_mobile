@@ -1,10 +1,12 @@
 <template>
   <div class="index">
+    <!-- 回到顶部 -->
     <nut-backtop :duration="1000" :bottom="60"></nut-backtop>
+    <!-- 路由 -->
     <transition name="fade-transform" mode="out-in">
       <router-view style="margin-bottom:50px" />
     </transition>
-    
+    <!-- 底部tab栏 -->
     <van-tabbar route>
       <van-tabbar-item replace to="/index" icon="home-o">首页</van-tabbar-item>
       <van-tabbar-item replace to="/limitFree" icon="star-o">限量免单</van-tabbar-item>
@@ -23,6 +25,7 @@ export default {
   name: "index",
   data() {
     return {
+      loading: true
     };
   },
 };

@@ -8,9 +8,9 @@
     <section>
       <header>注意事项</header>
       <ul class="note">
-        <li>1、与商家旺旺聊天时禁止提及“淘大熊、试客、试单、刷单”等信息，否则取消平台任务合作机会!</li>
-        <li>2、禁止使用信用卡、花呗、淘金币、优惠券、红包、天猫积分等淘宝商家使用的官方优惠渠道</li>
-        <li>3、禁止通过淘客网、返利网、-淘等返现返利链接下单!</li>
+        <li>1、与商家旺旺聊天时禁止提及<i>“淘大熊、试客、试单、刷单”</i>等信息，否则取消平台任务合作机会!</li>
+        <li>2、禁止使用<i>信用卡、花呗、淘金币、优惠券、红包、天猫积分</i>等淘宝商家使用的官方优惠渠道</li>
+        <li>3、禁止通过<i>淘客网、返利网、-淘</i>等返现返利链接下单!</li>
       </ul>
       <div class="scale">
         <span>* 以上由于买家违规下单所产生的费用，由买家承担。淘大熊有权冻结其帐号,限制提现操作，IP列入黑名单。</span>
@@ -25,7 +25,7 @@
           </header>
           <article>
             <ul>
-              <li style="color:#666">请打开淘宝APP使用账号小熊登录。如果已登录请点击“我的淘宝”“头像”，确认会员名是否一致</li>
+              <li style="color:#666">请打开淘宝APP使用账号<i style="color:#f7687c">小熊</i>登录。如果已登录请点击“我的淘宝”“头像”，确认会员名是否一致</li>
               <li>* 复制关键词切换到淘宝APP搜索</li>
               <li>
                 * 关键词：
@@ -37,7 +37,7 @@
               </li>
               <li>
                 找不到商品?
-                <span class="report">举报</span>
+                <span class="report" @click="showDialog = true">举报</span>
               </li>
             </ul>
           </article>
@@ -80,17 +80,37 @@
     <!-- 3tip -->
     <section>
       <ul class="tips">
-        <li> * 进店浏览至少三款其他宝贝，每个宝贝浏览2分钟左右。</li>
-        <li> * 回到主宝贝，仔细浏览至少5分钟，收藏宝贝和店铺。</li>
-        <li> * 再次确认后付款并提交订单号到后台。</li>
+        <li>* 进店浏览至少三款其他宝贝，每个宝贝浏览2分钟左右。</li>
+        <li>* 回到主宝贝，仔细浏览至少5分钟，收藏宝贝和店铺。</li>
+        <li>* 再次确认后付款并提交订单号到后台。</li>
       </ul>
     </section>
     <!-- 注意 -->
     <section>
-      <div class="attention">
-        注意 ：收到货后再确认收货，五星好评，然后上传好评截图到平台，等待商家审核之后申请提现返款
-      </div>
+      <div class="attention">注意 ：收到货后再确认收货，五星好评，然后上传好评截图到平台，等待商家审核之后申请提现返款</div>
     </section>
+
+    <van-dialog v-model="showDialog" title="举报内容" show-cancel-button>
+      <van-radio-group v-model="radio">
+        <van-cell-group>
+          <van-cell title="任务价格不一致" clickable @click="radio = '1'">
+            <van-radio slot="right-icon" checked-color="#ff5500" name="1" />
+          </van-cell>
+          <van-cell title="淘宝找不到宝贝" clickable @click="radio = '2'">
+            <van-radio slot="right-icon" checked-color="#ff5500" name="2" />
+          </van-cell>
+          <van-cell title="任务图片不一致" clickable @click="radio = '3'">
+            <van-radio slot="right-icon" checked-color="#ff5500" name="3" />
+          </van-cell>
+          <van-cell title="没有指定规格的宝贝" clickable @click="radio = '4'">
+            <van-radio slot="right-icon" checked-color="#ff5500" name="4" />
+          </van-cell>
+          <van-cell title="商家有运费" clickable @click="radio = '5'">
+            <van-radio slot="right-icon" checked-color="#ff5500" name="5" />
+          </van-cell>
+        </van-cell-group>
+      </van-radio-group>
+    </van-dialog>
   </div>
 </template> 
 <script>
@@ -99,6 +119,12 @@ import itemCardLarge from "@/components/item_card_large";
 export default {
   name: "getStart",
   components: { itemCardLarge },
+  data() {
+    return {
+      showDialog: false,
+      radio: ""
+    };
+  },
   methods: {}
 };
 </script>
@@ -144,9 +170,13 @@ export default {
         font-size: 12px;
         color: #666;
         margin-bottom: 10px;
+        i {
+          color: #ff5500;
+        }
       }
     }
     .scale {
+      line-height: 1.5;
       transform: scale(0.9);
       margin-left: calc(-10vw + 20px);
     }
@@ -169,7 +199,7 @@ export default {
           }
         }
         & > article {
-          padding: 5px 12px;
+          padding: 5px 0 5px 12px;
           margin-left: 6.5px;
           border-left: 1px dashed #999;
           li {
@@ -183,6 +213,7 @@ export default {
               border: 1px solid #ccc;
               border-right: 0;
               outline: none;
+              border-radius: 0; 
             }
             .search1 {
               display: inline-block;
@@ -217,21 +248,22 @@ export default {
           }
           .scale_li {
             padding: 0;
-            line-height: 1;
+            line-height: 1.5;
             margin-left: -5%;
             color: #999;
-            transform: scale(.9)
+            transform: scale(0.9);
           }
         }
       }
     }
     // tips
     & > .tips {
-      line-height: 2;
+      line-height: 1.5;
       font-size: 12px;
     }
     // 注意
     & > .attention {
+      line-height: 1.5;
       font-size: 13px;
     }
   }

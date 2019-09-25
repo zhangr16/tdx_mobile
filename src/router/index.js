@@ -46,7 +46,7 @@ export default [
     path: '/getStart',
     name: 'getStart',
     component: () => import('@/views/pages/index/getStart'),
-    meta: { title: '开始任务' }
+    meta: { title: '' }
   },
   {
     path: '/purchase',

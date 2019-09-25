@@ -4,9 +4,9 @@
     <i class="backBtn">
       <van-icon class="left_arrow" name="arrow-left" @click="$router.go(-1)" />
     </i>
-    <img src="@/assets/404_images/404.png" alt="" />
+    <img src="@/assets/404_images/404.png" alt />
     <!-- 抢购信息 -->
-    <div class="purchase_info">
+    <section class="purchase_info">
       <!-- 顶部 -->
       <div class="_top">
         <div class="title">童装女童吊带连衣裙夏装新款韩童装女童吊带连衣裙夏装新款韩...</div>
@@ -27,9 +27,9 @@
       </div>
       <!-- 底部 -->
       <div class="_bottom">商家已存入保证金99元平台担保返款</div>
-    </div>
+    </section>
     <!-- 任务流程 -->
-    <div class="purchase_flow">
+    <section class="purchase_flow">
       <header>任务流程</header>
       <ul>
         <li>1、点击“立即领取”,获取免单资格</li>
@@ -38,9 +38,9 @@
         <li>4、卖家发货→收到快递后到淘宝确认收货→给予五星好评并上传好评截图到平台→等待卖家确认</li>
         <li>5、卖家确认无误后，平台返款￥10.00元到您的账户中供您提现</li>
       </ul>
-    </div>
+    </section>
     <!-- 注意事项 -->
-    <div class="purchase_note">
+    <section class="purchase_note">
       <header>注意事项</header>
       <ul>
         <li>1、与商家旺旺聊天时禁止提及“淘大熊、试客、试单、刷单”等信息，否则取消平台任务合作机会!</li>
@@ -50,28 +50,49 @@
       <div class="scale">
         <span>* 以上由于买家违规下单所产生的费用，由买家承担。淘大熊有权冻结其帐号,限制提现操作，IP列入黑名单。</span>
       </div>
-    </div>
+    </section>
     <!-- 温馨提示 -->
-    <div class="purchase_tip" style="margin-bottom:0">
+    <section class="purchase_tip" style="margin-bottom:0">
       <header>温馨提示</header>
       <ul>
         <li>1、用户获取免单资格后，请根据时间提示及时下单并提交订单号</li>
         <li>2、若因未按时提交任务信息而被系统取消任务资格，平台概不负责！</li>
       </ul>
-    </div>
+    </section>
     <!-- 立即领取 -->
     <footer>
       <div class="_s" @click="$router.push('/index')">首页</div>
       <div class="_s">客服</div>
-      <div class="_l" @click="$router.push('/getStart')">立即领取</div>
+      <!-- $router.push('/getStart') -->
+      <div class="_l" @click="showConfirm = true">立即领取</div>
     </footer>
+
+    <!-- 确认弹窗 -->
+    <van-dialog v-model="showConfirm" title="商品信息" @confirm="handleConfirm">
+      <van-cell title="商品名称" value />
+      <van-cell title="商品价格" value />
+      <ul>
+        <li>注：1.领取任务后，2小时有效，超过2小时，任务自动退回，请在自动时间内完成任务！</li>
+        <li>2.每天00:00平台停止抢单，00:00没有提交任务的订单将会自动退单，请及时完成任务</li>
+      </ul>
+    </van-dialog>
   </div>
 </template>
 <script>
 export default {
   name: "purchase",
   data() {
-    return {};
+    return {
+      showConfirm: false
+    };
+  },
+  methods: {
+    handleConfirm() {
+      this.showConfirm = false
+      setTimeout(() => {
+        this.$router.push('/getStart')
+      }, 200);
+    }
   }
 };
 </script>
@@ -89,13 +110,13 @@ export default {
     top: 10px;
     left: 15px;
     background: #666;
-    border-radius: 50%; 
+    border-radius: 50%;
     opacity: 0.25;
     i {
-      font-size: 14px
+      font-size: 14px;
     }
   }
-  & > div {
+  & > section {
     background: #fff;
     margin-bottom: 10px;
     .num {
@@ -164,6 +185,7 @@ export default {
       }
     }
     .scale {
+      line-height: 1.5;
       transform: scale(0.9);
       margin-left: calc(-10vw + 20px);
     }
@@ -188,6 +210,19 @@ export default {
       color: #fff;
       flex: 1;
       background: linear-gradient(-90deg, #fa2440 0%, #f7697d 100%);
+    }
+  }
+}
+</style>
+<style lang="scss">
+.purchase {
+  .van-dialog__content {
+    ul {
+      padding: 10px 15px;
+      li {
+        font-size: 12px;
+        line-height: 1.5;
+      }
     }
   }
 }

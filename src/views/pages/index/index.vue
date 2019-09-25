@@ -1,17 +1,6 @@
 <template>
   <div class="home">
     <header>
-      <van-swipe class="banner1" :autoplay="112000" ref="swiper1" :show-indicators="false">
-        <van-swipe-item>
-          <div style="background:yellow;height: 100px;"></div>
-        </van-swipe-item>
-        <van-swipe-item>
-          <div style="background:gold;height: 100px;"></div>
-        </van-swipe-item>
-        <van-swipe-item>
-          <div style="background:silver;height: 100px;"></div>
-        </van-swipe-item>
-      </van-swipe>
       <div class="fixer">
         <van-search placeholder="搜索你喜欢的宝贝" shape="round" v-model="value">
           <div slot="left-icon"></div>
@@ -23,16 +12,29 @@
           <van-tab v-for="index in types" :title="index" :key="index"></van-tab>
         </van-tabs>
       </div>
+
+      <van-swipe class="bg_banner" :show-indicators="false" ref="swiper2">
+        <van-swipe-item>
+          <div style="background:brass"></div>
+        </van-swipe-item>
+        <van-swipe-item>
+          <div style="background:gold"></div>
+        </van-swipe-item>
+        <van-swipe-item>
+          <div style="background:silver"></div>
+        </van-swipe-item>
+      </van-swipe>
+
       <van-swipe
-        :loop="false"
         class="banner"
+        :initial-swipe="0"
         :autoplay="2000"
-        :show-indicators="true"
+        :show-indicators="false"
         ref="swiper"
         @change="onChange"
       >
         <van-swipe-item>
-          <img style="background:yellow" src="@/assets/404_images/404.png" alt />
+          <img style="background:brass" src="@/assets/404_images/404.png" alt />
         </van-swipe-item>
         <van-swipe-item>
           <img style="background:gold" src="@/assets/404_images/404.png" alt />
@@ -42,16 +44,16 @@
         </van-swipe-item>
       </van-swipe>
       <ul class="two_parts">
-        <li>
+        <li @click="$router.push('/limitFree')">
           <img src alt />
           <span>限量免单</span>
         </li>
-        <li>
+        <li @click="$router.push('/bearBuy')">
           <img src alt />
           <span>熊抢购</span>
         </li>
       </ul>
-      <van-notice-bar text="足协杯战线连续第2年上演广州德比战，上赛季半决赛上恒大以两回合5-3的总比分淘汰富力。" background="#fff">
+      <van-notice-bar text="滚动播报淘大熊实时" background="#fff">
         <div slot="left-icon" class="notice_title">商城头条</div>
       </van-notice-bar>
     </header>
@@ -72,7 +74,8 @@
     </section>
 
     <section>
-      <img src="@/assets/404_images/404.png" alt />
+      <span class="more">更多</span>
+      <img src="@/assets/404_images/404.png" alt @click="$router.push('/limitFree')" />
       <div class="ul_wrapper">
         <ul>
           <li v-for="item in 6" :key="item">
@@ -106,7 +109,7 @@ export default {
   components: { itemCardSmall, itemCardMid },
   data() {
     return {
-      bgImg: "",
+      loading: true,
       active_type: 0,
       value: "",
       types: [
@@ -129,13 +132,13 @@ export default {
     onSearch() {
       Toast.success(this.value);
     },
-    onChange(i) {
-      let el = this.$refs["swiper"];
-      let current = el.active
-      this.$refs["swiper1"].swipeTo(current)
+    onChange(i, v) {
+      this.$refs["swiper2"].swipeTo(i, { immediate: true });
     }
   },
-  mounted() {}
+  mounted() {
+    this.loading = false
+  }
 };
 </script>
 <style lang="scss" scope>
@@ -145,13 +148,25 @@ export default {
   & > header {
     position: relative;
     margin-bottom: 15px;
+    background: #fff;
+    // 底色轮播
+    .bg_banner {
+      width: 100%;
+      text-align: center;
+      div {
+        width: 100%;
+        height: 100px;
+      }
+    }
     // 轮播
     .banner {
-      width: 100%;
+      // border: 1px solid red;
+      margin-left: 5%;
+      width: 90%;
       text-align: center;
       img {
         width: 100%;
-        height: 220px;
+        height: 200px;
       }
     }
     // 限量免单+熊抢购
@@ -191,6 +206,7 @@ export default {
   }
 
   & > section {
+    position: relative;
     background: #fff;
     padding: 10px 15px;
     margin-bottom: 15px;
@@ -221,6 +237,18 @@ export default {
       background: red;
       height: 105px;
       margin-bottom: 10px;
+    }
+    // 更多
+    .more {
+      border-radius: 3px;
+      top: 15px;
+      right: 20px;
+      position: absolute;
+      display: block;
+      font-size: 12px;
+      color: #fff;
+      border: 1px solid #fff;
+      padding: 2px 5px;
     }
 
     // 子项目item
@@ -293,6 +321,7 @@ export default {
     width: 100%;
     z-index: 9999;
     position: absolute;
+    // background: rgba(255,255,255,.2)
   }
 }
 </style>

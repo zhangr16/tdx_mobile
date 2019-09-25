@@ -96,7 +96,6 @@ export default {
       flex-wrap: wrap;
       padding: 10px 15px;
       li {
-        border: 1px solid red;
         width: calc((100vw - 35px) / 2);
         // height: calc((100% - 35px) / 2);
         margin-bottom: 5px;
