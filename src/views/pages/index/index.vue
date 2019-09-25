@@ -11,11 +11,29 @@
         <van-tabs>
           <van-tab v-for="index in types" :title="index" :key="index"></van-tab>
         </van-tabs>
+        <van-swipe
+          class="banner"
+          :initial-swipe="0"
+          :autoplay="2000"
+          :show-indicators="false"
+          ref="swiper"
+          @change="onChange"
+        >
+          <van-swipe-item>
+            <img style="background:skyblue" src="@/assets/404_images/404.png" alt />
+          </van-swipe-item>
+          <van-swipe-item>
+            <img style="background:gold" src="@/assets/404_images/404.png" alt />
+          </van-swipe-item>
+          <van-swipe-item>
+            <img style="background:silver" src="@/assets/404_images/404.png" alt />
+          </van-swipe-item>
+        </van-swipe>
       </div>
 
       <van-swipe class="bg_banner" :show-indicators="false" ref="swiper2">
         <van-swipe-item>
-          <div style="background:brass"></div>
+          <div style="background:skyblue"></div>
         </van-swipe-item>
         <van-swipe-item>
           <div style="background:gold"></div>
@@ -25,24 +43,6 @@
         </van-swipe-item>
       </van-swipe>
 
-      <van-swipe
-        class="banner"
-        :initial-swipe="0"
-        :autoplay="2000"
-        :show-indicators="false"
-        ref="swiper"
-        @change="onChange"
-      >
-        <van-swipe-item>
-          <img style="background:brass" src="@/assets/404_images/404.png" alt />
-        </van-swipe-item>
-        <van-swipe-item>
-          <img style="background:gold" src="@/assets/404_images/404.png" alt />
-        </van-swipe-item>
-        <van-swipe-item>
-          <img style="background:silver" src="@/assets/404_images/404.png" alt />
-        </van-swipe-item>
-      </van-swipe>
       <ul class="two_parts">
         <li @click="$router.push('/limitFree')">
           <img src alt />
@@ -53,7 +53,7 @@
           <span>熊抢购</span>
         </li>
       </ul>
-      <van-notice-bar text="滚动播报淘大熊实时" background="#fff">
+      <van-notice-bar text="滚动播报淘大熊实时, 滚动播报淘大熊实时, 滚动播报淘大熊实时" background="#fff">
         <div slot="left-icon" class="notice_title">商城头条</div>
       </van-notice-bar>
     </header>
@@ -137,7 +137,7 @@ export default {
     }
   },
   mounted() {
-    this.loading = false
+    this.loading = false;
   }
 };
 </script>
@@ -155,23 +155,26 @@ export default {
       text-align: center;
       div {
         width: 100%;
-        height: 100px;
+        height: 200px;
       }
     }
     // 轮播
     .banner {
       // border: 1px solid red;
       margin-left: 5%;
+      margin-top: 5px;
       width: 90%;
       text-align: center;
+      border-radius: 5px;
       img {
         width: 100%;
-        height: 200px;
+        height: 180px;
       }
     }
     // 限量免单+熊抢购
     .two_parts {
       height: 100px;
+      margin-top: 100px;
       border-bottom: 1px solid #ccc;
       display: flex;
       font-size: 12px;

@@ -195,6 +195,7 @@ export default {
     height: 40px;
     line-height: 40px;
     display: flex;
+    font-size: 14px;
     box-shadow: 0px 0px 9px 2px rgba(229, 229, 229, 0.36);
     ._s {
       width: 60px;

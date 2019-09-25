@@ -28,20 +28,20 @@ export default {
     width: 100%;
     position: fixed;
     z-index: 999999;
-    height: 30px;
-    line-height: 30px;
+    height: 40px;
+    line-height: 40px;
     background: linear-gradient(-90deg, #fc5303 0%, #fa8f05 100%);
     text-align: center;
     color: #fff;
-    font-size: 14px;
+    font-size: 15px;
     .left_arrow {
       position: absolute;
       left: 15px;
-      top: 7.5px;
+      top: 13px;
     }
   }
   & > ul {
-    padding-top: 30px;
+    padding-top: 40px;
     display: flex;
     flex-direction: column;
     // background: #f6f6f6;

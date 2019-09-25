@@ -8,9 +8,18 @@
     <section>
       <header>注意事项</header>
       <ul class="note">
-        <li>1、与商家旺旺聊天时禁止提及<i>“淘大熊、试客、试单、刷单”</i>等信息，否则取消平台任务合作机会!</li>
-        <li>2、禁止使用<i>信用卡、花呗、淘金币、优惠券、红包、天猫积分</i>等淘宝商家使用的官方优惠渠道</li>
-        <li>3、禁止通过<i>淘客网、返利网、-淘</i>等返现返利链接下单!</li>
+        <li>
+          1、与商家旺旺聊天时禁止提及
+          <i>“淘大熊、试客、试单、刷单”</i>等信息，否则取消平台任务合作机会!
+        </li>
+        <li>
+          2、禁止使用
+          <i>信用卡、花呗、淘金币、优惠券、红包、天猫积分</i>等淘宝商家使用的官方优惠渠道
+        </li>
+        <li>
+          3、禁止通过
+          <i>淘客网、返利网、-淘</i>等返现返利链接下单!
+        </li>
       </ul>
       <div class="scale">
         <span>* 以上由于买家违规下单所产生的费用，由买家承担。淘大熊有权冻结其帐号,限制提现操作，IP列入黑名单。</span>
@@ -25,7 +34,10 @@
           </header>
           <article>
             <ul>
-              <li style="color:#666">请打开淘宝APP使用账号<i style="color:#f7687c">小熊</i>登录。如果已登录请点击“我的淘宝”“头像”，确认会员名是否一致</li>
+              <li style="color:#666">
+                请打开淘宝APP使用账号
+                <i style="color:#f7687c">小熊</i>登录。如果已登录请点击“我的淘宝”“头像”，确认会员名是否一致
+              </li>
               <li>* 复制关键词切换到淘宝APP搜索</li>
               <li>
                 * 关键词：
@@ -89,6 +101,23 @@
     <section>
       <div class="attention">注意 ：收到货后再确认收货，五星好评，然后上传好评截图到平台，等待商家审核之后申请提现返款</div>
     </section>
+    <!-- 活动信息 -->
+    <section class="active_info">
+      <header>活动信息</header>
+      <van-cell-group>
+        <van-field v-model="form.a" label="接手旺旺" placeholder="请输入接手旺旺" />
+        <van-field v-model="form.a" label="实际支付金额" placeholder="请输入实际支付金额" />
+        <van-cell class="_exchanger" title="积分抵换">
+          <van-radio-group v-model="form.b" :checked-color="`#ff5500`">
+            <van-radio name="1">是</van-radio>
+            <van-radio name="2">否</van-radio>
+          </van-radio-group>
+        </van-cell>
+        <van-field v-model="form.a" label="积分兑换数量" placeholder="请输入积分兑换数量" />
+        <van-field v-model="form.a" label="订单编号" placeholder="请输入订单编号" />
+        <van-field v-model="form.a" label="买家备注" placeholder="20字以内(可不填)" />
+      </van-cell-group>
+    </section>
 
     <van-dialog v-model="showDialog" title="举报内容" show-cancel-button>
       <van-radio-group v-model="radio">
@@ -122,7 +151,12 @@ export default {
   data() {
     return {
       showDialog: false,
-      radio: ""
+      radio: "",
+      form: {
+        a: "",
+        b: "",
+        c: ""
+      }
     };
   },
   methods: {}
@@ -135,20 +169,20 @@ export default {
     width: 100%;
     position: fixed;
     z-index: 999999;
-    height: 30px;
-    line-height: 30px;
+    height: 40px;
+    line-height: 40px;
     background: #fff;
     text-align: center;
-    font-size: 14px;
+    font-size: 15px;
     .left_arrow {
       position: absolute;
       left: 15px;
-      top: 7.5px;
+      top: 13px;
     }
   }
   & > nav {
     color: #fff;
-    padding-top: 30px;
+    padding-top: 40px;
     font-size: 12px;
     // height: 30px;
     text-align: center;
@@ -162,6 +196,7 @@ export default {
     & > header {
       margin-bottom: 10px;
       font-size: 13px;
+      font-weight: bold;
     }
     // 注意事项
     & > .note {
@@ -187,7 +222,9 @@ export default {
         & > header {
           display: flex;
           align-items: center;
+          font-weight: bold;
           span {
+            font-weight: normal;
             margin-right: 5px;
             font-size: 12px;
             width: 14px;
@@ -213,7 +250,7 @@ export default {
               border: 1px solid #ccc;
               border-right: 0;
               outline: none;
-              border-radius: 0; 
+              border-radius: 0;
             }
             .search1 {
               display: inline-block;
@@ -265,6 +302,31 @@ export default {
     & > .attention {
       line-height: 1.5;
       font-size: 13px;
+    }
+  }
+}
+</style>
+<style lang="scss">
+
+.active_info {
+  .van-cell {
+    padding-left: 0;
+    padding-right: 0;
+  }
+  .van-field__control {
+    padding-left: 6px;
+  }
+  ._exchanger {
+    display: block;
+    display: flex;
+    .van-cell__value {
+      flex: 2.7;
+      .van-radio-group {
+        display: flex;
+        .van-radio {
+          flex: 1;
+        }
+      }
     }
   }
 }

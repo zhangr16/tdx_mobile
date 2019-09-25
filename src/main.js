@@ -6,7 +6,7 @@ import store from "./store";
 import NutUI from '@nutui/nutui';
 
 // 解决移动端click事件300毫秒延迟方法
-import  FastClick  from  'fastclick'
+import FastClick from 'fastclick'
 FastClick.attach(document.body);
 
 // 移动端适配
@@ -30,11 +30,9 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  /* 路由发生变化修改页面title */
-  if (to.meta.title) {
-    document.title = to.meta.title;
-  }
-  window.scrollTo(0,0);
+  /* 路由发生变化修改页面title, 回到顶部 */
+  document.title = to.meta.title || ' ';
+  window.scrollTo(0, 0);
   next()
 });
 

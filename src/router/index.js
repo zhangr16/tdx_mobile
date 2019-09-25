@@ -40,13 +40,13 @@ export default [
     path: '/getSoon',
     name: 'getSoon',
     component: () => import('@/views/pages/index/getSoon'),
-    meta: { title: '' }
+    meta: { title: ' ' }
   },
   {
     path: '/getStart',
     name: 'getStart',
     component: () => import('@/views/pages/index/getStart'),
-    meta: { title: '' }
+    meta: { title: ' ' }
   },
   {
     path: '/purchase',
