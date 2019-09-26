@@ -80,7 +80,7 @@
               <li>* 核对宝贝，请提交宝贝链接或淘口令</li>
               <li>
                 <input type="text" class="inp" />
-                <span class="search2">验证</span>
+                <span class="search2" @click="handleConfirm">验证</span>
               </li>
               <li class="scale_li">1、获取链接方法：长按宝贝标题获取宝贝链接</li>
               <li class="scale_li">2、淘口令获取方法：宝贝标题右边点击“分享”-左下角点击复制链接-粘贴至空格点击验证</li>
@@ -102,7 +102,7 @@
       <div class="attention">注意 ：收到货后再确认收货，五星好评，然后上传好评截图到平台，等待商家审核之后申请提现返款</div>
     </section>
     <!-- 活动信息 -->
-    <section class="active_info">
+    <section class="active_info" v-if="showInfos">
       <header>活动信息</header>
       <van-cell-group>
         <van-field v-model="form.a" label="接手旺旺" placeholder="请输入接手旺旺" />
@@ -144,12 +144,14 @@
 </template> 
 <script>
 import itemCardLarge from "@/components/item_card_large";
+import { Toast } from "vant";
 
 export default {
   name: "getStart",
   components: { itemCardLarge },
   data() {
     return {
+      showInfos: false,
       showDialog: false,
       radio: "",
       form: {
@@ -159,7 +161,12 @@ export default {
       }
     };
   },
-  methods: {}
+  methods: {
+    handleConfirm() {
+      Toast.success('验证成功, 请填写下方活动信息')
+      this.showInfos = true
+    }
+  }
 };
 </script>
 <style lang="scss" scope>
@@ -307,7 +314,6 @@ export default {
 }
 </style>
 <style lang="scss">
-
 .active_info {
   .van-cell {
     padding-left: 0;
@@ -317,10 +323,9 @@ export default {
     padding-left: 6px;
   }
   ._exchanger {
-    display: block;
     display: flex;
     .van-cell__value {
-      flex: 2.7;
+      flex: 3;
       .van-radio-group {
         display: flex;
         .van-radio {

@@ -20,36 +20,30 @@
           @change="onChange"
         >
           <van-swipe-item>
-            <img style="background:skyblue" src="@/assets/404_images/404.png" alt />
+            <img src="@/assets/banner1.png" alt />
           </van-swipe-item>
           <van-swipe-item>
-            <img style="background:gold" src="@/assets/404_images/404.png" alt />
-          </van-swipe-item>
-          <van-swipe-item>
-            <img style="background:silver" src="@/assets/404_images/404.png" alt />
+            <img src="@/assets/banner2.png" alt />
           </van-swipe-item>
         </van-swipe>
       </div>
 
       <van-swipe class="bg_banner" :show-indicators="false" ref="swiper2">
         <van-swipe-item>
-          <div style="background:skyblue"></div>
+          <img src="@/assets/banner1_bg.png" alt />
         </van-swipe-item>
         <van-swipe-item>
-          <div style="background:gold"></div>
-        </van-swipe-item>
-        <van-swipe-item>
-          <div style="background:silver"></div>
+          <img src="@/assets/banner2_bg.png" alt />
         </van-swipe-item>
       </van-swipe>
 
       <ul class="two_parts">
         <li @click="$router.push('/limitFree')">
-          <img src alt />
+          <img src="@/assets/sy_icon_xianliangmiandan@2x.png" alt />
           <span>限量免单</span>
         </li>
         <li @click="$router.push('/bearBuy')">
-          <img src alt />
+          <img src="@/assets/sy_icon_xiongqianggou@2x.png" alt />
           <span>熊抢购</span>
         </li>
       </ul>
@@ -74,8 +68,23 @@
     </section>
 
     <section>
-      <span class="more">更多</span>
-      <img src="@/assets/404_images/404.png" alt @click="$router.push('/limitFree')" />
+      <van-swipe class="sy_banner" :autoplay="3000" :show-indicators="false" :touchable="false">
+        <van-swipe-item>
+          <img src="@/assets/sy_banner1.png" @click="$router.push('/limitFree')" />
+        </van-swipe-item>
+        <van-swipe-item>
+          <img src="@/assets/sy_banner2.png" @click="$router.push('/limitFree')" />
+        </van-swipe-item>
+        <van-swipe-item>
+          <img src="@/assets/sy_banner3.png" @click="$router.push('/limitFree')" />
+        </van-swipe-item>
+        <van-swipe-item>
+          <img src="@/assets/sy_banner4.png" @click="$router.push('/limitFree')" />
+        </van-swipe-item>
+        <van-swipe-item>
+          <img src="@/assets/sy_banner5.png" @click="$router.push('/limitFree')" />
+        </van-swipe-item>
+      </van-swipe>
       <div class="ul_wrapper">
         <ul>
           <li v-for="item in 6" :key="item">
@@ -153,28 +162,27 @@ export default {
     .bg_banner {
       width: 100%;
       text-align: center;
-      div {
+      img {
         width: 100%;
-        height: 200px;
+        height: 202px;
       }
     }
     // 轮播
     .banner {
-      // border: 1px solid red;
-      margin-left: 5%;
+      margin-left: 15px;
       margin-top: 5px;
-      width: 90%;
+      width: 345px;
       text-align: center;
       border-radius: 5px;
       img {
         width: 100%;
-        height: 180px;
+        height: 142px;
       }
     }
     // 限量免单+熊抢购
     .two_parts {
       height: 100px;
-      margin-top: 100px;
+      margin-top: 50px;
       border-bottom: 1px solid #ccc;
       display: flex;
       font-size: 12px;
@@ -189,7 +197,6 @@ export default {
           display: block;
           width: 50px;
           height: 50px;
-          border: 1px solid red;
           border-radius: 50%;
           margin: 10px 0;
         }
@@ -234,24 +241,14 @@ export default {
         color: #fff;
       }
     }
-    // 类别大图
-    & > img {
-      width: 100%;
-      background: red;
-      height: 105px;
-      margin-bottom: 10px;
-    }
-    // 更多
-    .more {
-      border-radius: 3px;
-      top: 15px;
-      right: 20px;
-      position: absolute;
-      display: block;
-      font-size: 12px;
-      color: #fff;
-      border: 1px solid #fff;
-      padding: 2px 5px;
+    .sy_banner {
+      img {
+        width: 345px;
+        text-align: center;
+        border-radius: 2px;
+        height: 105px;
+        margin-bottom: 10px;
+      }
     }
 
     // 子项目item
@@ -313,9 +310,6 @@ export default {
   .van-notice-bar__content {
     color: #333;
   }
-  .van-tabs__wrap::after {
-    border: none;
-  }
   .van-tabs__nav {
     background: none !important;
   }
@@ -324,7 +318,18 @@ export default {
     width: 100%;
     z-index: 9999;
     position: absolute;
-    // background: rgba(255,255,255,.2)
+    .van-tab {
+      color: #fff;
+    }
+    .van-tabs__line {
+      background-color: #fff;
+    }
+    
+    .van-tabbar-item--active, .van-tab--active {
+      .van-ellipsis {
+        font-size: 15px;
+      }
+    }
   }
 }
 </style>

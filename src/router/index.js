@@ -23,9 +23,9 @@ export default [
         meta: { title: '熊抢购' }
       },
       {
-        path: '/taskCenter',
-        name: 'taskCenter',
-        component: () => import('@/views/pages/taskCenter'),
+        path: '/task',
+        name: 'task',
+        component: () => import('@/views/pages/task'),
         meta: { title: '任务中心' }
       },
       {
@@ -53,6 +53,27 @@ export default [
     name: 'purchase',
     component: () => import('@/views/pages/index/purchase'),
     meta: { title: '抢购' }
+  },
+  // 好评截图
+  {
+    path: '/screenShots',
+    name: 'screenShots',
+    component: () => import('@/views/pages/task/screenShots'),
+    meta: { title: '' }
+  },
+  // 申请售后
+  {
+    path: '/applyAfter',
+    name: 'applyAfter',
+    component: () => import('@/views/pages/task/applyAfter'),
+    meta: { title: '' }
+  },
+  // 查看售后
+  {
+    path: '/viewAfter',
+    name: 'viewAfter',
+    component: () => import('@/views/pages/task/viewAfter'),
+    meta: { title: '' }
   },
   {
     path: '/404',

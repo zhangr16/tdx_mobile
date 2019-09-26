@@ -1,10 +1,27 @@
-.van-tabbar-item--active {
+.van-tabbar-item--active, .van-tab--active {
   color: #ff5500;
 }
 
-.van-tab {
-  flex-basis: 14% !important;
-  padding: 0;
+.home, .classify {
+  .van-tab {
+    flex-basis: 14% !important;
+    padding: 0;
+  }
+}
+.task {
+  .van-tab {
+    flex-basis: 20% !important;
+    padding: 0;
+    font-size: 12px
+  }
+}
+.van-tabs__wrap::after {
+  border: none;
+}
+
+.van-tabbar--fixed {
+  min-height: 50px;
+  z-index: 99999 !important;
 }
 .van-tabs__line {
   background-color: #ff5500;
