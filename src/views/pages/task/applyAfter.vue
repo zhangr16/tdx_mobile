@@ -1,7 +1,8 @@
 <template>
   <div class="applyAfter">
     <header>
-      <van-icon class="left_arrow" name="arrow-left" @click="$router.go(-1)" />申请售后
+      <van-icon class="left_arrow" name="arrow-left" @click="$router.go(-1)" />
+      {{ form.b || '申请售后' }}
     </header>
     <main>
       <div class="applyAfter_body">
@@ -56,6 +57,11 @@
           placeholder="请选择"
           @click="showPicker = true"
         />
+        <van-cell v-if="form.b == '资金问题'" class="uploads" title="实拍金额">
+          <div style="color:#333">
+            任务金额:¥2.00&nbsp;&nbsp;差价金额金额:¥1.00
+          </div>
+        </van-cell>
         <van-field
           clearable
           type="textarea"
@@ -91,7 +97,7 @@ export default {
   data() {
     return {
       showPicker: false,
-      columns: ["杭州", "宁波", "温州", "嘉兴", "湖州"],
+      columns: ["资金问题", "物流问题", "礼品问题", "其他"],
       fileList: [],
       form: { a: "", b: "" },
       isLimitFree: true
@@ -99,6 +105,9 @@ export default {
   },
   mounted() {
     this.isLimitFree = this.$route.query.isActive == 0;
+    if(this.$route.query.type) {
+      this.form.b = this.columns[this.$route.query.type]
+    }
   },
   methods: {
     onConfirm(value) {

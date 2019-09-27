@@ -4,7 +4,7 @@
 
 .home, .classify {
   .van-tab {
-    flex-basis: 14% !important;
+    flex-basis: 15% !important;
     padding: 0;
   }
 }
@@ -21,7 +21,7 @@
 
 .van-tabbar--fixed {
   min-height: 50px;
-  z-index: 99999 !important;
+  z-index: 99 !important;
 }
 .van-tabs__line {
   background-color: #ff5500;

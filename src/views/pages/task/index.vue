@@ -33,8 +33,8 @@
       <!-- 攻略 -->
       <div class="strategy">
         <i></i>
-        <span style="border-right:none">新手攻略</span>
-        <span>定制评价攻略</span>
+        <span @click="$router.push('/xsgl')" style="border-right:none">新手攻略</span>
+        <span @click="$router.push('/dzpjgl')">定制评价攻略</span>
         <i></i>
       </div>
       <!-- 任务卡 -->

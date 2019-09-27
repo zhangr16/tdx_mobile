@@ -50,8 +50,8 @@
       <div class="four_btns">
         <span style="background:#51c757" @click="$router.push('/screenShots')">上传好评截图</span>
         <span style="background:#ff6137" @click="$router.push('/screenShots')">查看好评截图</span>
-        <span style="background:#5784ff" @click="handleClickApply">申请售后</span>
-        <span style="background:#fa3950" @click="$router.push('/viewAfter')">查看售后</span>
+        <span style="background:#5784ff" @click="$router.push('/applyAfter?isActive=' + isActive)">申请售后</span>
+        <span style="background:#fa3950" @click="$router.push('/viewAfter?isActive=' + isActive)">查看售后</span>
       </div>
       <div class="times">
         <span>申请时间：2019-08-06</span>
@@ -87,10 +87,6 @@ export default {
     }
   },
   methods: {
-    // 售后申请类型
-    handleClickApply() {
-      this.$router.push('/applyAfter?isActive=' + this.isActive)
-    }
   }
 };
 </script>

@@ -78,12 +78,6 @@
         <van-swipe-item>
           <img src="@/assets/sy_banner3.png" @click="$router.push('/limitFree')" />
         </van-swipe-item>
-        <van-swipe-item>
-          <img src="@/assets/sy_banner4.png" @click="$router.push('/limitFree')" />
-        </van-swipe-item>
-        <van-swipe-item>
-          <img src="@/assets/sy_banner5.png" @click="$router.push('/limitFree')" />
-        </van-swipe-item>
       </van-swipe>
       <div class="ul_wrapper">
         <ul>

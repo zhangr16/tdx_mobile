@@ -36,18 +36,21 @@ export default [
       }
     ]
   },
+  // 马上抢
   {
     path: '/getSoon',
     name: 'getSoon',
     component: () => import('@/views/pages/index/getSoon'),
     meta: { title: ' ' }
   },
+  // 开始任务
   {
     path: '/getStart',
     name: 'getStart',
     component: () => import('@/views/pages/index/getStart'),
     meta: { title: ' ' }
   },
+  // 抢购
   {
     path: '/purchase',
     name: 'purchase',
@@ -74,6 +77,48 @@ export default [
     name: 'viewAfter',
     component: () => import('@/views/pages/task/viewAfter'),
     meta: { title: '' }
+  },
+  // 查看售后详情
+  {
+    path: '/viewAfterDesc',
+    name: 'viewAfterDesc',
+    component: () => import('@/views/pages/task/viewAfterDesc'),
+    meta: { title: '' }
+  },
+  // 协商历史
+  {
+    path: '/history',
+    name: 'history',
+    component: () => import('@/views/pages/task/history'),
+    meta: { title: '协商历史' }
+  },
+  // 定制评价攻略
+  {
+    path: '/dzpjgl',
+    name: 'dzpjgl',
+    component: () => import('@/views/pages/task/gonglue/dzpjgl'),
+    meta: { title: '' }
+  },
+  // 新手攻略
+  {
+    path: '/xsgl',
+    name: 'xsgl',
+    component: () => import('@/views/pages/task/gonglue/xsgl'),
+    meta: { title: '' }
+  },
+  // 登录
+  {
+    path: '/login',
+    name: 'login',
+    component: () => import('@/views/pages/login/login'),
+    meta: { title: '登录' }
+  },
+  // 登录
+  {
+    path: '/register',
+    name: 'register',
+    component: () => import('@/views/pages/login/register'),
+    meta: { title: '注册' }
   },
   {
     path: '/404',

@@ -5,14 +5,14 @@
     </header>
     <main>
       <van-cell>粉丝发起</van-cell>
-      <van-cell title="资金问题" is-link />
-      <van-cell title="物流问题" is-link />
-      <van-cell title="礼品问题" is-link />
-      <van-cell title="其他" is-link />
+      <van-cell title="资金问题" is-link @click="goToDesc(0)" />
+      <van-cell title="物流问题" is-link @click="goToDesc(1)" />
+      <van-cell title="礼品问题" is-link @click="goToDesc(2)" />
+      <van-cell title="其他" is-link @click="goToDesc(3)" />
     </main>
     <main style="margin-top:10px">
       <van-cell>商家发起</van-cell>
-      <van-cell title="资金问题" is-link />
+      <van-cell title="资金问题" is-link @click="goToDesc(0)"/>
     </main>
   </div>
 </template> 
@@ -23,10 +23,18 @@ export default {
   components: {},
   data() {
     return {
+      isLimitFree: true,
       form: { a: "", b: "" }
     };
   },
+  mounted() {
+    this.isLimitFree = this.$route.query.isActive == 0;
+  },
   methods: {
+    // 跳转申请售后页面
+    goToDesc(type) {
+      this.$router.push("/viewAfterDesc?isActive=" + this.$route.query.isActive + '&type=' + type);
+    }
   }
 };
 </script>
