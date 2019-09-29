@@ -122,7 +122,7 @@ export default {
         "内衣",
         "母婴",
         "彩妆",
-        "居家",
+        "家居",
         "鞋包",
         "美食",
         "文体",
@@ -221,10 +221,11 @@ export default {
       margin-bottom: 10px;
       li {
         float: left;
-        width: 62px;
-        height: 20px;
-        line-height: 20px;
-        font-size: 13px;
+        // width: 66px;
+        // height: 22px;
+        // line-height: 22px;
+        font-size: 14px;
+        padding: 5px 10px;
         margin-right: 10px;
         background: #f6f6f6;
         border-radius: 5px;
@@ -267,8 +268,9 @@ export default {
     & > header {
       padding: 10px 15px;
       span {
-        font-size: 14px;
+        font-size: 16px;
         padding: 0 8px;
+        font-weight: bold;
         border-left: 3px solid #ff5500;
       }
     }

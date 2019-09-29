@@ -75,7 +75,7 @@ export default {
         background-color: #fff;
         box-shadow: 0px 1px 16px 0px rgba(211, 69, 82, 0.2);
         border-radius: 20px;
-        padding: 30px;
+        padding: 10px 30px;
         // 忘记密码
         .tips {
           font-size: 12px;

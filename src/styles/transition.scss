@@ -15,10 +15,10 @@
 
 .fade-transform-enter {
   opacity: 0;
-  transform: translateX(-15PX);
+  transform: translateX(-10px);
 }
 
 .fade-transform-leave-to {
   opacity: 0;
-  transform: translateX(15PX);
+  transform: translateX(10px);
 }

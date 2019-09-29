@@ -24,6 +24,7 @@ Vue.use(VueRouter)
 Vue.use(NutUI)
 Vue.use(Vant);
 
+import { Toast } from 'vant';
 
 const router = new VueRouter({
   routes
@@ -32,6 +33,13 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
   /* 路由发生变化修改页面title, 回到顶部 */
   document.title = to.meta.title || ' ';
+  
+  Toast.loading({
+    mask: false,
+    message: '加载中...',
+    duration: 200
+  });
+
   window.scrollTo(0, 0);
   next()
 });

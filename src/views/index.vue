@@ -12,7 +12,7 @@
       <van-tabbar-item replace to="/limitFree" icon="star-o">限量免单</van-tabbar-item>
       <van-tabbar-item replace to="/bearBuy" icon="like-o">熊抢购</van-tabbar-item>
       <van-tabbar-item replace to="/task" icon="orders-o">任务中心</van-tabbar-item>
-      <van-tabbar-item replace to="/login" icon="user-o">我的</van-tabbar-item>
+      <van-tabbar-item replace to="/mine" icon="user-o">我的</van-tabbar-item>
       
     </van-tabbar>
   </div>

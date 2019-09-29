@@ -83,7 +83,7 @@ export default {
     background: linear-gradient(-90deg, #fc5303 0%, #fa8f05 100%);
     text-align: center;
     color: #fff;
-    font-size: 15px;
+    font-size: 17px;
     .right_date {
       font-size: 22px;
       position: absolute;

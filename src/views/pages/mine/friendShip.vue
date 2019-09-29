@@ -1,6 +1,7 @@
 <template>
-  <div class="classify">
-    <header style="margin-bottom:15px">
+  <div class="friendShip">
+    <header>
+      <van-icon class="_left_" name="arrow-left" @click="$router.go(-1)" />
       <van-search placeholder="搜索你喜欢的宝贝" shape="round" v-model="value">
         <div slot="left-icon"></div>
         <div slot="right-icon" @click="onSearch">
@@ -13,11 +14,9 @@
     </header>
 
     <section>
-      <ul class="top_ul">
-        <li :class="{'is_active': active_type == 0}" @click="active_type = 0">全 部</li>
-        <li :class="{'is_active': active_type == 1}" @click="active_type = 1">进行中</li>
-        <li :class="{'is_active': active_type == 2}" @click="active_type = 2">明日预告</li>
-      </ul>
+      <div class="_title">
+        亲友团任务
+      </div>
     </section>
 
     <section>
@@ -32,8 +31,9 @@
 <script>
 import itemCardMid2 from "@/components/item_card_mid2";
 
+// 亲友团
 export default {
-  name: "classify",
+  name: "friendShip",
   components: { itemCardMid2 },
   data() {
     return {
@@ -61,33 +61,28 @@ export default {
 };
 </script>
 <style lang="scss" scope>
-.classify {
+.friendShip {
   width: 100%;
   overflow: auto;
+  & > header {
+    position: relative;
+    margin-bottom:15px;
+    ._left_ {
+      font-size: 20px;
+      left: 15px;
+      top: 18px;
+      position: absolute;
+    }
+  } 
 
   & > section {
-    // padding: 10px 15px;
     margin-bottom: 15px;
-    // 三个选项卡
-    .top_ul {
-      width: 100%;
-      overflow: hidden;
-      margin-bottom: 10px;
-      padding-left: 15px; 
-      li {
-        float: left;
-        padding: 5px 9px;
-        font-size: 12px;
-        margin-right: 25px;
-        border-radius: 5px;
-        text-align: center;
-        border: 1px solid #666;
-        color: #666;
-      }
-      .is_active {
-        border: 1px solid #ff5500;
-        color: #ff5500;
-      }
+    &:last-child {
+      margin-bottom: 0 
+    }
+    ._title {
+      margin-left: 15px;
+      font-size: 14px;
     }
     .ul_free {
       width: 100%;
@@ -97,7 +92,6 @@ export default {
       padding: 10px 15px;
       li {
         width: calc((100vw - 35px) / 2);
-        // height: calc((100% - 35px) / 2);
         margin-bottom: 5px;
       }
       .margin_right {

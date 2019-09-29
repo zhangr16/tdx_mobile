@@ -42,7 +42,7 @@ export default {
     width: calc(100% - 140px);
     .title {
       width: 100%;
-      font-size: 14px;
+      font-size: 15px;
       overflow: hidden;
       white-space: nowrap;
       text-overflow: ellipsis;
@@ -50,13 +50,14 @@ export default {
     }
     .content {
       width: 100%;
-      font-size: 11px;
+      font-size: 12px;
       & > div {
         width: 100%;
       }
       &_price1,
       &_price2 {
-        padding: 2px 0;
+        font-size: 12px;
+        padding: 3px 0;
         color: #ff5500;
       }
       &_price1 > span {
@@ -69,17 +70,15 @@ export default {
         margin-top: 5px;
         span {
           display: inline-block;
-          transform: scale(0.85);
           color: #ff5500;
           border: 1px solid #ff5500;
-          padding: 4px 8px;
+          padding: 4px 6px;
           border-radius:5px;
         }
       }
       &_insure {
         color: #999;
-        transform: scale(0.9);
-        margin: 9px 0;
+        margin: 7px 0;
       }
       &_btn {
         text-align: center;

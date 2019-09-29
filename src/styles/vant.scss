@@ -2,12 +2,27 @@
   color: #ff5500;
 }
 
-.home, .classify {
+.home, .classify, .friendShip {
   .van-tab {
     flex-basis: 15% !important;
     padding: 0;
   }
 }
+
+.home, .classify {
+  .van-search {
+    padding-right: 30px;
+    padding-left: 30px;
+  }
+}
+
+.friendShip {
+  .van-search {
+    padding-right: 30px;
+    padding-left: 50px;
+  }
+}
+
 .task {
   .van-tab {
     flex-basis: 20% !important;
@@ -37,7 +52,3 @@
   color: #ff5500;
 }
 
-.van-search {
-  padding-right: 30px;
-  padding-left: 30px;
-}

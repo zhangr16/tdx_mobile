@@ -27,9 +27,6 @@ export default {
     };
   },
   methods: {
-    afterRead(v) {
-      console.log(v);
-    }
   }
 };
 </script>
