@@ -151,7 +151,7 @@ export default {
     .times {
       color: #999;
       display: flex;
-      padding: 5px 7px 10px 7px;
+      padding: 10px 7px;
       span {
         flex: 1;
       }

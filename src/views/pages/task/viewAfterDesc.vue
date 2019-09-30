@@ -8,12 +8,12 @@
       <van-cell-group>
         <van-cell title="申请关闭" label="还剩2天23小时59分" />
         <van-cell class="top_content">
-          <div>
+          <ul>
             <!-- 您已撤销本次退款申请，如问题仍未解决，售后保障期内，您可以重新发起售后申请<br/> -->
-            1、商家同意，系统将自动补差给您
-            <br />2、如果商家72小时内未处理，平台将自动接入处理
-            <br />3、如果商家拒绝，您可以修改申请后再次发起，商家会重新处理或者申请平台介入
-          </div>
+            <li>1、商家同意，系统将自动补差给您</li>
+            <li>2、如果商家72小时内未处理，平台将自动接入处理</li>
+            <li>3、如果商家拒绝，您可以修改申请后再次发起，商家会重新处理或者申请平台介入</li>
+          </ul>
           <div class="four_btns">
             <span
               style="background:#51c757"
@@ -32,7 +32,7 @@
       <van-cell class="mid_history" title="协商历史" is-link @click="goTohistory" />
 
       <section>
-        <div style="color:#666">售后信息</div>
+        <div class="_title">售后信息</div>
         <div class="viewAfterDesc_body">
           <img src="@/assets/404_images/404.png" alt />
           <ul v-if="isLimitFree">
@@ -155,43 +155,54 @@ export default {
   }
   & > main {
     width: 100%;
+    .van-cell__title {
+      & > span {
+        font-size: 16px;
+      }
+    }
     .top_content {
-      font-size: 12px;
+      font-size: 14px;
       .four_btns {
         margin-top: 10px;
         display: flex;
         justify-content: space-between;
         align-items: center;
-        transform: scale(0.9);
-        margin-left: -5%;
+        font-size: 12px;
         & > span {
           padding: 0 15px;
           color: #fff;
           border-radius: 5px;
         }
       }
-      & > div {
+      ul {
         color: #666;
+        li {
+          font-size: 14px;
+          line-height: 1.5;
+          padding-bottom: 10px;
+        }
       }
-      font-size: 12px;
     }
     .mid_history {
       margin: 15px 0;
     }
     .desc_ul {
       li {
-        font-size: 12px;
+        font-size: 14px;
         i {
           color: #999;
         }
       }
-      // border: 1px solid red;
     }
     & > section {
       padding: 10px 15px;
       background: #fff;
+      & > ._title {
+        color: #666;
+        font-size: 14px;
+      }
       .viewAfterDesc_body {
-        margin-top: 7px;
+        margin-top: 8px;
         display: flex;
         & > img {
           width: 110px;
@@ -202,16 +213,18 @@ export default {
         }
         & > ul {
           flex: 1;
-          height: 80px;
-          margin-top: 10px;
+          height: 90px;
+          margin-top: 5px;
           .scale_num {
             color: #999;
-            transform: scale(0.9);
-            margin-left: -5%;
           }
           li {
             height: 25%;
             display: flex;
+            font-size: 12px;
+            &:first-child {
+              font-size: 14px;
+            }
             span {
               flex: 1;
             }

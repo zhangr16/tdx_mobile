@@ -63,10 +63,11 @@ export default {
   & > main {
     width: 100%;
     background: #fff;
-    font-size: 12px;
+    font-size: 14px;
     .van-cell__value--alone {
       text-align: center;
       font-weight: bold;
+      font-size: 16px;
     }
   }
 }
