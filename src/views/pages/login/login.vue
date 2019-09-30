@@ -3,7 +3,7 @@
     <div class="login_wrapper">
       <header>
         <div class="icon">
-          <van-icon name="arrow-left" @click="$router.push('/index')" />
+          <van-icon name="arrow-left" @click="$router.push('/mine')" />
         </div>
         <div class="text">登 录</div>
       </header>

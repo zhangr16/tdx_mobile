@@ -37,7 +37,7 @@ router.beforeEach((to, from, next) => {
   Toast.loading({
     mask: false,
     message: '加载中...',
-    duration: 200
+    duration: 500
   });
 
   window.scrollTo(0, 0);

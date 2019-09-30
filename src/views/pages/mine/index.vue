@@ -81,11 +81,11 @@
             <img src="@/assets/mine/wd_icon_zhanghutixian@2x.png" alt />
             <span>账户提现</span>
           </li>
-          <li>
+          <li @click="$router.push('/funds')">
             <img src="@/assets/mine/wd_icon_zijinmingxi@2x.png" alt />
             <span>资金明细</span>
           </li>
-          <li class="br_none">
+          <li class="br_none" @click="$router.push('/score')">
             <img src="@/assets/mine/wd_icon_jifenmingxi@2x.png" alt />
             <span>积分明细</span>
           </li>
@@ -117,20 +117,19 @@
             <img src="@/assets/mine/wd_icon_qinyoutuan@2x.png" alt />
             <span>亲友团</span>
           </li>
-          <li class="bb_none">
+          <li class="bb_none" @click="$router.push('/hdjl')">
             <img src="@/assets/mine/wd_icon_huodongjiangli@2x.png" alt />
             <span>活动奖励</span>
           </li>
-          <li></li>
+          <li @click="$router.push('/update')">
+            <img src="@/assets/mine/wd_icon_gengxin@2x.png" alt />
+            <span>更新说明</span>
+          </li>
         </ul>
       </section>
     </main>
     <footer>
-      <div class="btns">
-        <span>意见反馈</span>
-        <span>更新说明</span>
-      </div>
-      <div class="logout">退出登录</div>
+      <div class="logout" @click="$router.push('/login')">退出登录</div>
     </footer>
   </div>
 </template> 
@@ -168,8 +167,8 @@ export default {
       align-items: center;
       padding-right: 30px;
       & > img {
-        width: 30px;
-        height: 30px;
+        width: 50px;
+        height: 50px;
         background: #ccc;
         border-radius: 50%;
       }
@@ -187,17 +186,16 @@ export default {
       }
     }
     .nums {
-      padding: 15px 35px;
+      padding: 15px 30px 15px 50px;
       display: flex;
       justify-content: space-between;
       span {
+        font-size: 14px;
         background-color: #fb7704;
         border-radius: 5px;
         border: 1px solid #fff;
-        width: 115px;
-        height: 20px;
-        line-height: 20px;
         text-align: center;
+        padding: 5px 15px;
       }
     }
   }
@@ -208,7 +206,7 @@ export default {
       margin-top: 15px;
       .tabs {
         display: flex;
-        font-weight: bold;
+        font-size: 14px;
         .is_active {
           border-bottom: 2px solid #fb6e04;
         }
@@ -252,6 +250,7 @@ export default {
             border-right: 1px solid #e5e5e5;
           }
           & > span {
+            font-size: 14px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -262,7 +261,7 @@ export default {
           ._numbers {
             padding-top: 5px;
             color: #fa2a44;
-            font-size: 15px;
+            font-size: 16px;
           }
         }
       }
@@ -298,27 +297,9 @@ export default {
     }
   }
   & > footer {
-    margin-bottom: 65px;
+    margin-top: 20px;
+    margin-bottom: 70px;
     font-size: 14px;
-    .btns {
-      display: flex;
-      padding: 15px 15px 25px 15px;
-      & > span {
-        flex: 1;
-        text-align: center;
-        padding: 8px 0;
-        border-radius: 5px;
-        &:first-child {
-          color: #fa5569;
-          border: solid 1px #fa5569;
-          margin-right: 10px;
-        }
-        &:last-child {
-          color: #ff5500;
-          border: solid 1px #ff5500;
-        }
-      }
-    }
     .logout {
       color: #fff;
       width: 345px;

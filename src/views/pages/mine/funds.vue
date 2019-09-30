@@ -1,0 +1,227 @@
+<template>
+  <div class="funds">
+    <!-- 日历控件 -->
+    <nut-calendar
+      :is-visible="isVisible"
+      :default-value="myDate"
+      type="range"
+      :start-date="null"
+      :end-date="null"
+      :animation="`nutSlideUp`"
+      @close="isVisible = false"
+      @choose="setChooseValue"
+    ></nut-calendar>
+
+    <header>
+      <van-icon class="left_arrow" name="arrow-left" @click="$router.go(-1)" />
+      资金明细
+      <van-icon class="right_date" name="calender-o" @click="isVisible = true" />
+    </header>
+    <main>
+      <ul class="title_ul">
+        <li>
+          总收入
+          <br />
+          <span>¥10000</span>
+        </li>
+        <li class="mid">
+          已提现
+          <br />
+          <span>¥5000</span>
+        </li>
+        <li>
+          余额
+          <br />
+          <span>¥5000</span>
+        </li>
+      </ul>
+      <nav>
+        <van-field
+          readonly
+          clickable
+          clearable
+          label="资金类型"
+          right-icon="arrow-down"
+          :value="form.type"
+          placeholder="请选择"
+          @click="showType = true"
+        />
+        <van-field
+          readonly
+          clickable
+          clearable
+          label="资金状态"
+          right-icon="arrow-down"
+          :value="form.status"
+          placeholder="请选择"
+          @click="showStatus = true"
+        />
+      </nav>
+      <van-popup v-model="showType" position="bottom">
+        <van-picker
+          show-toolbar
+          :default-index="0"
+          :columns="['全部' ,'任务金额', '定制金额', '售后金额']"
+          @cancel="showType = false"
+          @confirm="(val) => { form.type = val; showType = false }"
+        />
+      </van-popup>
+      <van-popup v-model="showStatus" position="bottom">
+        <van-picker
+          show-toolbar
+          :default-index="0"
+          :columns="['全部' , '已打款', '待审核', '已驳回']"
+          @cancel="showStatus = false"
+          @confirm="(val) => { form.status = val; showStatus = false }"
+        />
+      </van-popup>
+      <ul class="item_ul">
+        <li v-for="item in 4" :key="item" @click="$router.push('/fundDesc')">
+          <img src="@/assets/mine/money1.png" alt />
+          <div>
+            <span class="_title">
+              <span>任务金额-已打款</span>
+              <i>+ 12.00</i>
+            </span>
+            <span class="_desc">银行卡提现</span>
+            <span class="_time">2019-08-13 00:00:00</span>
+          </div>
+        </li>
+      </ul>
+    </main>
+  </div>
+</template> 
+<script>
+export default {
+  // 资金明细
+  name: "funds",
+  components: {},
+  data() {
+    return {
+      form: {
+        type: "全部",
+        status: "全部"
+      },
+      showStatus: false,
+      showType: false,
+      isVisible: false,
+      myDate: null
+    };
+  },
+  methods: {
+    setChooseValue(param) {
+      this.myDate = [...[param[0][3], param[1][3]]];
+    }
+  }
+};
+</script>
+<style lang="scss" scope>
+.funds {
+  position: relative;
+  width: 100%;
+  padding-top: 50px;
+  min-height: 100vh;
+  & > header {
+    width: 100%;
+    position: fixed;
+    top: 0;
+    z-index: 999999;
+    height: 40px;
+    line-height: 40px;
+    background: linear-gradient(-90deg, #fc5303 0%, #fa8e05 100%);
+    text-align: center;
+    color: #fff;
+    font-size: 17px;
+    .left_arrow {
+      font-size: 20px;
+      position: absolute;
+      left: 15px;
+      top: 10px;
+    }
+    .right_date {
+      font-size: 24px;
+      position: absolute;
+      right: 15px;
+      top: 8px;
+    }
+  }
+  & > main {
+    width: 100%;
+    .title_ul {
+      display: flex;
+      padding: 10px 0;
+      background: #fff;
+      .mid {
+        border-left: 1px solid #e5e5e5;
+        border-right: 1px solid #e5e5e5;
+      }
+      li {
+        line-height: 1.5;
+        font-size: 14px;
+        flex: 1;
+        text-align: center;
+        span {
+          font-weight: bold;
+        }
+      }
+    }
+    nav {
+      padding: 15px 0;
+      display: flex;
+      & > .van-cell {
+        flex: 1;
+        padding: 10px;
+        .van-field__label {
+          
+          width: 70px;
+        }
+        .van-field__control {
+          font-weight: bold;
+          text-align: center
+        }
+      }
+    }
+    .item_ul {
+      width: 100%;
+      background: #fff;
+      li {
+        font-size: 14px;
+        color: #666;
+        line-height: 1.5;
+        padding: 0 15px;
+        display: flex;
+        & > img {
+          width: 30px;
+          height: 30px;
+          margin: 15px 10px 0 0;
+        }
+        & > div {
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          border-bottom: 1px solid #e5e5e5;
+          padding: 15px 0;
+          ._title {
+            color: #333;
+            font-size: 14px;
+            display: flex;
+            justify-content: space-between;
+            i {
+              color: #fa2a44;
+            }
+          }
+          ._desc {
+            font-size: 12px;
+            padding: 5px 0;
+            color: #666;
+          }
+          ._time {
+            color: #999;
+            font-size: 12px;
+          }
+        }
+      }
+    }
+  }
+}
+</style>

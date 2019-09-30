@@ -77,7 +77,7 @@ export default {
       li {
         float: left;
         padding: 5px 9px;
-        font-size: 12px;
+        font-size: 14px;
         margin-right: 25px;
         border-radius: 5px;
         text-align: center;

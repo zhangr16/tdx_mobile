@@ -9,7 +9,10 @@
       </div>
       <div class="content">
         <div class="content_price">￥2.9</div>
-        <div class="content_desc">累计已抢<i>1</i>份 累计剩余<i>2</i>份</div>
+        <div class="content_desc">
+          <div>累计已抢<i>1</i>份</div>
+          <div>累计剩余<i>2</i>份</div>
+        </div>
       </div>
       <div class="btn">马上抢</div>
     </main>
@@ -37,6 +40,7 @@ export default {
     text-align: center;
     padding: 0 14px;
     .title {
+      font-size: 12px;
       margin: 5px 0;
       display: flex;
       align-items: center;
@@ -48,25 +52,30 @@ export default {
     }
     .content {
       display: flex;
-      // justify-content: space-between;
       align-items: center;
       &_price {
-        font-size: 12px;
+        font-size: 14px;
         color: #ff5500;
         text-decoration: line-through;
+        margin-right: 10px;
       }
       &_desc {
+        font-size: 12px;
         color: #999;
-        transform: scale(0.9);
+        transform: scale(.9);
+        & > div {
+          padding-bottom: 3px;
+        }
+        // margin-left: -5%;
         i {
           color: red;
         }
       }
     }
     .btn {
-      font-size: 12px;
+      font-size: 14px;
       margin: 10px 0;
-      padding: 4px 6px;
+      padding: 5px 6px;
       width: calc(100%);
       color: #ff5500;
       border: 1px solid #ff5500;

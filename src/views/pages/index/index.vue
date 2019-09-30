@@ -59,7 +59,7 @@
         <li :class="{'is_active': active_type == 2}" @click="active_type = 2">新品预告</li>
       </ul>
       <div class="ul_wrapper">
-        <ul v-if="active_type == 0">
+        <ul>
           <li v-for="item in 6" :key="item">
             <item-card-small />
           </li>
@@ -195,6 +195,7 @@ export default {
           margin: 10px 0;
         }
         span {
+          font-size: 14px;
           flex: 1;
         }
       }

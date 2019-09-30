@@ -38,26 +38,29 @@ export default {
   }
   & > main {
     width: calc((100vw - 46px) / 3);
-    text-align: center;
     .title {
+      font-size: 12px;
+      text-align: left;
       overflow: hidden;
       white-space: nowrap;
       text-overflow: ellipsis;
-      margin: 5px 0 10px 0;
+      margin: 5px 0;
     }
     .content {
       display: flex;
       justify-content: space-between;
       align-items: center;
       &_price {
-        font-size: 12px;
+        font-size: 14px;
         color: #ff5500;
         text-decoration: line-through;
+        margin-right: 5px;
       }
       &_desc {
         display: flex;
         flex-direction: column;
-        transform: scale(0.75);
+        transform: scale(0.8);
+        margin-left: -10%;
         color: #999;
         span {
           padding-top: 5px; 
@@ -68,7 +71,8 @@ export default {
       }
     }
     .btn {
-      font-size: 11px;
+      text-align: center;
+      font-size: 12px;
       margin: 10px 0;
       width: calc(100% - 20px);
       margin-left: 10px;

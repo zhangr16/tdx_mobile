@@ -5,7 +5,7 @@
     </header>
     <main>
       <van-cell title="1、注册账号" />
-      <van-cell title="2、实名认证" label="需要提供：真实姓名、淘宝账号、对应支付宝截图" is-link />
+      <van-cell title="2、实名认证" label="需要提供：真实姓名、淘宝账号、对应支付宝截图" is-link to="certification" />
       <van-cell title="3、等待实名认证通过" />
       <van-cell title="4、进入宝贝大厅挑选商品" is-link to="index" />
       <van-cell title="5、商品详情页" />
@@ -17,12 +17,12 @@
       <van-cell title="7、开始做任务" label="在淘宝订单页复制订单号并在平台提交" />
       <van-cell title="8、提交订单号">
         <template slot="label">
-         等待<i>两天</i>后出现上传好评的入口
+          等待<i>两天</i>后出现上传好评的入口
         </template>
       </van-cell>
-      <van-cell title="9、等待买家发货" >
+      <van-cell title="9、等待买家发货">
         <template slot="label">
-         收到宝贝后对<i>任务宝贝</i>进行评价
+          收到宝贝后对<i>任务宝贝</i>进行评价
         </template>
       </van-cell>
       <van-cell title="10、五星10字以上好评" />
@@ -30,11 +30,11 @@
       <van-cell title="12、商家审核通过" />
       <van-cell title="13、系统返任务款">
         <template slot="label">
-         系统将购物款返还到您平台的<i>账单</i>里
+          系统将购物款返还到您平台的<i>账单</i>里
         </template>
       </van-cell>
       <van-cell title="14、绑定提现银行卡" is-link />
-      <van-cell title="15、申请提现" is-link />
+      <van-cell title="15、申请提现" is-link to="zhtx" />
       <van-cell title="16、24:00前平台打款到银行卡" />
       <van-cell title="17、完成" />
     </main>
@@ -73,22 +73,28 @@ export default {
     background: linear-gradient(-90deg, #fc5303 0%, #fa8e05 100%);
     text-align: center;
     color: #fff;
-    font-size: 15px;
+    font-size: 17px;
     .left_arrow {
       position: absolute;
       left: 15px;
-      top: 13px;
+      top: 10px;
+      font-size: 20px;
     }
   }
   & > main {
     width: 100%;
     background: #fff;
     .van-cell {
-      font-size: 13px;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      min-height: 55px;
+      padding: 5px 15px;
       .van-cell__label {
         font-size: 12px;
+        margin-top: 0;
         i {
-          color:#fa2a44;
+          color: #fa2a44;
         }
       }
     }

@@ -71,7 +71,7 @@
           label="售后说明"
           placeholder="请填写售后说明"
         />
-        <van-cell class="uploads" title="售后凭证">
+        <van-cell class="uploads" title="售后凭证" label="（最多3张）">
           <van-uploader v-model="fileList" multiple :max-count="3" />
         </van-cell>
       </van-cell-group>
@@ -131,12 +131,13 @@ export default {
     line-height: 40px;
     background: linear-gradient(-90deg, #fc5303 0%, #fa8e05 100%);
     text-align: center;
-    font-size: 15px;
+    font-size: 17px;
     color: #fff;
     .left_arrow {
       position: absolute;
       left: 15px;
-      top: 13px;
+      top: 10px;
+      font-size: 20px;
     }
   }
   & > main {

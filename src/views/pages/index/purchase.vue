@@ -1,8 +1,8 @@
 <template>
   <div class="purchase">
     <!-- 回退按钮 -->
-    <i class="backBtn">
-      <van-icon class="left_arrow" name="arrow-left" @click="$router.go(-1)" />
+    <i class="backBtn" @click="$router.go(-1)">
+      <van-icon class="left_arrow" name="arrow-left" />
     </i>
     <img src="@/assets/404_images/404.png" alt />
     <!-- 抢购信息 -->
@@ -68,7 +68,7 @@
     </footer>
 
     <!-- 确认弹窗 -->
-    <van-dialog v-model="showConfirm" title="商品信息" @confirm="handleConfirm">
+    <van-dialog v-model="showConfirm" title="商品信息" :closeOnClickOverlay="true" @confirm="handleConfirm">
       <van-cell title="商品名称" value />
       <van-cell title="商品价格" value />
       <ul>
@@ -103,11 +103,11 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 24px;
-    height: 24px;
+    width: 30px;
+    height: 30px;
     color: #fff;
     position: absolute;
-    top: 10px;
+    top: 15px;
     left: 15px;
     background: #666;
     border-radius: 50%;
@@ -138,11 +138,14 @@ export default {
     }
     & > ._top {
       .title {
-        font-size: 14px;
+        font-size: 16px;
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
         margin-bottom: 10px;
+      }
+      .num {
+        font-size: 14px;
       }
     }
     & > ._mid {
@@ -150,6 +153,7 @@ export default {
       border-bottom: 1px solid #e5e5e5;
       span {
         color: #999;
+        font-size: 14px;
       }
       .time {
         margin-top: 10px;
@@ -163,6 +167,7 @@ export default {
       }
     }
     & > ._bottom {
+      font-size: 14px;
       color: #999;
     }
   }
@@ -173,33 +178,33 @@ export default {
     padding: 10px 15px;
 
     & > header {
-      font-size: 13px;
+      font-size: 16px;
       margin-bottom: 10px;
+      font-weight: bold;
     }
     & > ul {
       li {
-        line-height: 2;
-        font-size: 12px;
+        line-height: 1.5;
+        font-size: 14px;
         color: #666;
         margin-bottom: 10px;
       }
     }
     .scale {
       line-height: 1.5;
-      transform: scale(0.9);
-      margin-left: calc(-10vw + 20px);
+      font-size: 12px;
     }
   }
   footer {
     width: 100%;
-    height: 40px;
-    line-height: 40px;
+    height: 50px;
+    line-height: 50px;
     display: flex;
     font-size: 14px;
     box-shadow: 0px 0px 9px 2px rgba(229, 229, 229, 0.36);
     ._s {
       width: 60px;
-      font-size: 12px;
+      font-size: 14px;
       color: #666;
       text-align: center;
       &:first-child {
@@ -210,6 +215,7 @@ export default {
       text-align: center;
       color: #fff;
       flex: 1;
+      font-size: 16px;
       background: linear-gradient(-90deg, #fa2440 0%, #f7697d 100%);
     }
   }

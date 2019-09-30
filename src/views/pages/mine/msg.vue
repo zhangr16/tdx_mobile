@@ -47,14 +47,13 @@ export default {
       font-size: 20px;
       position: absolute;
       left: 15px;
-      top: 12px;
+      top: 10px;
     }
   }
 
   & > ul {
     li {
       background: #fff;
-      font-size: 12px;
       color: #666;
       line-height: 1.5;
       padding: 15px;
@@ -73,13 +72,14 @@ export default {
           color:#333;
           font-size: 14px;
         }
-        .desc {
+        ._desc {
+          font-size: 12px;
+          padding: 5px 0;
           color: #666;
         }
         ._time {
           color: #999;
-          transform: scale(.9);
-          margin-left: -5%;
+          font-size: 12px;
         }
       }
     }

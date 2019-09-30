@@ -85,10 +85,10 @@ export default {
     color: #fff;
     font-size: 17px;
     .right_date {
-      font-size: 22px;
+      font-size: 24px;
       position: absolute;
       right: 15px;
-      top: 9px;
+      top: 8px;
     }
   }
   & > main {
@@ -116,19 +116,23 @@ export default {
         background: #ccc;
       }
     }
+    & > .van-tabs .van-tab {
+      font-size: 14px;
+    }
     .strategy {
       width: 100%;
       display: flex;
       color: #fb2742;
       background: #fff;
       padding: 15px 0;
+      font-size: 14px;
       i {
-        width: 5px;
+        width: 10px;
       }
       span {
         flex: 1;
-        height: 22px;
-        line-height: 22px;
+        height: 26px;
+        line-height: 26px;
         text-align: center;
         border: 1px solid #fb2742;
       }

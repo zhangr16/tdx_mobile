@@ -33,11 +33,12 @@ export default {
     background: linear-gradient(-90deg, #fc5303 0%, #fa8f05 100%);
     text-align: center;
     color: #fff;
-    font-size: 15px;
+    font-size: 17px;
     .left_arrow {
       position: absolute;
       left: 15px;
-      top: 13px;
+      top: 10px;
+      font-size: 20px;
     }
   }
   & > ul {

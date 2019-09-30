@@ -113,7 +113,7 @@ export default [
     component: () => import('@/views/pages/login/login'),
     meta: { title: '登录' }
   },
-  // 登录
+  // 注册
   {
     path: '/register',
     name: 'register',
@@ -181,6 +181,41 @@ export default [
     path: '/suggestions',
     name: 'suggestions',
     component: () => import('@/views/pages/mine/suggestions'),
+    meta: { title: '' }
+  },
+  // 资金明细
+  {
+    path: '/funds',
+    name: 'funds',
+    component: () => import('@/views/pages/mine/funds'),
+    meta: { title: '' }
+  },
+  // 资金详情
+  {
+    path: '/fundDesc',
+    name: 'fundDesc',
+    component: () => import('@/views/pages/mine/fundDesc'),
+    meta: { title: '' }
+  },
+  // 积分明细
+  {
+    path: '/score',
+    name: 'score',
+    component: () => import('@/views/pages/mine/score'),
+    meta: { title: '' }
+  },
+  // 活动奖励
+  {
+    path: '/hdjl',
+    name: 'hdjl',
+    component: () => import('@/views/pages/mine/hdjl'),
+    meta: { title: '' }
+  },
+  // 更新说明
+  {
+    path: '/update',
+    name: 'update',
+    component: () => import('@/views/pages/mine/update'),
     meta: { title: '' }
   },
   {

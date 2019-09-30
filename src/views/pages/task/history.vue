@@ -116,11 +116,12 @@ export default {
     line-height: 40px;
     background: #fff;
     text-align: center;
-    font-size: 15px;
+    font-size: 17px;
     .left_arrow {
       position: absolute;
       left: 15px;
-      top: 13px;
+      top: 10px;
+      font-size: 20px;
     }
   }
 

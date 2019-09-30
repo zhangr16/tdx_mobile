@@ -44,6 +44,7 @@ export default {
       margin: 5px 0;
       display: flex;
       align-items: center;
+      font-size: 12px;
       i {
         display: inline-block;
         color: #fff;
@@ -60,20 +61,25 @@ export default {
     }
     .content {
       display: flex;
-      // justify-content: space-between;
       align-items: center;
       &_price {
-        font-size: 12px;
+        font-size: 14px;
         color: #ff5500;
         text-decoration: line-through;
       }
       &_desc {
+        flex: 1;
         display: flex;
         flex-direction: column;
         color: #999;
-        margin-left: 8px;
-        transform: scale(0.9);
+        margin-left: 5px;
+        .van-progress {
+          height: 5px;
+        }
         .word {
+          text-align: left;
+          transform: scale(0.9);
+          margin-left: -5%;
           flex: 1;
           padding-top: 5px;
           overflow: hidden;
@@ -83,12 +89,10 @@ export default {
       }
     }
     .btn {
-      font-size: 12px;
+      font-size: 13px;
       margin: 10px 0;
-      padding: 4px 6px;
+      padding: 5px 6px;
       width: calc(100%);
-      // height: 20px;
-      // line-height: 20px;
       color: #ff5500;
       border: 1px solid #ff5500;
       border-radius: 5px;

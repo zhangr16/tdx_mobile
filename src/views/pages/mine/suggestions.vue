@@ -47,7 +47,7 @@ export default {
       font-size: 20px;
       position: absolute;
       left: 15px;
-      top: 12px;
+      top: 10px;
     }
   }
 

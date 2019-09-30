@@ -45,7 +45,7 @@
               </li>
               <li>
                 <input type="text" class="inp" />
-                <span class="search1">搜索</span>
+                <span class="search1">搜 索</span>
               </li>
               <li>
                 找不到商品?
@@ -56,7 +56,7 @@
         </li>
         <li>
           <header>
-            <span>2</span>搜索宝贝
+            <span>2</span>同类对比
           </header>
           <article>
             <ul>
@@ -80,7 +80,7 @@
               <li>* 核对宝贝，请提交宝贝链接或淘口令</li>
               <li>
                 <input type="text" class="inp" />
-                <span class="search2" @click="handleConfirm">验证</span>
+                <span class="search2" @click="handleConfirm">验 证</span>
               </li>
               <li class="scale_li">1、获取链接方法：长按宝贝标题获取宝贝链接</li>
               <li class="scale_li">2、淘口令获取方法：宝贝标题右边点击“分享”-左下角点击复制链接-粘贴至空格点击验证</li>
@@ -180,18 +180,18 @@ export default {
     line-height: 40px;
     background: #fff;
     text-align: center;
-    font-size: 15px;
+    font-size: 17px;
     .left_arrow {
       position: absolute;
       left: 15px;
-      top: 13px;
+      top: 10px;
+      font-size: 20px
     }
   }
   & > nav {
     color: #fff;
     padding-top: 40px;
-    font-size: 12px;
-    // height: 30px;
+    font-size: 14px;
     text-align: center;
     line-height: 30px;
     background: linear-gradient(-90deg, #fc5303 0%, #fa8f05 100%);
@@ -202,14 +202,14 @@ export default {
     margin-top: 10px;
     & > header {
       margin-bottom: 10px;
-      font-size: 13px;
+      font-size: 16px;
       font-weight: bold;
     }
     // 注意事项
     & > .note {
       li {
-        line-height: 2;
-        font-size: 12px;
+        line-height: 1.5;
+        font-size: 14px;
         color: #666;
         margin-bottom: 10px;
         i {
@@ -219,13 +219,12 @@ export default {
     }
     .scale {
       line-height: 1.5;
-      transform: scale(0.9);
-      margin-left: calc(-10vw + 20px);
+      font-size: 12px;
     }
     // 步骤
     & > .step {
       li {
-        font-size: 13px;
+        font-size: 16px;
         & > header {
           display: flex;
           align-items: center;
@@ -249,11 +248,11 @@ export default {
           li {
             padding: 5px 0;
             line-height: 1.5;
-            font-size: 12px;
+            font-size: 14px;
             .inp {
               width: 245px;
-              height: 25px;
-              line-height: 25px;
+              height: 40px;
+              line-height: 40px;
               border: 1px solid #ccc;
               border-right: 0;
               outline: none;
@@ -265,8 +264,9 @@ export default {
               background: linear-gradient(-90deg, #fc5504 0%, #fa8d05 100%);
               color: #fff;
               width: 50px;
-              height: 25px;
-              line-height: 25px;
+              height: 40px;
+              line-height: 40px;
+              font-size: 14px;
             }
             .search2 {
               display: inline-block;
@@ -274,8 +274,9 @@ export default {
               background: linear-gradient(-90deg, #fb243f 0%, #f7687c 100%);
               color: #fff;
               width: 50px;
-              height: 25px;
-              line-height: 25px;
+              height: 40px;
+              line-height: 40px;
+              font-size: 14px;
             }
             .change_keyword {
               padding: 5px;
@@ -293,22 +294,21 @@ export default {
           .scale_li {
             padding: 0;
             line-height: 1.5;
-            margin-left: -5%;
+            font-size: 12px;
             color: #999;
-            transform: scale(0.9);
           }
         }
       }
     }
     // tips
     & > .tips {
-      line-height: 1.5;
+      line-height: 1.8;
       font-size: 12px;
     }
     // 注意
     & > .attention {
       line-height: 1.5;
-      font-size: 13px;
+      font-size: 14px;
     }
   }
 }
@@ -325,7 +325,7 @@ export default {
   ._exchanger {
     display: flex;
     .van-cell__value {
-      flex: 3;
+      flex: 2.7;
       .van-radio-group {
         display: flex;
         .van-radio {

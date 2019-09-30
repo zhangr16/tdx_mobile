@@ -58,11 +58,12 @@ export default {
     background: linear-gradient(-90deg, #fc5303 0%, #fa8e05 100%);
     text-align: center;
     color: #fff;
-    font-size: 15px;
+    font-size: 17px;
     .left_arrow {
       position: absolute;
       left: 15px;
-      top: 13px;
+      top: 10px;
+      font-size: 20px;
     }
   }
   & > main {
@@ -71,7 +72,7 @@ export default {
     ._exchanger {
       display: flex;
       .van-cell__value {
-        flex: 3;
+        flex: 2.8;
         .van-radio-group {
           display: flex;
           .van-radio {

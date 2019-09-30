@@ -7,7 +7,7 @@
       <van-cell-group>
         <van-field v-model="form.a" label="买家旺旺" placeholder="请输入买家旺旺" />
         <van-field v-model="form.b" label="订单编号" placeholder="请输入订单编号" />
-        <van-cell class="uploads" title="上传截图">
+        <van-cell class="uploads" title="上传截图" label="（最多3张）">
           <van-uploader v-model="fileList" multiple :max-count="3" />
         </van-cell>
       </van-cell-group>
@@ -44,11 +44,12 @@ export default {
     line-height: 40px;
     background: #fff;
     text-align: center;
-    font-size: 15px;
+    font-size: 17px;
     .left_arrow {
       position: absolute;
       left: 15px;
-      top: 13px;
+      top: 10px;
+      font-size: 20px;
     }
   }
   & > main {

@@ -59,7 +59,7 @@
       </div>
       <div class="two_btns">
         <span>
-          <i class="red">开始任务</i>
+          <i class="red" @click="$router.push('/getStart')">开始任务</i>
         </span>
         <span>
           <i class="gray">我要退单</i>
@@ -99,8 +99,7 @@ export default {
     align-items: center;
     color: #666;
     font-size: 12px;
-    padding: 10px 0;
-    transform: scale(0.95);
+    padding: 10px 5px;
   }
   &_body {
     padding: 5px;
@@ -115,16 +114,18 @@ export default {
     }
     & > ul {
       flex: 1;
-      height: 80px;
-      margin-top: 10px;
+      height: 90px;
+      margin-top: 5px;
       .scale_num {
         color: #999;
-        transform: scale(0.9);
-        margin-left: -5%;
       }
       li {
         height: 25%;
         display: flex;
+        font-size: 12px;
+        &:first-child {
+          font-size: 14px;
+        }
         span {
           flex: 1;
         }
@@ -140,7 +141,7 @@ export default {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      transform: scale(0.95);
+      padding: 0 5px;
       span {
         padding: 4px 6px;
         color: #fff;
@@ -150,8 +151,7 @@ export default {
     .times {
       color: #999;
       display: flex;
-      padding: 5px 0 10px 0;
-      transform: scale(0.95);
+      padding: 5px 7px 10px 7px;
       span {
         flex: 1;
       }
