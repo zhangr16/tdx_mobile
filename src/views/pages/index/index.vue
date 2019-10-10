@@ -71,19 +71,35 @@
         </ul>
       </div>
     </section>
-
+    <!-- 种类推荐 -->
     <section>
-      <van-swipe class="sy_banner" :autoplay="3000" :show-indicators="false" :touchable="false">
-        <van-swipe-item>
-          <img src="@/assets/sy_banner1.png" @click="$router.push('/limitFree')" />
-        </van-swipe-item>
-        <van-swipe-item>
-          <img src="@/assets/sy_banner2.png" @click="$router.push('/limitFree')" />
-        </van-swipe-item>
-        <van-swipe-item>
-          <img src="@/assets/sy_banner3.png" @click="$router.push('/limitFree')" />
-        </van-swipe-item>
-      </van-swipe>
+      <div class="sy_banner">
+        <img src="@/assets/sy_banner1.png" @click="$router.push('/limitFree')" />
+      </div>
+      <div class="ul_wrapper">
+        <ul>
+          <li v-for="item in 6" :key="item">
+            <item-card-small />
+          </li>
+        </ul>
+      </div>
+    </section>
+    <section>
+      <div class="sy_banner">
+        <img src="@/assets/sy_banner2.png" @click="$router.push('/limitFree')" />
+      </div>
+      <div class="ul_wrapper">
+        <ul>
+          <li v-for="item in 6" :key="item">
+            <item-card-small />
+          </li>
+        </ul>
+      </div>
+    </section>
+    <section>
+      <div class="sy_banner">
+        <img src="@/assets/sy_banner3.png" @click="$router.push('/limitFree')" />
+      </div>
       <div class="ul_wrapper">
         <ul>
           <li v-for="item in 6" :key="item">
@@ -93,6 +109,7 @@
       </div>
     </section>
 
+    <!-- 精选免单 -->
     <section style="padding:0">
       <header>
         <span>精选免单</span>
@@ -100,7 +117,7 @@
       <div class="ul_free">
         <ul>
           <li :class="{'margin_right': index%2 == 0}" v-for="(item, index) in 4" :key="index">
-            <item-card-mid />
+            <item-card-mid :scored="index > 1" />
           </li>
         </ul>
       </div>
@@ -149,17 +166,14 @@ export default {
         window.pageYOffset ||
         document.documentElement.scrollTop ||
         document.body.scrollTop; // 滚动条偏移量
-      if (scrollTop > 25) {
-        this.isWhite = true
-      } else {
-        this.isWhite = false
-      }
-      // this.isFixed = scrollTop > offsetTop ? true : false; // 如果滚动到顶部了，this.isFixed就为true
+      this.isWhite = scrollTop > 0;
     }
   },
   mounted() {
     this.loading = false;
-    window.addEventListener("scroll", this.handleScroll);
+    this.$nextTick(() => {
+      window.addEventListener("scroll", this.handleScroll);
+    });
   }
 };
 </script>
@@ -176,7 +190,8 @@ export default {
     .van-tab {
       color: #7d7e80 !important;
     }
-    .van-tabbar-item--active, .van-tab--active {
+    .van-tabbar-item--active,
+    .van-tab--active {
       color: #ff5500 !important;
     }
     .van-tabs__line {

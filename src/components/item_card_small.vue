@@ -45,6 +45,7 @@ export default {
       white-space: nowrap;
       text-overflow: ellipsis;
       margin: 5px 0;
+      font-weight: bold;
     }
     .content {
       display: flex;

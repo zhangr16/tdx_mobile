@@ -1,6 +1,6 @@
 <template>
   <div class="friendShip">
-    <header>
+    <header class="let_fixed">
       <van-icon class="_left_" name="arrow-left" @click="$router.go(-1)" />
       <van-search placeholder="搜索你喜欢的宝贝" shape="round" v-model="value">
         <div slot="left-icon"></div>
@@ -10,6 +10,18 @@
       </van-search>
       <van-tabs>
         <van-tab v-for="index in types" :title="index" :key="index"></van-tab>
+      </van-tabs>
+    </header>
+
+    <header>
+      <van-search placeholder="搜索你喜欢的宝贝" shape="round">
+        <div slot="left-icon"></div>
+        <div slot="right-icon">
+          <van-icon name="search" />
+        </div>
+      </van-search>
+      <van-tabs>
+        <van-tab></van-tab>
       </van-tabs>
     </header>
 
@@ -65,7 +77,6 @@ export default {
   width: 100%;
   overflow: auto;
   & > header {
-    position: relative;
     margin-bottom:15px;
     ._left_ {
       font-size: 20px;

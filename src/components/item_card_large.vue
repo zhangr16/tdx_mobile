@@ -4,7 +4,9 @@
     <main>
       <div class="title">童装女童吊带连衣裙夏装新款韩...童装女童吊带连衣裙夏装新款韩...</div>
       <div class="content">
-        <div class="content_price1"><span>商品价值:</span> 99元&nbsp;&nbsp;<span>剩余份数:</span> 1/9份</div>
+        <van-progress pivot-text color="#ff5500" :percentage="30" />
+        <div class="content_word">已抢<i>1</i>件 共<i>3</i>件</div>
+        <!-- <div class="content_price1"><span>商品价值:</span> 99元&nbsp;&nbsp;<span>剩余份数:</span> 1/9份</div> -->
         <div class="content_price2"><span>任务金额:</span> 99元&nbsp;&nbsp;<span>返还金额:</span> 99元</div>
         <div class="content_time">
           <span>截止日期：2019-07-07 00:00:00</span>
@@ -54,16 +56,26 @@ export default {
       & > div {
         width: 100%;
       }
+      &_word {
+        padding: 5px 0;
+        color: #999;
+        font-size: 12px;
+        i {
+          color: #ff464f;
+        }
+      }
       &_price1,
       &_price2 {
-        font-size: 12px;
+        font-size: 14px;
         padding: 3px 0;
         color: #ff5500;
       }
       &_price1 > span {
+        font-size: 12px;
         color: #333;
       }
       &_price2 > span {
+        font-size: 12px;
         color: #999;
       }
       &_time {
@@ -71,9 +83,9 @@ export default {
         span {
           display: inline-block;
           color: #ff5500;
-          border: 1px solid #ff5500;
-          padding: 4px 6px;
-          border-radius:5px;
+          // border: 1px solid #ff5500;
+          // padding: 4px 6px;
+          // border-radius:5px;
         }
       }
       &_insure {

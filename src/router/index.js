@@ -90,7 +90,14 @@ export default [
     path: '/history',
     name: 'history',
     component: () => import('@/views/pages/task/history'),
-    meta: { title: '协商历史' }
+    meta: { title: '' }
+  },
+  // 协商历史修改记录
+  {
+    path: '/historyRecord',
+    name: 'historyRecord',
+    component: () => import('@/views/pages/task/historyRecord'),
+    meta: { title: '' }
   },
   // 定制评价攻略
   {

@@ -8,7 +8,7 @@
       <!-- 图片 -->
       <img src="@/assets/404_images/404.png" alt />
       <ul v-if="isLimitFree">
-        <li>小个子连衣裙夏季收腰显瘦...</li>
+        <li style="font-weight:bold">小个子连衣裙夏季收腰显瘦...</li>
         <li class="scale_num">订单编号：1234567891111111</li>
         <li>
           原价：
@@ -21,7 +21,7 @@
         <li>账号：123456665856+66</li>
       </ul>
       <ul v-else>
-        <li>小个子连衣裙夏季收腰显瘦...</li>
+        <li style="font-weight:bold">小个子连衣裙夏季收腰显瘦...</li>
         <li class="scale_num">订单编号：1234567891111111</li>
         <li>账号：123456665856+66</li>
         <li>
