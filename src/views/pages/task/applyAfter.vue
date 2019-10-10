@@ -58,8 +58,9 @@
           @click="showPicker = true"
         />
         <van-cell v-if="form.b == '资金问题'" class="uploads" title="实拍金额">
-          <div style="color:#333">
-            任务金额:¥2.00&nbsp;&nbsp;差价金额金额:¥1.00
+          <div class="_funds">
+            任务金额: ¥<van-stepper :value="form.c" step="0.01" :decimal-length="2" />
+            差价金额: ¥<van-stepper :value="form.d" step="0.01" :decimal-length="2" />
           </div>
         </van-cell>
         <van-field
@@ -99,14 +100,14 @@ export default {
       showPicker: false,
       columns: ["资金问题", "物流问题", "礼品问题", "其他"],
       fileList: [],
-      form: { a: "", b: "" },
+      form: { a: "", b: "", c: 2.00, d: 4 },
       isLimitFree: true
     };
   },
   mounted() {
     this.isLimitFree = this.$route.query.isActive == 0;
-    if(this.$route.query.type) {
-      this.form.b = this.columns[this.$route.query.type]
+    if (this.$route.query.type) {
+      this.form.b = this.columns[this.$route.query.type];
     }
   },
   methods: {
@@ -193,6 +194,19 @@ export default {
           }
         }
       }
+    }
+  }
+
+  ._funds {
+    color:#333;
+    .van-stepper {
+      display: inline-flex;
+      .van-stepper__input {
+        width: 45px;
+      }
+    }
+    .van-stepper__minus, .van-stepper__plus {
+      display: none;
     }
   }
 }

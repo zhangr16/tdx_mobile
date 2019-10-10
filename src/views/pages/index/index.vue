@@ -2,30 +2,35 @@
   <div class="home">
     <header>
       <div class="fixer">
-        <van-search placeholder="搜索你喜欢的宝贝" shape="round" v-model="value">
-          <div slot="left-icon"></div>
-          <div slot="right-icon" @click="onSearch">
-            <van-icon name="search" />
-          </div>
-        </van-search>
-        <van-tabs>
-          <van-tab v-for="index in types" :title="index" :key="index"></van-tab>
-        </van-tabs>
-        <van-swipe
-          class="banner"
-          :initial-swipe="0"
-          :autoplay="2000"
-          :show-indicators="false"
-          ref="swiper"
-          @change="onChange"
-        >
-          <van-swipe-item>
-            <img src="@/assets/banner1.png" alt />
-          </van-swipe-item>
-          <van-swipe-item>
-            <img src="@/assets/banner2.png" alt />
-          </van-swipe-item>
-        </van-swipe>
+        <div class="let_fixed" :class="{'white_background': isWhite}">
+          <van-search placeholder="搜索你喜欢的宝贝" shape="round" v-model="value">
+            <div slot="left-icon"></div>
+            <div slot="right-icon" @click="onSearch">
+              <van-icon name="search" />
+            </div>
+          </van-search>
+          <van-tabs>
+            <van-tab v-for="index in types" :title="index" :key="index"></van-tab>
+          </van-tabs>
+        </div>
+
+        <div class="margin_top">
+          <van-swipe
+            class="banner"
+            :initial-swipe="0"
+            :autoplay="2000"
+            :show-indicators="false"
+            ref="swiper"
+            @change="onChange"
+          >
+            <van-swipe-item>
+              <img src="@/assets/banner1.png" alt />
+            </van-swipe-item>
+            <van-swipe-item>
+              <img src="@/assets/banner2.png" alt />
+            </van-swipe-item>
+          </van-swipe>
+        </div>
       </div>
 
       <van-swipe class="bg_banner" :show-indicators="false" ref="swiper2">
@@ -113,6 +118,7 @@ export default {
   data() {
     return {
       loading: true,
+      isWhite: false,
       active_type: 0,
       value: "",
       types: [
@@ -137,10 +143,23 @@ export default {
     },
     onChange(i, v) {
       this.$refs["swiper2"].swipeTo(i, { immediate: true });
+    },
+    handleScroll() {
+      let scrollTop =
+        window.pageYOffset ||
+        document.documentElement.scrollTop ||
+        document.body.scrollTop; // 滚动条偏移量
+      if (scrollTop > 25) {
+        this.isWhite = true
+      } else {
+        this.isWhite = false
+      }
+      // this.isFixed = scrollTop > offsetTop ? true : false; // 如果滚动到顶部了，this.isFixed就为true
     }
   },
   mounted() {
     this.loading = false;
+    window.addEventListener("scroll", this.handleScroll);
   }
 };
 </script>
@@ -148,6 +167,22 @@ export default {
 .home {
   width: 100%;
   overflow: auto;
+  .margin_top {
+    margin-top: 100px;
+  }
+  // 滚动变化样式
+  .white_background {
+    background: #fff;
+    .van-tab {
+      color: #7d7e80 !important;
+    }
+    .van-tabbar-item--active, .van-tab--active {
+      color: #ff5500 !important;
+    }
+    .van-tabs__line {
+      background-color: #ff5500 !important;
+    }
+  }
   & > header {
     position: relative;
     margin-bottom: 15px;
@@ -252,7 +287,7 @@ export default {
       width: calc(100vw - 30px);
       overflow-x: scroll;
       ul {
-        width: 200%;
+        // width: 170%;
         overflow-x: scroll;
         display: flex;
         li {
@@ -321,8 +356,9 @@ export default {
     .van-tabs__line {
       background-color: #fff;
     }
-    
-    .van-tabbar-item--active, .van-tab--active {
+
+    .van-tabbar-item--active,
+    .van-tab--active {
       .van-ellipsis {
         font-size: 15px;
       }

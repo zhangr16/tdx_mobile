@@ -1,6 +1,6 @@
 <template>
   <div class="classify">
-    <header style="margin-bottom:15px">
+    <header class="let_fixed">
       <van-search placeholder="搜索你喜欢的宝贝" shape="round" v-model="value">
         <div slot="left-icon"></div>
         <div slot="right-icon" @click="onSearch">
@@ -9,6 +9,18 @@
       </van-search>
       <van-tabs>
         <van-tab v-for="index in types" :title="index" :key="index"></van-tab>
+      </van-tabs>
+    </header>
+
+    <header>
+      <van-search placeholder="搜索你喜欢的宝贝" shape="round">
+        <div slot="left-icon"></div>
+        <div slot="right-icon">
+          <van-icon name="search" />
+        </div>
+      </van-search>
+      <van-tabs>
+        <van-tab></van-tab>
       </van-tabs>
     </header>
 
@@ -64,7 +76,11 @@ export default {
 .classify {
   width: 100%;
   overflow: auto;
-
+  & > header {
+    width: 100%;
+    background: #fff;
+    margin-bottom: 15px;
+  }
   & > section {
     // padding: 10px 15px;
     margin-bottom: 15px;

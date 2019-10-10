@@ -11,7 +11,7 @@
             color="#ff5500"
             :percentage="50"
           />
-          <span class="">已抢20件共50件</span>
+          <span class="">已抢8件共50件</span>
         </div>
       </div>
       <div class="btn">马上抢</div>
@@ -32,12 +32,12 @@ export default {
   width: 100%;
   & > img {
     width: 100%;
-    height: calc((100vw - 46px) / 3);
+    height: calc((100vw - 60px) / 3);
     background: gainsboro;
     border-radius: 5px;
   }
   & > main {
-    width: calc((100vw - 46px) / 3);
+    width: calc((100vw - 60px) / 3);
     .title {
       font-size: 12px;
       text-align: left;

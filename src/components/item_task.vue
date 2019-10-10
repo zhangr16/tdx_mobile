@@ -54,8 +54,8 @@
         <span style="background:#fa3950" @click="$router.push('/viewAfter?isActive=' + isActive)">查看售后</span>
       </div>
       <div class="times">
-        <span>申请时间：2019-08-06</span>
-        <span>完成时间：2019-08-06</span>
+        <span>申请时间：2019-08-06 23:59</span>
+        <span>完成时间：2019-08-06 12:11</span>
       </div>
       <div class="two_btns">
         <span>
@@ -151,7 +151,7 @@ export default {
     .times {
       color: #999;
       display: flex;
-      padding: 10px 7px;
+      padding: 10px 6px;
       span {
         flex: 1;
       }
