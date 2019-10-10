@@ -25,7 +25,8 @@
       <!-- tabber栏 -->
       <van-tabs v-model="activeTab">
         <van-tab title="全部"></van-tab>
-        <van-tab title="待提交"></van-tab>
+        <van-tab title="已领取"></van-tab>
+        <van-tab title="已提交"></van-tab>
         <van-tab title="待审核"></van-tab>
         <van-tab title="已完成"></van-tab>
         <van-tab title="售后"></van-tab>

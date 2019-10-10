@@ -28,9 +28,9 @@
         </div>
         <div class="states">
           <span>
-            <van-icon name="orders-o" />
+            <van-icon name="sign" />
             <a>
-              已申请
+              已领取
               <i>(1)</i>
             </a>
           </span>
@@ -53,6 +53,13 @@
             <a>
               已完成
               <i>(41)</i>
+            </a>
+          </span>
+          <span>
+            <van-icon name="notes-o" />
+            <a>
+              售后
+              <i>(5)</i>
             </a>
           </span>
         </div>
@@ -202,7 +209,6 @@ export default {
   & > main {
     & > section {
       background: #fff;
-      padding: 0 15px;
       margin-top: 15px;
       .tabs {
         display: flex;
