@@ -18,6 +18,15 @@
         disabled
       />
     </van-dialog>
+    <!-- 查看定制评价 -->
+    <van-dialog class="uploads" v-model="showEvaluate" title="定制评价" :closeOnClickOverlay="true">
+      <van-cell title="评价说明" value="2132131232" />
+      <van-cell title="好评截图">
+        <img src="@/assets/404_images/404.png" alt="" />
+        <img src="https://m.360buyimg.com/mobilecms/s750x750_jfs/t1/4875/23/1968/285655/5b9549eeE4997a18c/070eaf5bddf26be8.jpg" alt="" />
+        <img src="@/assets/404_images/404.png" alt="" />
+      </van-cell>
+    </van-dialog>
 
     <div class="item_task_head">
       <span>商家旺旺号：12345677</span>
@@ -93,9 +102,10 @@
         <span v-if="entity.status == '已领取' || entity.status == '已完成'">&nbsp;</span>
       </div>
       <!-- 时间 -->
-      <div class="times" v-if="entity.status == '已领取'">
-        <span>申请时间:2019-08-06 23:59</span>
-        <span>完成时间:2019-08-06 12:11</span>
+      <div class="times">
+        <span>申请时间：2019-08-06 23:59</span>
+        <span v-if="entity.status == '已领取'">完成时间：2019-08-06 12:11</span>
+        <span v-else>完成时间：暂无</span>
       </div>
       <!-- 按钮 -->
       <div class="two_btns" v-if="entity.status == '已领取'">
@@ -108,7 +118,7 @@
       </div>
       <div class="two_btns margin_top" v-if="entity.status == '已提交'">
         <span>
-          <i class="red">查看定制评价</i>
+          <i class="red" @click="showEvaluate = true">查看定制评价</i>
         </span>
       </div>
     </div>
@@ -131,7 +141,8 @@ export default {
   data() {
     return {
       showRemark: false,
-      showImg: false
+      showImg: false,
+      showEvaluate: false
     };
   },
   computed: {
@@ -229,6 +240,23 @@ export default {
         .gray {
           border: solid 1px #999;
           color: #999;
+        }
+      }
+    }
+  }
+  .uploads {
+    .van-cell {
+      padding-right: 5px; 
+    }
+    .van-cell__value {
+      flex: 3;
+      text-align: left;
+      img {
+        width: 70px;
+        height: 70px;
+        margin-right: 5px;
+        &:last-child {
+          margin-right: 0;
         }
       }
     }

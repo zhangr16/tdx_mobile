@@ -180,10 +180,12 @@ export default {
         margin-top: 10px;
         .scale_num {
           color: #999;
-          transform: scale(0.9);
-          margin-left: -5%;
         }
         li {
+          &:first-child {
+            font-size: 13px;
+            font-weight: bold;
+          }
           height: 25%;
           display: flex;
           span {
