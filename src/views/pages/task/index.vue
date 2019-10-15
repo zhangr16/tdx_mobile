@@ -40,8 +40,8 @@
       </div>
       <!-- 任务卡 -->
       <ul class="ul_items">
-        <li v-for="item in 5" :key="item">
-          <itemTask :isActive="isActive" />
+        <li v-for="(item, key) in taskList" :key="key">
+          <itemTask :isActive="isActive" :entity="item" />
         </li>
       </ul>
     </main>
@@ -59,7 +59,18 @@ export default {
       isActive: 0,
       activeTab: 0,
       isVisible: false,
-      myDate: null
+      myDate: null,
+      taskList: [{
+        status: '已领取'
+      },{
+        status: '已提交'
+      },{
+        status: '待审核'
+      },{
+        status: '已完成'
+      },{
+        status: '售后'
+      }]
     };
   },
   mounted() {},

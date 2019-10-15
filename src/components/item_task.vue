@@ -1,8 +1,27 @@
 <template>
   <div class="item_task">
+    <!-- 商品信息 -->
+    <van-dialog v-model="showImg" title="商品信息" :closeOnClickOverlay="true">
+      <img
+        style="width:100%;"
+        src="https://m.360buyimg.com/mobilecms/s750x750_jfs/t1/4875/23/1968/285655/5b9549eeE4997a18c/070eaf5bddf26be8.jpg"
+        alt
+      />
+    </van-dialog>
+    <!-- 商家备注 -->
+    <van-dialog v-model="showRemark" title="商家备注" :closeOnClickOverlay="true">
+      <van-field
+        value="我是备注我是备注我是备注我是备注我是备注我是备注我是备注我是备注我是备注我是备注我是备注"
+        label="备注"
+        type="textarea"
+        autosize
+        disabled
+      />
+    </van-dialog>
+
     <div class="item_task_head">
       <span>商家旺旺号：12345677</span>
-      <span>任务状态：已提交</span>
+      <span>任务状态：{{ entity.status || '' }}</span>
     </div>
     <div class="item_task_body">
       <!-- 图片 -->
@@ -48,21 +67,48 @@
     </div>
     <div class="item_task_foot">
       <div class="four_btns">
-        <span style="background:#51c757" @click="$router.push('/screenShots')">上传好评截图</span>
-        <span style="background:#ff6137" @click="$router.push('/screenShots')">查看好评截图</span>
-        <span style="background:#5784ff" @click="$router.push('/applyAfter?isActive=' + isActive)">申请售后</span>
-        <span style="background:#fa3950" @click="$router.push('/viewAfter?isActive=' + isActive)">查看售后</span>
+        <span style="background:#409eff" @click="showImg = true">商品信息</span>
+        <span
+          style="background:#51c757"
+          @click="$router.push('/applyAfter?isActive=' + isActive)"
+        >申请售后</span>
+        <span
+          style="background:#5784ff"
+          v-if="entity.status == '已提交'"
+          @click="$router.push('/screenShots')"
+        >上传好评截图</span>
+        <span
+          style="background:#ff6137"
+          v-if="entity.status == '待审核'"
+          @click="$router.push('/screenShots')"
+        >查看好评截图</span>
+        <span
+          style="background:#fa3950"
+          v-if="entity.status == '售后'"
+          @click="$router.push('/viewAfter?isActive=' + isActive)"
+        >查看售后</span>
+        <span style="background:#ccc" @click="showRemark = true">查看商家备注</span>
+        <span v-if="entity.status == '已领取' || entity.status == '已完成'">&nbsp;</span>
+        <span v-if="entity.status == '已领取' || entity.status == '已完成'">&nbsp;</span>
+        <span v-if="entity.status == '已领取' || entity.status == '已完成'">&nbsp;</span>
       </div>
-      <div class="times">
-        <span>申请时间：2019-08-06 23:59</span>
-        <span>完成时间：2019-08-06 12:11</span>
+      <!-- 时间 -->
+      <div class="times" v-if="entity.status == '已领取'">
+        <span>申请时间:2019-08-06 23:59</span>
+        <span>完成时间:2019-08-06 12:11</span>
       </div>
-      <div class="two_btns">
+      <!-- 按钮 -->
+      <div class="two_btns" v-if="entity.status == '已领取'">
         <span>
           <i class="red" @click="$router.push('/getStart')">开始任务</i>
         </span>
         <span>
           <i class="gray">我要退单</i>
+        </span>
+      </div>
+      <div class="two_btns margin_top" v-if="entity.status == '已提交'">
+        <span>
+          <i class="red">查看定制评价</i>
         </span>
       </div>
     </div>
@@ -76,18 +122,24 @@ export default {
     isActive: {
       type: Number,
       default: 0
+    },
+    entity: {
+      type: Object,
+      default: {}
     }
   },
   data() {
-    return {};
+    return {
+      showRemark: false,
+      showImg: false
+    };
   },
   computed: {
     isLimitFree() {
       return this.isActive == 0;
     }
   },
-  methods: {
-  }
+  methods: {}
 };
 </script>
 <style lang="scss" scope>
@@ -155,6 +207,9 @@ export default {
       span {
         flex: 1;
       }
+    }
+    .margin_top {
+      margin-top: 10px;
     }
     .two_btns {
       display: flex;

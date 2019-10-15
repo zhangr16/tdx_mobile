@@ -5,7 +5,8 @@
   "author": "zhangr16",
   "scripts": {
     "dev": "vue-cli-service serve",
-    "build": "vue-cli-service build",
+    "dev-build": "vue-cli-service build --mode build-dev",
+    "prod-build": "vue-cli-service build --mode build-prod",
     "analyze": "vue-cli-service build"
   },
   "dependencies": {

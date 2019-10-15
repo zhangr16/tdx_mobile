@@ -4,7 +4,7 @@ import { getToken, removeToken } from '@/utils/auth'
 
 // 创建axios实例
 const service = axios.create({
-    baseURL: "http://submission.husicong.cn", // api的base_url
+    baseURL: process.env.NODE_ENV == 'development' ? "http://submission.husicong.cn" : "http://crm2.iletuan.cn",
     timeout: 10000 // 请求超时时间
 })
 
