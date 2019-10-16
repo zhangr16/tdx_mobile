@@ -1,0 +1,65 @@
+.history {
+  position: relative;
+  width: 100%;
+  padding-top: 1.33333rem;
+}
+.history > header {
+    width: 100%;
+    position: fixed;
+    top: 0;
+    z-index: 999999;
+    height: 1.06667rem;
+    line-height: 1.06667rem;
+    background: #fff;
+    text-align: center;
+    font-size: 0.45333rem;
+}
+.history > header .left_arrow {
+      position: absolute;
+      left: 0.4rem;
+      top: 0.26667rem;
+      font-size: 0.53333rem;
+}
+.history > main {
+    width: 100%;
+    background: #fff;
+    font-size: 0.32rem;
+}
+.history > main .slotter {
+      display: flex;
+      align-items: center;
+      padding-right: 0.26667rem;
+}
+.history > main .slotter i {
+        font-size: 0.53333rem;
+}
+.history > main .van-cell {
+      padding-right: 0;
+}
+.history > main .fans_ul li,
+    .history > main .sale_ul li {
+      transform: scale(0.9);
+      margin-left: -5%;
+      padding: 0.10667rem 0;
+}
+.history > main .fans_ul .img_li,
+    .history > main .sale_ul .img_li {
+      display: flex;
+      align-items: flex-start;
+}
+.history > main .fans_ul .img_li > img,
+      .history > main .sale_ul .img_li > img {
+        width: 1.78667rem;
+        height: 1.78667rem;
+}
+.history > main .fans_ul .flex_li,
+    .history > main .sale_ul .flex_li {
+      display: flex;
+      justify-content: space-between;
+}
+.history > main .fans_ul .flex_li i,
+      .history > main .sale_ul .flex_li i {
+        font-size: 0.48rem;
+        color: #ff5500;
+}
+

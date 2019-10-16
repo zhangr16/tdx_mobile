@@ -2,11 +2,11 @@
   <div class="mine">
     <header>
       <div class="msg">
-        <van-icon name="comment-o" @click="$router.push('/msg')" />
+        <span class="iconfont iconxiaoxi" @click="$router.push('/msg')"></span>
         <span @click="$router.push('/msg')">(20)</span>
       </div>
       <div class="desc">
-        <img />
+        <span class="iconfont iconmorentouxiang"></span>
         <div>
           <div class="desc_top">用户名:15877187876</div>
           <div class="desc_bottom">
@@ -28,35 +28,35 @@
         </div>
         <div class="states">
           <span>
-            <van-icon name="sign" />
+            <van-icon name="completed" />
             <a>
               已领取
               <i>(1)</i>
             </a>
           </span>
           <span>
-            <van-icon name="label-o" />
+            <span class="iconfont iconyitijiao"></span>
             <a>
               已提交
               <i>(2)</i>
             </a>
           </span>
           <span>
-            <van-icon name="clock-o" />
+            <span class="iconfont icondaishenhe"></span>
             <a>
               待审核
               <i>(3)</i>
             </a>
           </span>
           <span>
-            <van-icon name="passed" />
+            <span class="iconfont iconyiwancheng"></span>
             <a>
               已完成
               <i>(41)</i>
             </a>
           </span>
           <span>
-            <van-icon name="notes-o" />
+            <span class="iconfont iconshenqing"></span>
             <a>
               售后
               <i>(5)</i>
@@ -68,14 +68,14 @@
         <div class="fans">
           <div>
             <span>
-              <van-icon name="friends-o" />&nbsp;
+              <span class="iconfont iconfensi"></span>&nbsp;
               <span>粉丝</span>
             </span>
             <span class="_numbers">0</span>
           </div>
           <div>
             <span>
-              <van-icon name="notes-o" />&nbsp;
+              <span class="iconfont iconmiandanzongshu"></span>&nbsp;
               <span>免单总数</span>
             </span>
             <span class="_numbers">0</span>
@@ -164,7 +164,7 @@ export default {
       text-align: right;
       font-size: 14px;
       padding: 5px 0;
-      i {
+      & > span:first-child {
         font-size: 16px;
         vertical-align: middle;
       }
@@ -173,14 +173,11 @@ export default {
       display: flex;
       align-items: center;
       padding-right: 30px;
-      & > img {
-        width: 50px;
-        height: 50px;
-        background: #ccc;
-        border-radius: 50%;
+      & > span {
+        font-size: 48px;
       }
       & > div {
-        padding: 5px;
+        padding: 5px 10px;
         flex: 1;
         .desc_top {
           font-size: 14px;
@@ -232,10 +229,15 @@ export default {
           text-align: center;
           display: flex;
           flex-direction: column;
+          & > span {
+            color: #fa2a44;
+            font-size: 22px;
+            padding: 8px 0;
+          }
           & > i {
             color: #fa2a44;
             font-size: 22px;
-            padding: 10px 0;
+            padding: 8px 0;
           }
           a {
             padding-bottom: 10px;
@@ -260,7 +262,8 @@ export default {
             display: flex;
             align-items: center;
             justify-content: center;
-            & > i {
+            .iconfont {
+              font-weight: bold;
               font-size: 18px;
             }
           }

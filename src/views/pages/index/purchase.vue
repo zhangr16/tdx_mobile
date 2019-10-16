@@ -4,7 +4,17 @@
     <i class="backBtn" @click="$router.go(-1)">
       <van-icon class="left_arrow" name="arrow-left" />
     </i>
-    <img src="@/assets/404_images/404.png" alt />
+
+    <van-swipe class="img_banner" :initial-swipe="0" :autoplay="3000" ref="swiper">
+      <van-swipe-item>
+        <img src="@/assets/sy_banner1.png" alt />
+      </van-swipe-item>
+      <van-swipe-item>
+        <img src="@/assets/sy_banner2.png" alt />
+      </van-swipe-item>
+    </van-swipe>
+
+    <!-- <img src="@/assets/404_images/404.png" alt /> -->
     <!-- 抢购信息 -->
     <section class="purchase_info">
       <!-- 顶部 -->
@@ -30,7 +40,9 @@
     </section>
     <!-- 任务流程 -->
     <section class="purchase_flow">
-      <header>任务流程</header>
+      <header>
+        <span class="iconfont iconrenwuliucheng"></span> 任务流程
+      </header>
       <ul>
         <li>1、点击“立即领取”,获取免单资格</li>
         <li>2、点击"开始任务",按照任务提示，以￥99.00元价格去指定平台</li>
@@ -41,7 +53,9 @@
     </section>
     <!-- 注意事项 -->
     <section class="purchase_note">
-      <header>注意事项</header>
+      <header>
+        <span class="iconfont iconzhuyi"></span> 注意事项
+      </header>
       <ul>
         <li>
           1、与商家旺旺聊天时禁止提及
@@ -62,7 +76,9 @@
     </section>
     <!-- 温馨提示 -->
     <section class="purchase_tip" style="margin-bottom:0">
-      <header>温馨提示</header>
+      <header>
+        <span class="iconfont iconwenxintishi"></span> 温馨提示
+      </header>
       <ul>
         <li>1、用户获取免单资格后，请根据时间提示及时下单并提交订单号</li>
         <li>2、若因未按时提交任务信息而被系统取消任务资格，平台概不负责！</li>
@@ -70,14 +86,23 @@
     </section>
     <!-- 立即领取 -->
     <footer>
-      <div class="_s" @click="$router.push('/index')">首页</div>
-      <div class="_s">客服</div>
+      <div class="_s" @click="$router.push('/index')">
+        <span class="iconfont iconshouye-mashangqiangdangeshangpin"></span> 首页
+      </div>
+      <div class="_s">
+        <span class="iconfont iconkefu"></span> 客服
+      </div>
       <!-- $router.push('/getStart') -->
       <div class="_l" @click="showConfirm = true">立即领取</div>
     </footer>
 
     <!-- 确认弹窗 -->
-    <van-dialog v-model="showConfirm" title="商品信息" :closeOnClickOverlay="true" @confirm="handleConfirm">
+    <van-dialog
+      v-model="showConfirm"
+      title="商品信息"
+      :closeOnClickOverlay="true"
+      @confirm="handleConfirm()"
+    >
       <van-cell title="商品名称" value />
       <van-cell title="商品价格" value />
       <ul>
@@ -97,10 +122,10 @@ export default {
   },
   methods: {
     handleConfirm() {
-      this.showConfirm = false
+      this.showConfirm = false;
       setTimeout(() => {
-        this.$router.push('/getStart')
-      }, 200);
+        this.$router.push("/getStart");
+      }, 100);
     }
   }
 };
@@ -116,6 +141,7 @@ export default {
     height: 30px;
     color: #fff;
     position: absolute;
+    z-index: 9999;
     top: 15px;
     left: 15px;
     background: #666;
@@ -134,11 +160,10 @@ export default {
     }
   }
   // 图片样式
-  & > img {
+  .img_banner img {
     display: block;
     width: 100vw;
     height: 100vw;
-    background: greenyellow;
   }
 
   &_info {
@@ -189,7 +214,10 @@ export default {
     & > header {
       font-size: 16px;
       margin-bottom: 10px;
-      font-weight: bold;
+      font-weight: 500;
+      & > .iconfont {
+        color: #fa2440;
+      }
     }
     & > ul {
       li {
@@ -243,6 +271,9 @@ export default {
         line-height: 1.5;
       }
     }
+  }
+  .van-swipe__indicator--active {
+    background-color: #fa2742;
   }
 }
 </style>

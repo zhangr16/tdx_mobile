@@ -1,0 +1,331 @@
+.item_card_small {
+  width: 100%;
+}
+.item_card_small > img {
+    width: 100%;
+    height: calc((100vw - 1.6rem) / 3);
+    background: gainsboro;
+    border-radius: 0.13333rem;
+}
+.item_card_small > main {
+    width: calc((100vw - 1.6rem) / 3);
+}
+.item_card_small > main .title {
+      font-size: 0.32rem;
+      text-align: left;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      margin: 0.13333rem 0;
+      font-weight: bold;
+}
+.item_card_small > main .content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+}
+.item_card_small > main .content_price {
+        font-size: 0.37333rem;
+        color: #ff5500;
+        text-decoration: line-through;
+        margin-right: 0.13333rem;
+}
+.item_card_small > main .content_desc {
+        display: flex;
+        flex-direction: column;
+        transform: scale(0.8);
+        margin-left: -10%;
+        color: #999;
+}
+.item_card_small > main .content_desc span {
+          padding-top: 0.13333rem;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+}
+.item_card_small > main .btn {
+      text-align: center;
+      font-size: 0.32rem;
+      margin: 0.26667rem 0;
+      width: calc(100% - 0.53333rem);
+      margin-left: 0.26667rem;
+      height: 0.53333rem;
+      line-height: 0.53333rem;
+      color: #fff;
+      border-radius: 0.13333rem;
+      background-image: linear-gradient(-90deg, #f95e26 0%, #fb9a0f 100%);
+      box-shadow: 0 0.08rem 0.02667rem 0 rgba(255, 201, 169, 0.43);
+}
+
+.item_card_mid {
+  width: 100%;
+}
+.item_card_mid > img {
+    width: 100%;
+    height: calc((100vw - 0.10667rem) / 2);
+    background: gainsboro;
+}
+.item_card_mid > main {
+    width: calc((100vw - 0.10667rem) / 2);
+    padding: 0 0.37333rem;
+}
+.item_card_mid > main .title {
+      margin: 0.13333rem 0;
+      display: flex;
+      align-items: center;
+      font-size: 0.32rem;
+      font-weight: bold;
+}
+.item_card_mid > main .title i {
+        font-weight: normal;
+        display: inline-block;
+        color: #fff;
+        padding: 0.08rem 0.13333rem;
+        background: linear-gradient(-90deg, #ff0c46 0%, #ff797d 100%);
+        border-radius: 0.08rem;
+        margin-right: 0.13333rem;
+}
+.item_card_mid > main .title span {
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+}
+.item_card_mid > main .two_icons {
+      padding: 0.13333rem 0;
+}
+.item_card_mid > main .two_icons i {
+        display: inline-block;
+        color: #fff;
+        padding: 0.08rem 0.13333rem;
+        border-radius: 0.08rem;
+        margin-right: 0.26667rem;
+}
+.item_card_mid > main .two_icons > i:first-child {
+        background: linear-gradient(-90deg, #ff0c46 0%, #ff797d 100%);
+}
+.item_card_mid > main .two_icons > i:last-child {
+        background: linear-gradient(90deg, #769dff 0%, #316ded 100%);
+}
+.item_card_mid > main .content {
+      display: flex;
+      align-items: center;
+}
+.item_card_mid > main .content_price {
+        font-size: 0.37333rem;
+        color: #ff5500;
+        text-decoration: line-through;
+}
+.item_card_mid > main .content_desc {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        color: #999;
+        margin-left: 0.13333rem;
+}
+.item_card_mid > main .content_desc .van-progress {
+          height: 0.13333rem;
+}
+.item_card_mid > main .content_desc .word {
+          text-align: left;
+          transform: scale(0.9);
+          margin-left: -5%;
+          flex: 1;
+          padding-top: 0.13333rem;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+}
+.item_card_mid > main .content_desc .word i {
+            color: #ff464f;
+}
+.item_card_mid > main .btn {
+      text-align: center;
+      font-size: 0.34667rem;
+      margin: 0.26667rem 0;
+      padding: 0.13333rem 0.16rem;
+      width: calc(100%);
+      color: #ff5500;
+      border: 0.02667rem solid #ff5500;
+      border-radius: 0.13333rem;
+      box-shadow: 0 0.08rem 0.02667rem 0 rgba(255, 201, 169, 0.43);
+}
+
+.home {
+  width: 100%;
+  overflow: auto;
+}
+.home .margin_top {
+    margin-top: 2.66667rem;
+}
+.home .white_background {
+    background: #fff;
+}
+.home .white_background .van-tab {
+      color: #7d7e80 !important;
+}
+.home .white_background .van-tabbar-item--active,
+    .home .white_background .van-tab--active {
+      color: #ff5500 !important;
+}
+.home .white_background .van-tabs__line {
+      background-color: #ff5500 !important;
+}
+.home > header {
+    position: relative;
+    margin-bottom: 0.4rem;
+    background: #fff;
+}
+.home > header .bg_banner {
+      width: 100%;
+      text-align: center;
+}
+.home > header .bg_banner img {
+        width: 100%;
+        height: 5.38667rem;
+}
+.home > header .banner {
+      margin-left: 0.4rem;
+      margin-top: 0.13333rem;
+      width: 9.2rem;
+      text-align: center;
+      border-radius: 0.13333rem;
+}
+.home > header .banner img {
+        width: 100%;
+        height: 3.78667rem;
+}
+.home > header .two_parts {
+      height: 2.66667rem;
+      margin-top: 1.33333rem;
+      border-bottom: 0.02667rem solid #ccc;
+      display: flex;
+      font-size: 0.32rem;
+      background: #fff;
+}
+.home > header .two_parts li {
+        text-align: center;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+}
+.home > header .two_parts li img {
+          display: block;
+          width: 1.33333rem;
+          height: 1.33333rem;
+          border-radius: 50%;
+          margin: 0.26667rem 0;
+}
+.home > header .two_parts li span {
+          font-size: 0.37333rem;
+          flex: 1;
+}
+.home > header .notice_title {
+      border: 0.02667rem solid #ff5500;
+      font-family: zcoolwenyiti;
+      border-radius: 0.13333rem;
+      padding: 0 0.05333rem;
+      margin-right: 0.13333rem;
+}
+.home > section {
+    position: relative;
+    background: #fff;
+    padding: 0.26667rem 0.4rem;
+    margin-bottom: 0.4rem;
+}
+.home > section .top_ul {
+      width: 100%;
+      overflow: hidden;
+      margin-bottom: 0.26667rem;
+}
+.home > section .top_ul li {
+        float: left;
+        font-size: 0.37333rem;
+        padding: 0.13333rem 0.26667rem;
+        margin-right: 0.26667rem;
+        background: #f6f6f6;
+        border-radius: 0.13333rem;
+        text-align: center;
+}
+.home > section .top_ul .is_active {
+        background: #ff5500;
+        color: #fff;
+}
+.home > section .sy_banner img {
+      width: 9.2rem;
+      text-align: center;
+      border-radius: 0.05333rem;
+      height: 2.8rem;
+      margin-bottom: 0.26667rem;
+}
+.home > section .ul_wrapper {
+      width: calc(100vw - 0.8rem);
+      overflow-x: scroll;
+}
+.home > section .ul_wrapper ul {
+        overflow-x: scroll;
+        display: flex;
+}
+.home > section .ul_wrapper ul li {
+          flex: 1;
+          margin-right: 0.10667rem;
+}
+.home > section .ul_wrapper ul li:last-child {
+            margin-right: 0;
+}
+.home > section > header {
+      padding: 0.26667rem 0.4rem;
+}
+.home > section > header span {
+        font-size: 0.42667rem;
+        padding: 0 0.21333rem;
+        font-weight: bold;
+        border-left: 0.08rem solid #ff5500;
+}
+.home > section .ul_free {
+      width: 100%;
+}
+.home > section .ul_free ul {
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+}
+.home > section .ul_free ul li {
+          width: calc((100% - 0.16rem) / 2);
+          margin-bottom: 0.13333rem;
+}
+.home > section .ul_free ul .margin_right {
+          margin-right: 0.13333rem;
+}
+
+.home .van-field__right-icon .van-icon {
+  font-size: 0.50667rem;
+}
+.home .van-search {
+  background: none !important;
+  padding-right: 0.8rem;
+  padding-left: 0.8rem;
+}
+.home .van-notice-bar__content {
+  color: #333;
+}
+.home .van-tabs__nav {
+  background: none !important;
+}
+.home .fixer {
+  top: 0;
+  width: 100%;
+  z-index: 9999;
+  position: absolute;
+}
+.home .fixer .van-tab {
+    color: #fff;
+}
+.home .fixer .van-tabs__line {
+    background-color: #fff;
+}
+.home .fixer .van-tabbar-item--active .van-ellipsis,
+  .home .fixer .van-tab--active .van-ellipsis {
+    font-size: 0.4rem;
+}
+

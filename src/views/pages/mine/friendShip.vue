@@ -5,7 +5,7 @@
       <van-search placeholder="搜索你喜欢的宝贝" shape="round" v-model="value">
         <div slot="left-icon"></div>
         <div slot="right-icon" @click="onSearch">
-          <van-icon name="search" />
+          <span class="iconfont iconsousuo"></span>
         </div>
       </van-search>
       <van-tabs>
@@ -17,7 +17,7 @@
       <van-search placeholder="搜索你喜欢的宝贝" shape="round">
         <div slot="left-icon"></div>
         <div slot="right-icon">
-          <van-icon name="search" />
+          <span class="iconfont iconsousuo"></span>
         </div>
       </van-search>
       <van-tabs>

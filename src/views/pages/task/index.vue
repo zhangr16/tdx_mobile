@@ -13,7 +13,7 @@
     ></nut-calendar>
     <header>
       任务中心
-      <van-icon class="right_date" name="calender-o" @click="isVisible = true" />
+      <span class="iconfont iconrili right_date" @click="isVisible = true"></span>
     </header>
     <main>
       <!-- 限量免单，熊抢购title -->
@@ -97,10 +97,9 @@ export default {
     color: #fff;
     font-size: 17px;
     .right_date {
-      font-size: 24px;
+      font-size: 20px;
       position: absolute;
       right: 15px;
-      top: 8px;
     }
   }
   & > main {

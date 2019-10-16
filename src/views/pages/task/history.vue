@@ -10,7 +10,7 @@
     <main>
       <van-cell title="是否完结：否">
         <span slot="right-icon" class="slotter" @click="$router.push('/historyRecord?type=' + $route.query.type)">
-          <van-icon name="todo-list-o" />
+          <span class="iconfont iconxiugaijilu"></span>
           <span>修改记录</span>
         </span>
       </van-cell>
@@ -132,7 +132,7 @@ export default {
       align-items: center;
       padding-right: 10px;
       i {
-        font-size: 18px;
+        font-size: 20px;
       }
     }
     .van-cell {

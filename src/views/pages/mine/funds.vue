@@ -15,7 +15,7 @@
     <header>
       <van-icon class="left_arrow" name="arrow-left" @click="$router.go(-1)" />
       资金明细
-      <van-icon class="right_date" name="calender-o" @click="isVisible = true" />
+      <span class="iconfont iconrili right_date" @click="isVisible = true"></span>
     </header>
     <main>
       <ul class="title_ul">
@@ -139,10 +139,9 @@ export default {
       top: 10px;
     }
     .right_date {
-      font-size: 24px;
+      font-size: 20px;
       position: absolute;
       right: 15px;
-      top: 8px;
     }
   }
   & > main {

@@ -11,17 +11,20 @@
       <li>
         <div>2、长按二维码保存到手机分享给好友或朋友圈</div>
         <div class="qr_code">
-          <span></span>
+          <!-- <span></span> -->
+          <qrcode :wid="100" :hei="100" url="http://www.taodaxiong.com/Mobile/MobileRegister?code=79217450"></qrcode>
         </div>
       </li>
     </ul>
   </div>
 </template> 
 <script>
+import qrcode from 'vue_qrcodes'
+
 export default {
   // 分享好友
   name: "share",
-  components: {},
+  components: { qrcode },
   data() {
     return {};
   },
@@ -68,11 +71,6 @@ export default {
         justify-content: center;
         align-items: center;
         margin-top: 15px;
-        & > span {
-          width: 100px;
-          height: 100px;
-          background: #fa8e05;
-        }
       }
     }
   }
