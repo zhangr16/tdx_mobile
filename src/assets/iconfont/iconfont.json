@@ -6,6 +6,20 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "6200181",
+      "name": "已领取",
+      "font_class": "yilingqu",
+      "unicode": "e6c1",
+      "unicode_decimal": 59073
+    },
+    {
+      "icon_id": "8956365",
+      "name": "售后",
+      "font_class": "shouhou",
+      "unicode": "e67d",
+      "unicode_decimal": 59005
+    },
+    {
       "icon_id": "11087444",
       "name": "点击查看",
       "font_class": "dianjichakan",

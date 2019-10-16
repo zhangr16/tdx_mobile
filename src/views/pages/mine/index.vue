@@ -28,7 +28,7 @@
         </div>
         <div class="states">
           <span>
-            <van-icon name="completed" />
+            <span class="iconfont iconyilingqu"></span>
             <a>
               已领取
               <i>(1)</i>
@@ -56,7 +56,7 @@
             </a>
           </span>
           <span>
-            <span class="iconfont iconshenqing"></span>
+            <span class="iconfont iconshouhou"></span>
             <a>
               售后
               <i>(5)</i>
@@ -231,13 +231,13 @@ export default {
           flex-direction: column;
           & > span {
             color: #fa2a44;
-            font-size: 22px;
-            padding: 8px 0;
+            font-size: 26px;
+            padding: 12px 0;
           }
           & > i {
             color: #fa2a44;
-            font-size: 22px;
-            padding: 8px 0;
+            font-size: 26px;
+            padding: 12px 0;
           }
           a {
             padding-bottom: 10px;
@@ -270,7 +270,7 @@ export default {
           ._numbers {
             padding-top: 5px;
             color: #fa2a44;
-            font-size: 16px;
+            font-size: 18px;
           }
         }
       }

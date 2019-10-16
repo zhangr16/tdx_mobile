@@ -7,7 +7,7 @@
       <router-view style="margin-bottom:50px" />
     </transition>
     <!-- 底部tab栏 -->
-    <van-tabbar route>
+    <van-tabbar route class="bottom_tabs">
       <van-tabbar-item replace to="/index">
       <span slot="icon" class="iconfont iconshouye-xianxing"></span>
         首页
@@ -50,5 +50,10 @@ export default {
   width: 100%;
   overflow: auto;
   min-height: 100vh;
+  .bottom_tabs {
+    .iconfont {
+      font-size: 18px;
+    }
+  }
 }
 </style>
