@@ -58,13 +58,19 @@ module.exports = {
 
     // 配置 webpack-dev-server 行为。
     devServer: {
-        open: process.platform === 'darwin',
         host: '0.0.0.0',
         port: 8899,
         https: false,
-        hotOnly: false,
-        open: true,
-        before: app => { }
+        open: false,
+        proxy: {
+            '/': {
+                ws: false, // proxy websockets
+                // target: 'http://106.54.237.151',
+                target: 'http://192.168.0.169:8123',
+                // target: 'http://192.168.0.145',
+                changeOrigin: true
+            }
+        }
     },
 
     configureWebpack: config => {

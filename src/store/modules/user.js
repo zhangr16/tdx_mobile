@@ -1,48 +1,50 @@
-import { login } from '@/api/login'
+import { login, logout } from '@/api/index'
 import { getToken, getName, setToken, removeToken, setName, removeName } from '@/utils/auth'
 
 const user = {
   state: {
     token: getToken(),
-    name: getName()
+    name: JSON.parse(getName())
   },
 
   mutations: {
     SET_TOKEN: (state, token) => {
       state.token = token
     },
-    SET_NAME: (state, name) => {
-      state.name = name
+    SET_NAME: (state, data) => {
+      state.name = data
     }
   },
 
   actions: {
     // 登录
     async Login({ commit }, userInfo) {
-      const _username = userInfo.username.trim()
-      const _password = userInfo.password
-      let response = await login({
-        account_name: _username,
-        password: _password
-      })
-      if (response && response.code !== 200) {
-        return false
-      } else {
+      let response = await login(userInfo)
+      // console.log(response)
+      if (response && response.error.errno == 200) {
         const data = response.data;
-        setToken(data.token)
-        setName(data.account_name)
-        commit('SET_TOKEN', data.token)
-        commit('SET_NAME', data.account_name)
+        setName(JSON.stringify(data))
+        commit('SET_NAME', data)
+        setToken('faketoken')
+        commit('SET_TOKEN', 'faketoken')
         return true
+      } else {
+        return false
       }
     },
 
     // 登出
     async LogOut({ commit }) {
-      commit('SET_TOKEN', '')
-      commit('SET_NAME', '')
-      removeName()
-      removeToken()
+      let res = await logout()
+      if (res && res.error.errno == 200) {
+        commit('SET_TOKEN', '')
+        commit('SET_NAME', '')
+        removeName()
+        removeToken()
+        return true
+      } else {
+        return false
+      }
     },
   }
 }

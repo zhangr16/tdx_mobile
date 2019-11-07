@@ -4,14 +4,14 @@
     <van-dialog v-model="showImg" title="商品信息" :closeOnClickOverlay="true">
       <img
         style="width:100%;"
-        src="https://m.360buyimg.com/mobilecms/s750x750_jfs/t1/4875/23/1968/285655/5b9549eeE4997a18c/070eaf5bddf26be8.jpg"
+        :src="entity.sipping_url"
         alt
       />
     </van-dialog>
     <!-- 商家备注 -->
     <van-dialog v-model="showRemark" title="商家备注" :closeOnClickOverlay="true">
       <van-field
-        value="我是备注我是备注我是备注我是备注我是备注我是备注我是备注我是备注我是备注我是备注我是备注"
+        :value="remarkEntity.mc_comment"
         label="备注"
         type="textarea"
         autosize
@@ -20,119 +20,113 @@
     </van-dialog>
     <!-- 查看定制评价 -->
     <van-dialog class="uploads" v-model="showEvaluate" title="定制评价" :closeOnClickOverlay="true">
-      <van-cell title="评价说明" value="2132131232" />
+      <van-cell title="评价说明" :value="evaluateEntity.m_eva_explain" />
       <van-cell title="好评截图">
-        <img src="@/assets/404_images/404.png" alt="" />
-        <img src="https://m.360buyimg.com/mobilecms/s750x750_jfs/t1/4875/23/1968/285655/5b9549eeE4997a18c/070eaf5bddf26be8.jpg" alt="" />
-        <img src="@/assets/404_images/404.png" alt="" />
+        <img v-for="(img, key) in evaluateEntity.imgs" :key="key" :src="img" alt />
       </van-cell>
     </van-dialog>
 
     <div class="item_task_head">
-      <span>商家旺旺号：12345677</span>
-      <span>任务状态：{{ entity.status || '' }}</span>
+      <span>商家旺旺号：{{ entity.shop_ww || '' }}</span>
+      <span>任务状态：{{ status_arr[entity.status - 1] }}</span>
     </div>
     <div class="item_task_body">
       <!-- 图片 -->
-      <img src="@/assets/404_images/404.png" alt />
-      <ul v-if="isLimitFree">
-        <li style="font-weight:bold">小个子连衣裙夏季收腰显瘦...</li>
-        <li class="scale_num">订单编号：1234567891111111</li>
+      <img :src="entity.sipping_url" alt />
+      <!-- 限量免单 -->
+      <ul v-if="entity.order_type == 1">
+        <li style="font-weight:bold">{{ entity.title }}</li>
+        <li class="scale_num">订单编号：{{ entity.order_sn }}</li>
         <li>
           原价：
-          <i>¥19.9</i>
+          <i>¥{{entity.price}}</i>
         </li>
         <li>
           实拍：
-          <i>¥19.9</i>
+          <i>¥{{entity.price}}</i>
         </li>
-        <li>账号：123456665856+66</li>
+        <li>账号：{{entity.mobile}}</li>
       </ul>
+      <!-- 熊抢购 -->
       <ul v-else>
-        <li style="font-weight:bold">小个子连衣裙夏季收腰显瘦...</li>
-        <li class="scale_num">订单编号：1234567891111111</li>
-        <li>账号：123456665856+66</li>
+        <li style="font-weight:bold">{{ entity.title }}</li>
+        <li class="scale_num">订单编号：{{ entity.order_sn }}</li>
+        <li>账号：{{entity.mobile}}</li>
         <li>
           <span>
             优惠价：
-            <i>¥18.5</i>
+            <i>¥{{entity.current_price}}</i>
           </span>
           <span>
             返利：
-            <i>¥1.4</i>
+            <i>¥{{entity.price - entity.current_price}}</i>
           </span>
         </li>
         <li>
           <span>
             原&nbsp;&nbsp;&nbsp;价：
-            <i>¥19.9</i>
+            <i>¥{{entity.price}}</i>
           </span>
           <span>
             实拍：
-            <i>¥19.9</i>
+            <i>¥{{entity.price}}</i>
           </span>
         </li>
       </ul>
     </div>
+    <!-- 按钮区域 -->
     <div class="item_task_foot">
       <div class="four_btns">
         <span style="background:#409eff" @click="showImg = true">商品信息</span>
         <span
           style="background:#51c757"
-          @click="$router.push('/applyAfter?isActive=' + isActive)"
+          @click="$router.push('/applyAfter?order_type=' + entity.order_type)"
         >申请售后</span>
         <span
+          v-if="entity.status == 2 || entity.status == 3"
           style="background:#5784ff"
-          v-if="entity.status == '已提交'"
-          @click="$router.push('/screenShots')"
+          @click="$router.push('/screenShots?id=' + entity.id + '&e=1')"
         >上传好评截图</span>
         <span
+          v-if="entity.status == 4 || entity.status == 3"
           style="background:#ff6137"
-          v-if="entity.status == '待审核'"
-          @click="$router.push('/screenShots')"
+          @click="$router.push('/screenShots?id=' + entity.id)"
         >查看好评截图</span>
         <span
           style="background:#fa3950"
-          v-if="entity.status == '售后'"
-          @click="$router.push('/viewAfter?isActive=' + isActive)"
+          @click="$router.push('/viewAfter?order_type=' + entity.order_type)"
         >查看售后</span>
-        <span style="background:#ccc" @click="showRemark = true">查看商家备注</span>
-        <span v-if="entity.status == '已领取' || entity.status == '已完成'">&nbsp;</span>
-        <span v-if="entity.status == '已领取' || entity.status == '已完成'">&nbsp;</span>
-        <span v-if="entity.status == '已领取' || entity.status == '已完成'">&nbsp;</span>
+        <span style="background:#ccc" @click="viewRemarks">查看商家备注</span>
       </div>
       <!-- 时间 -->
       <div class="times">
-        <span>申请时间：2019-08-06 23:59</span>
-        <span v-if="entity.status == '已领取'">完成时间：2019-08-06 12:11</span>
-        <span v-else>完成时间：暂无</span>
+        <span>申请时间：{{entity.task_start}}</span>
+        <!-- <span v-if="entity.status == '已领取'">完成时间：2019-08-06 12:11</span> -->
+        <span>完成时间：{{entity.task_end}}</span>
       </div>
-      <!-- 按钮 -->
-      <div class="two_btns" v-if="entity.status == '已领取'">
+      <div class="two_btns">
         <span>
           <i class="red" @click="$router.push('/getStart')">开始任务</i>
         </span>
-        <span>
-          <i class="gray">我要退单</i>
+        <span v-if="entity.status == 1">
+          <i class="gray" @click="chargeBack">我要退单</i>
         </span>
       </div>
-      <div class="two_btns margin_top" v-if="entity.status == '已提交'">
+      <div class="two_btns margin_top" v-if="entity.make_status != 0">
         <span>
-          <i class="red" @click="showEvaluate = true">查看定制评价</i>
+          <i class="red" @click="viewEvaluation">查看定制评价</i>
         </span>
       </div>
     </div>
   </div>
 </template>
 <script>
+import { order_action } from "@/api/index"
+
 // 任务中心 任务卡
 export default {
   name: "item_task",
   props: {
-    isActive: {
-      type: Number,
-      default: 0
-    },
     entity: {
       type: Object,
       default: {}
@@ -142,15 +136,49 @@ export default {
     return {
       showRemark: false,
       showImg: false,
-      showEvaluate: false
+      showEvaluate: false,
+
+      evaluateEntity: {},
+      remarkEntity: {},
+      status_arr: ["已领取", "已提交", "待审核", "已完成", "售后"]
     };
   },
-  computed: {
-    isLimitFree() {
-      return this.isActive == 0;
+  computed: {},
+  methods: {
+    async viewEvaluation() {
+      let res = await order_action({
+        id: this.entity.id,
+        type: 4
+      })
+      if(res && res.error.errno == 200) {
+        this.evaluateEntity = {
+          m_eva_explain: res.m_eva_explain,
+          imgs: res.img
+        }
+        this.showEvaluate = true;
+      }
+    },
+    async viewRemarks() {
+      let res = await order_action({
+        id: this.entity.id,
+        type: 5
+      })
+      if(res && res.error.errno == 200) {
+        this.remarkEntity.mc_comment = res.mc_comment
+        this.showRemark = true;
+      }
+    },
+    async chargeBack() {
+      let res = await order_action({
+        id: this.entity.id,
+        type: 6
+      })
+      if(res && res.error.errno == 200) {
+        this.$toast.success(res.error.usermsg)
+        this.$emit('update')
+      }
     }
-  },
-  methods: {}
+  }
 };
 </script>
 <style lang="scss" scope>
@@ -172,7 +200,6 @@ export default {
       width: 110px;
       height: 110px;
       border-radius: 5px;
-      border: 1px solid red;
       margin-right: 10px;
     }
     & > ul {
@@ -201,12 +228,11 @@ export default {
   &_foot {
     padding: 5px 0 10px 0;
     .four_btns {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
       padding: 0 5px;
       span {
+        display: inline-block;
         padding: 4px 6px;
+        margin: 0 10px 5px 0;
         color: #fff;
         border-radius: 5px;
       }
@@ -246,7 +272,7 @@ export default {
   }
   .uploads {
     .van-cell {
-      padding-right: 5px; 
+      padding-right: 5px;
     }
     .van-cell__value {
       flex: 3;

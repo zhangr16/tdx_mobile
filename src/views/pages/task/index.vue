@@ -1,5 +1,6 @@
 <template>
   <div class="task">
+
     <!-- 日历控件 -->
     <nut-calendar
       :is-visible="isVisible"
@@ -18,9 +19,9 @@
     <main>
       <!-- 限量免单，熊抢购title -->
       <div class="top2">
-        <span :class="{'is_active': isActive == 0}" @click="isActive = 0">限量免单</span>
+        <span :class="{'is_active': isActive == 1}" @click="handleTabClick(1)">限量免单</span>
         <i></i>
-        <span :class="{'is_active': isActive == 1}" @click="isActive = 1">熊抢购</span>
+        <span :class="{'is_active': isActive == 2}" @click="handleTabClick(2)">熊抢购</span>
       </div>
       <!-- tabber栏 -->
       <van-tabs v-model="activeTab">
@@ -39,44 +40,70 @@
         <i></i>
       </div>
       <!-- 任务卡 -->
-      <ul class="ul_items">
+      <ul class="ul_items" v-if="taskList.length > 0">
         <li v-for="(item, key) in taskList" :key="key">
-          <itemTask :isActive="isActive" :entity="item" />
+          <itemTask :entity="item" @update="getData" />
         </li>
       </ul>
+      <div v-else class="empty">
+        <img src="@/assets/empty/img_renwuzhongxin@2x.png" alt="" />
+      </div>
     </main>
   </div>
 </template>
 
 <script>
 import itemTask from "@/components/item_task";
+import { order_list } from "@/api/index";
 
 export default {
   name: "task",
   components: { itemTask },
   data() {
     return {
-      isActive: 0,
+      isActive: 1,
       activeTab: 0,
       isVisible: false,
       myDate: null,
-      taskList: [{
-        status: '已领取'
-      },{
-        status: '已提交'
-      },{
-        status: '待审核'
-      },{
-        status: '已完成'
-      },{
-        status: '售后'
-      }]
+
+      formData: {
+        task_start: "",
+        task_end: "",
+        page_num: 100,
+        page: 1,
+        order_type: "1",
+        status: "0"
+      },
+      taskList: []
     };
   },
-  mounted() {},
+  watch: {
+    isActive: function(val) {
+      if(val) this.formData.order_type = val + "";
+    },
+    activeTab: function(val) {
+      this.formData.status = val;
+      this.getData()
+    }
+  },
+  mounted() {
+    this.getData();
+  },
   methods: {
     setChooseValue(param) {
-      this.myDate = [...[param[0][3], param[1][3]]];
+      this.formData.task_start = param[0][3]
+      this.formData.task_end = param[1][3]
+      this.getData();
+    },
+    async getData() {
+      let res = await order_list(this.formData);
+      if(res && res.error.errno == 200)  this.taskList = res.orderList
+    },
+    handleTabClick(num) {
+      if (num != this.isActive) {
+        this.isActive = num;
+        this.getData();
+      }
     }
   }
 };

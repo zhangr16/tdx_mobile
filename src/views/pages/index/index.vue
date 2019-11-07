@@ -125,7 +125,6 @@
   </div>
 </template>
 <script>
-import { Toast } from "vant";
 import itemCardSmall from "@/components/item_card_small";
 import itemCardMid from "@/components/item_card_mid";
 
@@ -156,7 +155,7 @@ export default {
   },
   methods: {
     onSearch() {
-      Toast.success(this.value);
+      this.$toast.success(this.value);
     },
     onChange(i, v) {
       this.$refs["swiper2"].swipeTo(i, { immediate: true });

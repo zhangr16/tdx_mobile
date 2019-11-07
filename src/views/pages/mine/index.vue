@@ -28,7 +28,7 @@
         </div>
         <div class="states">
           <span>
-            <span class="iconfont iconyilingqu"></span>
+            <span style="font-weight:600" class="iconfont iconyilingqu"></span>
             <a>
               已领取
               <i>(1)</i>

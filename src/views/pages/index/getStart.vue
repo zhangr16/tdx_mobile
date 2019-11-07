@@ -144,7 +144,6 @@
 </template> 
 <script>
 import itemCardLarge from "@/components/item_card_large";
-import { Toast } from "vant";
 
 export default {
   name: "getStart",
@@ -163,7 +162,7 @@ export default {
   },
   methods: {
     handleConfirm() {
-      Toast.success('验证成功, 请填写下方活动信息')
+      this.$toast.success('验证成功, 请填写下方活动信息')
       this.showInfos = true
     }
   }
