@@ -17,13 +17,13 @@
           <div class="four_btns">
             <span
               style="background:#51c757"
-              @click="$router.push('/applyAfter?isActive=' + $route.query.isActive + '&type=' + $route.query.type)"
+              @click="$router.push('/applyAfter?id=' + $route.query.id + '&e=1')"
             >修改申请</span>
             <span style="background:#ff6137">撤销申请</span>
             <span style="background:#5784ff">客服介入</span>
             <span
               style="background:#fa3950"
-              @click="$router.push('/applyAfter?isActive=' + $route.query.isActive)"
+              @click="$router.push('/applyAfter')"
             >再次申请</span>
           </div>
         </van-cell>
@@ -34,42 +34,44 @@
       <section>
         <div class="_title">售后信息</div>
         <div class="viewAfterDesc_body">
-          <img src="@/assets/404_images/404.png" alt />
-          <ul v-if="isLimitFree">
-            <li>小个子连衣裙夏季收腰显瘦...</li>
-            <li class="scale_num">订单编号：1234567891111111</li>
+          <img :src="entity.img" alt />
+          <!-- 限量免单 -->
+          <ul v-if="entity.order_type != 3">
+            <li>{{entity.title}}</li>
+            <li class="scale_num">订单编号：{{entity.order_sn}}</li>
             <li>
               原价：
-              <i>¥19.9</i>
+              <i>¥{{entity.task_price}}</i>
             </li>
             <li>
               实拍：
-              <i>¥19.9</i>
+              <i>¥{{entity.reality_price}}</i>
             </li>
-            <li>账号：123456665856+66</li>
+            <li>账号：{{entity.mobile}}</li>
           </ul>
+          <!-- 熊抢购 -->
           <ul v-else>
-            <li>小个子连衣裙夏季收腰显瘦...</li>
-            <li class="scale_num">订单编号：1234567891111111</li>
-            <li>账号：123456665856+66</li>
+            <li>{{entity.title}}</li>
+            <li class="scale_num">订单编号：{{entity.order_sn}}</li>
+            <li>账号：{{entity.mobile}}</li>
             <li>
               <span>
                 优惠价：
-                <i>¥18.5</i>
+                <i>¥{{entity.current_price}}</i>
               </span>
               <span>
                 返利：
-                <i>¥1.4</i>
+                <i>¥{{entity.reality_price - entity.current_price}}</i>
               </span>
             </li>
             <li>
               <span>
                 原&nbsp;&nbsp;&nbsp;价：
-                <i>¥19.9</i>
+                <i>¥{{entity.task_price}}</i>
               </span>
               <span>
                 实拍：
-                <i>¥19.9</i>
+                <i>¥{{entity.reality_price}}</i>
               </span>
             </li>
           </ul>
@@ -80,22 +82,22 @@
         <van-cell class="desc_ul">
           <ul>
             <li>
-              <i>售后原因：</i>资金问题
+              <i>售后原因：</i>{{columns[entity.sale_type - 1]}}
+            </li>
+            <li v-if="entity.sale_type == 1">
+              <i>任务原价：</i>￥{{entity.task_price}}
+            </li>
+            <li v-if="entity.sale_type == 1">
+              <i>实拍价：</i>￥{{entity.reality_price}}
+            </li>
+            <li v-if="entity.sale_type == 1">
+              <i>差价金额：</i>￥{{entity.differ_price}}
             </li>
             <li>
-              <i>任务原价：</i>￥2
+              <i>售后说明：</i>{{entity.comment}}
             </li>
             <li>
-              <i>实拍价：</i>￥3
-            </li>
-            <li>
-              <i>差价金额：</i>￥1
-            </li>
-            <li>
-              <i>售后说明：</i>资金问题
-            </li>
-            <li>
-              <i>申请时间：</i>2019-07-07 00:00:00
+              <i>申请时间：</i>{{entity.create_time}}
             </li>
           </ul>
         </van-cell>
@@ -104,6 +106,8 @@
   </div>
 </template> 
 <script>
+import {saleApply} from "@/api/index"
+
 export default {
   // 好评截图
   name: "viewAfterDesc",
@@ -113,11 +117,17 @@ export default {
       columns: ["资金问题", "物流问题", "礼品问题", "其他"],
       fileList: [],
       form: { a: "", b: "" },
-      isLimitFree: true
+      isLimitFree: true,
+      entity: {}
     };
   },
-  mounted() {
+  async mounted() {
     this.isLimitFree = this.$route.query.isActive == 0;
+    let res = await saleApply({
+      sale_id: this.$route.query.id,
+      action: 3
+    })
+    if(res && res.error.errno == 200) this.entity = res.data
   },
   methods: {
     /**
@@ -126,7 +136,7 @@ export default {
      * type: ["资金问题", "物流问题", "礼品问题", "其他"]
      */
     goTohistory() {
-      this.$router.push("/history?type=" + this.$route.query.type);
+      this.$router.push("/history?id=" + this.$route.query.id);
     }
   }
 };
@@ -208,7 +218,6 @@ export default {
           width: 110px;
           height: 110px;
           border-radius: 5px;
-          border: 1px solid red;
           margin-right: 10px;
         }
         & > ul {

@@ -2,47 +2,61 @@
   <div class="applyAfter">
     <header>
       <van-icon class="left_arrow" name="arrow-left" @click="$router.go(-1)" />
-      {{ form.b || '申请售后' }}
+      {{ form.sale_type || '申请售后' }}
     </header>
     <main>
       <div class="applyAfter_body">
         <!-- 图片 -->
-        <img src="@/assets/404_images/404.png" alt />
-        <ul v-if="isLimitFree">
-          <li>小个子连衣裙夏季收腰显瘦...</li>
-          <li class="scale_num">订单编号：1234567891111111</li>
+        <img :src="entity.img" alt />
+        <!-- 限量免单 -->
+        <ul v-if="entity.order_type != 3">
+          <li>{{entity.title}}</li>
+          <li class="scale_num">订单编号：{{entity.order_sn}}</li>
           <li>
-            原价：
-            <i>¥19.9</i>
+            <span>
+              原价：
+              <i>¥{{entity.price}}</i>
+            </span>
           </li>
           <li>
-            实拍：
-            <i>¥19.9</i>
+            <span>
+              实拍：
+              <i>¥{{entity.reality_price}}</i>
+            </span>
+            <span>
+              可获积分：
+              <i>{{entity.get_integral}}</i>
+            </span>
           </li>
-          <li>账号：123456665856+66</li>
+          <li>账号：{{entity.mobile}}</li>
         </ul>
+        <!-- 熊抢购 -->
         <ul v-else>
-          <li>小个子连衣裙夏季收腰显瘦...</li>
-          <li class="scale_num">订单编号：1234567891111111</li>
-          <li>账号：123456665856+66</li>
+          <li>{{entity.title}}</li>
+          <li class="scale_num">订单编号：{{entity.order_sn}}</li>
+          <li>账号：{{entity.mobile}}</li>
           <li>
             <span>
               优惠价：
-              <i>¥18.5</i>
+              <i>¥{{entity.current_price}}</i>
             </span>
             <span>
               返利：
-              <i>¥1.4</i>
+              <i>¥{{entity.price - entity.reality_price}}</i>
             </span>
           </li>
           <li>
             <span>
-              原&nbsp;&nbsp;&nbsp;价：
-              <i>¥19.9</i>
+              原价：
+              <i>¥{{entity.price}}</i>
             </span>
             <span>
               实拍：
-              <i>¥19.9</i>
+              <i>¥{{entity.reality_price}}</i>
+            </span>
+            <span>
+              积分：
+              <i>{{-entity.integral}}</i>
             </span>
           </li>
         </ul>
@@ -53,31 +67,47 @@
           readonly
           clickable
           label="申请原因"
-          :value="form.b"
+          :value="form.sale_type"
           placeholder="请选择"
-          @click="showPicker = true"
+          @click="() => {
+            if(!isEdit) showPicker = true
+          }"
         />
-        <van-cell v-if="form.b == '资金问题'" class="uploads" title="实拍金额">
+        <van-cell v-if="form.sale_type == '资金问题'" class="uploads" title="实拍金额">
           <div class="_funds">
-            任务金额: ¥<van-stepper :value="form.c" step="0.01" :decimal-length="2" />
-            差价金额: ¥<van-stepper :value="form.d" step="0.01" :decimal-length="2" />
+            ¥
+            <van-stepper v-model="form.reality_price" step="0.01" :decimal-length="2" min="0" />
+            <br />任务金额: ¥
+            <van-stepper disabled :value="entity.price" step="0.01" :decimal-length="2" />差价金额: ¥
+            <van-stepper
+              disabled
+              :value="(form.reality_price - entity.price) || 0"
+              step="0.01"
+              :decimal-length="2"
+              min="-99999"
+            />
           </div>
         </van-cell>
         <van-field
-          clearable
           type="textarea"
           rows="1"
           autosize
-          v-model="form.a"
+          v-model="form.comment"
           label="售后说明"
           placeholder="请填写售后说明"
         />
         <van-cell class="uploads" title="售后凭证" label="（最多3张）">
-          <van-uploader v-model="fileList" multiple :max-count="3" />
+          <van-uploader
+            :after-read="afterRead"
+            :before-delete="beforeDel"
+            v-model="fileList"
+            multiple
+            :max-count="3"
+          />
         </van-cell>
       </van-cell-group>
 
-      <div class="submit_btn">提 交</div>
+      <div class="submit_btn" @click="handleSubmit">提 交</div>
     </main>
 
     <van-popup v-model="showPicker" position="bottom">
@@ -91,6 +121,8 @@
   </div>
 </template> 
 <script>
+import { saleApply, uploadImg, deleteUpload } from "@/api/index";
+
 export default {
   // 好评截图
   name: "applyAfter",
@@ -99,21 +131,115 @@ export default {
     return {
       showPicker: false,
       columns: ["资金问题", "物流问题", "礼品问题", "其他"],
-      fileList: [],
-      form: { a: "", b: "", c: 2.00, d: 4 },
-      isLimitFree: true
+      fileList: [], // 图片
+      form: { comment: "", sale_type: null, reality_price: null },
+      _id: null,
+      isEdit: false, // 是否可编辑
+      entity: {}
     };
   },
   mounted() {
-    this.isLimitFree = this.$route.query.isActive == 0;
-    if (this.$route.query.type) {
-      this.form.b = this.columns[this.$route.query.type];
+    if (this.$route.query.id) {
+      this._id = this.$route.query.id;
     }
+    if (this.$route.query.e) {
+      this.isEdit = true;
+    }
+    this.getData();
   },
   methods: {
+    async getData() {
+      if (this.isEdit) {
+        let res = await saleApply({
+          action: 5,
+          sale_id: this._id
+        })
+        if (res && res.error.errno == 200) {
+          this.entity = res.saleInfo;
+          // 表单设值
+          this.form = {
+            sale_type: this.columns[res.saleInfo.sale_type - 1],
+            reality_price: res.saleInfo.reality_price,
+            comment: res.saleInfo.comment
+          }
+          // 图片
+          res.saleInfo.apply_img.map(el => {
+            this.fileList.push({
+              url: el
+            })
+          })
+        }
+      } else {
+        let res = await saleApply({
+          action: 1,
+          id: this._id
+        });
+        if (res && res.error.errno == 200) {
+          this.entity = res.orderInfo;
+          this.form.reality_price = res.orderInfo.reality_price;
+        }
+      }
+    },
     onConfirm(value) {
-      this.form.b = value;
+      this.form.sale_type = value;
       this.showPicker = false;
+    },
+    // 图片操作
+    async afterRead(content) {
+      let form = new FormData();
+      form.append("img", content.file);
+      let res = await uploadImg(form);
+      if (res && res.error.errno == 200) {
+        this.$toast.success("图片上传成功");
+        content.url = res.url;
+      }
+    },
+    async beforeDel(content) {
+      let res = await deleteUpload({
+        url: content.url
+      });
+      if (res && res.error.errno == 200) {
+        this.$toast.success("图片删除成功");
+        return true;
+      }
+    },
+    // 提交按钮
+    async handleSubmit() {
+      if (!this.form.sale_type) return this.$toast.fail("请选择申请原因");
+
+      let arr = [];
+      let queryObj;
+      this.fileList.map(el => {
+        arr.push(el.url);
+      });
+      if(this.isEdit) {
+        queryObj = {
+          action: 6,
+          sale_id: this._id,
+          sale_type: this.columns.indexOf(this.form.sale_type) + 1,
+          comment: this.form.comment,
+          apply_img: arr
+        };
+      } else {
+        queryObj = {
+          action: 2,
+          id: this._id,
+          sale_type: this.columns.indexOf(this.form.sale_type) + 1,
+          comment: this.form.comment,
+          apply_img: arr
+        };
+      }
+      
+      if (queryObj.sale_type == 1) {
+        queryObj.reality_price = this.form.reality_price;
+      }
+      let res = await saleApply(queryObj);
+      if (res && res.error.errno == 200) {
+        this.$toast.success(res.error.usermsg);
+        setTimeout(() => {
+          this.$router.push("/task");
+        }, 500);
+      }
     }
   }
 };
@@ -171,7 +297,6 @@ export default {
         width: 110px;
         height: 110px;
         border-radius: 5px;
-        border: 1px solid red;
         margin-right: 10px;
       }
       & > ul {
@@ -200,14 +325,15 @@ export default {
   }
 
   ._funds {
-    color:#333;
+    color: #333;
     .van-stepper {
       display: inline-flex;
       .van-stepper__input {
         width: 45px;
       }
     }
-    .van-stepper__minus, .van-stepper__plus {
+    .van-stepper__minus,
+    .van-stepper__plus {
       display: none;
     }
   }

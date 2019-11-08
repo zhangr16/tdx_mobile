@@ -51,3 +51,39 @@ export function deleteUpload(obj) {
         data: obj
     })
 }
+
+// 售后申请: 1申请 3处理  5修改
+export function saleApply(obj) {
+    return request({
+        url: '/s/saleapply',
+        method: 'post',
+        data: obj
+    })
+}
+
+// 售后列表
+export function saleApplyList(obj) {
+    return request({
+        url: '/s/salelist',
+        method: 'post',
+        data: obj
+    })
+}
+
+// 售后历史
+export function saleHistory(obj) {
+    return request({
+        url: '/s/salehistory',
+        method: 'post',
+        data: obj
+    })
+}
+
+// 售后列表历史记录
+export function saleApplyHistory(obj) {
+    return request({
+        url: '/s/saleapplyhistory',
+        method: 'post',
+        data: obj
+    })
+}

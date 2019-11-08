@@ -3,37 +3,52 @@
     <header>
       <van-icon class="left_arrow" name="arrow-left" @click="$router.go(-1)" />售后类型
     </header>
-    <main>
-      <van-cell>粉丝发起</van-cell>
-      <van-cell title="资金问题" is-link @click="goToDesc(0)" />
-      <van-cell title="物流问题" is-link @click="goToDesc(1)" />
-      <van-cell title="礼品问题" is-link @click="goToDesc(2)" />
-      <van-cell title="其他" is-link @click="goToDesc(3)" />
-    </main>
-    <main style="margin-top:10px">
-      <van-cell>商家发起</van-cell>
-      <van-cell title="资金问题" is-link @click="goToDesc(0)"/>
-    </main>
+    <div class="no_data" v-if="fan_list.length == 0 && saler_list.length == 0">
+      暂无售后类型
+    </div>
+    <div v-else>
+      <main v-if="fan_list.length > 0">
+        <van-cell>粉丝发起</van-cell>
+        <van-cell v-for="(item, index) in fan_list" :key="index" :title="issueArr[item.sale_type - 1]" is-link @click="goToDesc(item.id)"/>
+      </main>
+      <main v-if="saler_list.length > 0" style="margin-top:10px">
+        <van-cell>商家发起</van-cell>
+        <van-cell v-for="(item, index) in saler_list" :key="index" :title="issueArr[item.sale_type - 1]" is-link @click="goToDesc(item.id)"/>
+      </main>
+    </div>
   </div>
-</template> 
+</template>
 <script>
+import {saleApplyList} from "@/api/index"
+
 export default {
   // 好评截图
   name: "viewAfter",
   components: {},
   data() {
     return {
-      isLimitFree: true,
-      form: { a: "", b: "" }
+      issueArr: ['资金问题', '物流问题', '礼品问题', '其他问题'],
+      form: { a: "", b: "" },
+      _id: null,
+      fan_list: [],
+      saler_list: []
     };
   },
   mounted() {
-    this.isLimitFree = this.$route.query.isActive == 0;
+    if(this.$route.query.id) this._id = this.$route.query.id
+    this.getData()
   },
   methods: {
+    async getData() {
+      let res = await saleApplyList({id: this._id})
+      if(res && res.error.errno == 200) {
+        this.saler_list = res.saleList2b
+        this.fan_list = res.saleList2c
+      }
+    },
     // 跳转申请售后页面
-    goToDesc(type) {
-      this.$router.push("/viewAfterDesc?isActive=" + this.$route.query.isActive + '&type=' + type);
+    goToDesc(val) {
+      this.$router.push("/viewAfterDesc?id=" + val);
     }
   }
 };
@@ -60,7 +75,14 @@ export default {
       font-size: 20px;
     }
   }
-  & > main {
+  .no_data {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 18px;
+    height: 90vh;
+  }
+  main {
     width: 100%;
     background: #fff;
     font-size: 14px;

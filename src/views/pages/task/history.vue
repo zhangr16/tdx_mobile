@@ -1,15 +1,17 @@
 <template>
   <div class="history">
-    <van-image-preview
-      v-model="showImg"
-      :images="['https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1569576294030&di=9b2fba7ac77d2fe494836ae231386d72&imgtype=0&src=http%3A%2F%2Fpic1.ymatou.com%2FG02%2Fshangou%2FM0B%2FE5%2F1E%2FCgvUBFjCY7-AG8bWAAKTQbIz480662_1_1_n_w_o.jpg']"
-    />
+    <van-image-preview v-model="showImg" :images="entity.apply_img" />
     <header>
-      <van-icon class="left_arrow" name="arrow-left" @click="$router.go(-1)" />协商历史
+      <van-icon class="left_arrow" name="arrow-left" @click="$router.go(-1)" />
+      {{typeArr[entity.sale_type - 1]}}协商历史
     </header>
     <main>
-      <van-cell title="是否完结：否">
-        <span slot="right-icon" class="slotter" @click="$router.push('/historyRecord?type=' + $route.query.type)">
+      <van-cell :title="'是否完结：' + (entity.is_finish > 0 ? '是': '否') ">
+        <span
+          slot="right-icon"
+          class="slotter"
+          @click="$router.push('/historyRecord?id=' + $route.query.id)"
+        >
           <span class="iconfont iconxiugaijilu"></span>
           <span>修改记录</span>
         </span>
@@ -17,64 +19,89 @@
       <van-cell>
         <ul class="fans_ul">
           <li>
-            <span style="color:#ff5500">粉丝：15871700567</span>
-            &nbsp;&nbsp;
-            <span style="color:#999">申请时间：2019-07-07 00:00:00</span>
+            <span v-if="entity.platform == '2c'" class="isFans">粉丝：{{entity.mobile}}</span>
+            <span v-else>商家：{{entity.account}}</span>
+
+            <span style="color:#999">申请时间：{{entity.create_time}}</span>
           </li>
-          <li class="flex_li" v-if="$route.query.type == 0">
+          <li class="flex_li" v-if="entity.sale_type == 1">
             <span>
               实拍金额：
-              <i>¥3</i>
+              <i>¥{{entity.reality_price}}</i>
             </span>
             <span>
               任务金额：
-              <i>¥2</i>
+              <i>¥{{entity.task_price}}</i>
             </span>
             <span>
               差价：
-              <i>¥1</i>
+              <i>¥{{entity.differ_price}}</i>
             </span>
           </li>
-          <li>售后说明：此商品存在{{ historyTitle }}问题</li>
+          <li>处理说明：{{entity.comment}}</li>
+          <!-- <li>售后说明：此商品存在{{ historyTitle }}问题</li> -->
           <li class="img_li">
             <span>凭证截图：</span>
             <img
-              src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1569576294030&di=9b2fba7ac77d2fe494836ae231386d72&imgtype=0&src=http%3A%2F%2Fpic1.ymatou.com%2FG02%2Fshangou%2FM0B%2FE5%2F1E%2FCgvUBFjCY7-AG8bWAAKTQbIz480662_1_1_n_w_o.jpg"
+              v-for="(item, k) in entity.apply_img"
+              :key="k"
+              :src="item"
               alt
               @click="showImg = true"
             />
           </li>
         </ul>
       </van-cell>
-      <van-cell>
-        <ul class="sale_ul">
-          <li>
-            <span>商家：15871700567</span>
-            &nbsp;&nbsp;
-            <span style="color:#999">处理时间：2019-07-07 00:00:00</span>
-          </li>
-          <li class="flex_li" v-if="$route.query.type == 0">
-            <span>
-              实拍金额：
-              <i>¥3</i>
-            </span>
-            <span>
-              任务金额：
-              <i>¥2</i>
-            </span>
-            <span>
-              差 价：
-              <i>¥1</i>
-            </span>
-          </li>
-          <li v-if="$route.query.type != 0">处理内容：{{ historyTitle }}错误</li>
-          <li>处理说明：问题已反馈</li>
-        </ul>
-      </van-cell>
+
+      <!-- 礼品，资金问题 -->
+      <template v-if="entity.sale_type == 3 || entity.sale_type == 1">
+        <van-cell>
+          <ul class="sale_ul">
+            <li>
+              <span v-if="entity.sale_type == 3">平台：大淘客</span>
+              <span v-else-if="entity.platform == '2b'" class="isFans">粉丝：{{entity.mobile}}</span>
+              <span v-else>商家：{{entity.account}}</span>
+
+              <span style="color:#999">处理时间：{{entity.dispose_time}}</span>
+            </li>
+            <li class="flex_li" v-if="entity.sale_type == 1">
+              <span>
+                实拍金额：
+                <i>¥{{entity.reality_price}}</i>
+              </span>
+              <span>
+                任务金额：
+                <i>¥{{entity.task_price}}</i>
+              </span>
+              <span>
+                差 价：
+                <i>¥{{entity.differ_price}}</i>
+              </span>
+            </li>
+            <!-- <li v-if="$route.query.type != 0">处理内容：{{ historyTitle }}错误</li> -->
+            <li>处理说明：{{entity.info}}</li>
+          </ul>
+        </van-cell>
+      </template>
+
+      <!-- 物流，其他问题 -->
+      <template v-else>
+        <van-cell v-for="(item, k) in entity.logitics" :key="k">
+          <ul class="sale_ul">
+            <li>
+              <span :class="{'isFans': item.platform == '2c'}">{{item.platform == '2b' ? '商家' : '粉丝'}}：{{item.name}}</span>
+              <span style="color:#999">处理时间：{{item.dispose_time}}</span>
+            </li>
+            <li>处理说明：{{item.info}}</li>
+          </ul>
+        </van-cell>
+      </template>
     </main>
   </div>
 </template> 
 <script>
+import { saleHistory } from "@/api/index";
+
 export default {
   // 好评截图
   name: "history",
@@ -82,22 +109,16 @@ export default {
   data() {
     return {
       showImg: false,
-      form: { a: "", b: "" }
+      form: { a: "", b: "" },
+      entity: {},
+      typeArr: ["资金", "物流", "礼品", "其他"]
     };
   },
-  mounted() {},
-  computed: {
-    historyTitle() {
-      let _n = this.$route.query.type;
-      return ["资金", "物流", "礼品", "其他"][_n];
-    }
+  async mounted() {
+    let res = await saleHistory({ id: this.$route.query.id });
+    if (res && res.error.errno == 200) this.entity = res.salehistory;
   },
-  methods: {
-    // 放大功能
-    enlarge() {
-      this.$ImagePreview(["@/assets/404_images/404.png"]);
-    }
-  }
+  methods: {}
 };
 </script>
 <style lang="scss" scope>
@@ -105,6 +126,9 @@ export default {
   position: relative;
   width: 100%;
   padding-top: 50px;
+  .isFans {
+    color:#ff5500
+  }
   & > header {
     width: 100%;
     position: fixed;
@@ -125,7 +149,6 @@ export default {
 
   & > main {
     width: 100%;
-    background: #fff;
     font-size: 12px;
     .slotter {
       display: flex;
@@ -137,10 +160,15 @@ export default {
     }
     .van-cell {
       padding-right: 0;
+      margin-bottom: 10px;
     }
     .fans_ul,
     .sale_ul {
       li {
+        &:first-child {
+          display: flex;
+          justify-content: space-between;
+        }
         transform: scale(0.9);
         margin-left: -5%;
         padding: 4px 0;
@@ -149,8 +177,9 @@ export default {
         display: flex;
         align-items: flex-start;
         & > img {
-          width: 67px;
-          height: 67px;
+          width: 90px;
+          height: 90px;
+          margin-right: 10px;
         }
       }
       .flex_li {

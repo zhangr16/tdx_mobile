@@ -80,8 +80,12 @@
         <span style="background:#409eff" @click="showImg = true">商品信息</span>
         <span
           style="background:#51c757"
-          @click="$router.push('/applyAfter?order_type=' + entity.order_type)"
+          @click="$router.push('/applyAfter?id=' + entity.id)"
         >申请售后</span>
+        <span
+          style="background:#fa3950"
+          @click="$router.push('/viewAfter?id=' + entity.id)"
+        >查看售后</span>
         <span
           v-if="entity.status == 2 || entity.status == 3"
           style="background:#5784ff"
@@ -92,10 +96,6 @@
           style="background:#ff6137"
           @click="$router.push('/screenShots?id=' + entity.id)"
         >查看好评截图</span>
-        <span
-          style="background:#fa3950"
-          @click="$router.push('/viewAfter?order_type=' + entity.order_type)"
-        >查看售后</span>
         <span style="background:#ccc" @click="viewRemarks">查看商家备注</span>
       </div>
       <!-- 时间 -->
@@ -168,6 +168,7 @@ export default {
         this.showRemark = true;
       }
     },
+    // 退款
     async chargeBack() {
       let res = await order_action({
         id: this.entity.id,
@@ -177,7 +178,7 @@ export default {
         this.$toast.success(res.error.usermsg)
         this.$emit('update')
       }
-    }
+    },
   }
 };
 </script>
