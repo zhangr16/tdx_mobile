@@ -4,7 +4,7 @@
     <van-dialog v-model="showImg" title="商品信息" :closeOnClickOverlay="true">
       <img
         style="width:100%;"
-        :src="entity.sipping_url"
+        :src="entity.img"
         alt
       />
     </van-dialog>

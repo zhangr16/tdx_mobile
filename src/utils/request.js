@@ -31,7 +31,7 @@ service.interceptors.response.use(
         }
         if (res.error.errno == 431) {
             Toast.fail('请先退出，重新登录');
-            // location.href = '/login'
+            location.href = '/#/login'
         } else if (res.error.errno != 200) {
             Toast.fail(res.error.usermsg);
         }

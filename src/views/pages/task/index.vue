@@ -1,6 +1,5 @@
 <template>
   <div class="task">
-
     <!-- 日历控件 -->
     <nut-calendar
       :is-visible="isVisible"

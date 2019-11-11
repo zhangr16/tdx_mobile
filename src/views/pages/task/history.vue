@@ -89,7 +89,9 @@
         <van-cell v-for="(item, k) in entity.logitics" :key="k">
           <ul class="sale_ul">
             <li>
-              <span :class="{'isFans': item.platform == '2c'}">{{item.platform == '2b' ? '商家' : '粉丝'}}：{{item.name}}</span>
+              <span
+                :class="{'isFans': item.platform == '2c'}"
+              >{{item.platform == '2b' ? '商家' : '粉丝'}}：{{item.name}}</span>
               <span style="color:#999">处理时间：{{item.dispose_time}}</span>
             </li>
             <li>处理说明：{{item.info}}</li>
@@ -97,10 +99,20 @@
         </van-cell>
       </template>
     </main>
+    <footer v-if="entity.platform == '2c' && (entity.sale_type == 2 || entity.sale_type == 4)">
+      <van-field
+        v-model="msg"
+        rows="2"
+        autosize
+        type="textarea"
+        placeholder="请输入回复"
+      />
+      <van-button type="primary" @click="handleReplay">回 复</van-button>
+    </footer>
   </div>
 </template> 
 <script>
-import { saleHistory } from "@/api/index";
+import { saleHistory, saleApply } from "@/api/index";
 
 export default {
   // 好评截图
@@ -109,25 +121,46 @@ export default {
   data() {
     return {
       showImg: false,
-      form: { a: "", b: "" },
       entity: {},
-      typeArr: ["资金", "物流", "礼品", "其他"]
+      typeArr: ["资金", "物流", "礼品", "其他"],
+      msg: ""
     };
   },
-  async mounted() {
-    let res = await saleHistory({ id: this.$route.query.id });
-    if (res && res.error.errno == 200) this.entity = res.salehistory;
+  mounted() {
+    this.getData()  
   },
-  methods: {}
+  methods: {
+    async getData() {
+      let res = await saleHistory({ id: this.$route.query.id });
+      if (res && res.error.errno == 200) this.entity = res.salehistory;
+    },
+    async handleReplay() {
+      if (this.msg != "") {
+        let res = await saleApply({
+          sale_id: this.$route.query.id,
+          dispose: null,
+          action: 4,
+          info: this.msg
+        });
+        if (res && res.error.errno == 200) {
+          this.$toast.success(res.error.usermsg);
+          this.msg = ""
+          this.getData()
+        }
+      } else {
+        this.$toast.fail("请填写回复信息");
+      }
+    }
+  }
 };
 </script>
 <style lang="scss" scope>
 .history {
   position: relative;
   width: 100%;
-  padding-top: 50px;
+  padding: 50px 0 100px 0;
   .isFans {
-    color:#ff5500
+    color: #ff5500;
   }
   & > header {
     width: 100%;
@@ -191,6 +224,15 @@ export default {
         }
       }
     }
+  }
+
+  & > footer {
+    width: 100%;
+    border: 1px solid red;
+    position: fixed;
+    background: #fff;
+    bottom: 0;
+    text-align: center;
   }
 }
 </style>

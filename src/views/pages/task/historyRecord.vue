@@ -2,7 +2,7 @@
   <div class="historyRecord">
     <van-image-preview
       v-model="showImg"
-      :images="['https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1569576294030&di=9b2fba7ac77d2fe494836ae231386d72&imgtype=0&src=http%3A%2F%2Fpic1.ymatou.com%2FG02%2Fshangou%2FM0B%2FE5%2F1E%2FCgvUBFjCY7-AG8bWAAKTQbIz480662_1_1_n_w_o.jpg']"
+      :images="tempImg"
     />
     <header>
       <van-icon class="left_arrow" name="arrow-left" @click="$router.go(-1)" />修改记录历史
@@ -34,9 +34,10 @@
           <li class="img_li">
             <span>凭证截图：</span>
             <img
-              src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1569576294030&di=9b2fba7ac77d2fe494836ae231386d72&imgtype=0&src=http%3A%2F%2Fpic1.ymatou.com%2FG02%2Fshangou%2FM0B%2FE5%2F1E%2FCgvUBFjCY7-AG8bWAAKTQbIz480662_1_1_n_w_o.jpg"
+              v-for="(img, _k) in item.apply_img" :key="_k"
+              :src="img"
               alt
-              @click="showImg = true"
+              @click="enlarge(item.apply_img)"
             />
           </li>
         </ul>
@@ -55,7 +56,8 @@ export default {
     return {
       showImg: false,
       is_finish: null,
-      items: []
+      items: [],
+      tempImg: []
     };
   },
   async mounted() {
@@ -67,8 +69,12 @@ export default {
   },
   methods: {
     // 放大功能
-    enlarge() {
-      this.$ImagePreview(["@/assets/404_images/404.png"]);
+    async enlarge(val) {
+      if(val) {
+        this.showImg = true
+        await this.$nextTick()
+        this.tempImg = val;
+      }
     }
   }
 };
