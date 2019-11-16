@@ -29,12 +29,19 @@ import '@/styles/index.scss'
 
 Vue.use(VueRouter)
 Vue.use(Vant);
-
+import { cateTitle } from "@/api"
 import { Toast } from 'vant';
 
 const router = new VueRouter({
   routes
 })
+
+// 全局获取分类
+if (!JSON.parse(window.localStorage.getItem('tpyeArr'))) {
+  cateTitle().then(res => {
+    window.localStorage.setItem('tpyeArr', JSON.stringify(res.data))
+  })
+}
 
 router.beforeEach((to, from, next) => {
   /* 路由发生变化修改页面title, 回到顶部 */

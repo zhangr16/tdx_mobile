@@ -1,17 +1,28 @@
 <template>
-  <div class="item_card_large" @click="$router.push('/purchase')">
-    <img src="@/assets/404_images/404.png" alt />
+  <div class="item_card_large" @click="handleClick">
+    <img :src="entity.img" alt />
     <main>
-      <div class="title">童装女童吊带连衣裙夏装新款韩...童装女童吊带连衣裙夏装新款韩...</div>
+      <div class="title">{{entity.title}}</div>
       <div class="content">
         <van-progress pivot-text color="#ff5500" :percentage="30" />
-        <div class="content_word">已抢<i>1</i>件 共<i>3</i>件</div>
-        <!-- <div class="content_price1"><span>商品价值:</span> 99元&nbsp;&nbsp;<span>剩余份数:</span> 1/9份</div> -->
-        <div class="content_price2"><span>任务金额:</span> 99元&nbsp;&nbsp;<span>返还金额:</span> 99元</div>
-        <div class="content_time">
-          <span>截止日期：2019-07-07 00:00:00</span>
+        <div class="content_word">
+          已抢
+          <i>{{entity.task_count - entity.remain_count}}</i>件 共
+          <i>{{entity.task_count}}</i>件
         </div>
-        <div class="content_insure">商家已存入保证金99元平台担保返款</div>
+        <!-- <div class="content_price1"><span>商品价值:</span> 99元&nbsp;&nbsp;<span>剩余份数:</span> 1/9份</div> -->
+        <div class="content_price2">
+          <span>任务金额:</span>
+          {{entity.price}}元&nbsp;&nbsp;
+          <span>返还金额:</span>
+          {{entity.price - entity.current_price}}元
+        </div>
+        <div class="content_time">
+          <span>截止日期：{{entity.task_end}}</span>
+        </div>
+        <div
+          class="content_insure"
+        >商家已存入保证金{{entity.activity_type == 1 ? entity.price*entity.order_number : entity.price - entity.current_price }}元平台担保返款</div>
         <div class="content_btn">
           <span>抢购</span>
         </div>
@@ -23,8 +34,19 @@
 // 马上抢大卡片
 export default {
   name: "item_card_large",
+  props: {
+    entity: {
+      default: {},
+      type: Object
+    }
+  },
   data() {
     return {};
+  },
+  methods: {
+    handleClick() {
+      this.$router.push("/purchase?t_id=" + this.entity.t_id);
+    }
   }
 };
 </script>
@@ -90,7 +112,7 @@ export default {
       }
       &_insure {
         color: #999;
-        margin: 7px 0;
+        margin: 8px 0;
       }
       &_btn {
         text-align: center;
@@ -100,7 +122,7 @@ export default {
           width: 92px;
           height: 20px;
           line-height: 20px;
-          border-radius:5px; 
+          border-radius: 5px;
           box-shadow: 0px 3px 1px 0px rgba(255, 201, 169, 0.43);
           background-image: linear-gradient(-90deg, #f95e26 0%, #fb9a0f 100%);
         }

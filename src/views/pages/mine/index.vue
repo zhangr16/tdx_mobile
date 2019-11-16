@@ -136,7 +136,7 @@
       </section>
     </main>
     <footer>
-      <div class="logout" @click="$router.push('/login')">退出登录</div>
+      <div class="logout" @click="handleLogout">退出登录</div>
     </footer>
   </div>
 </template> 
@@ -148,7 +148,26 @@ export default {
       is_active: 0
     };
   },
-  methods: {}
+  methods: {
+    handleLogout() {
+      this.$dialog
+        .confirm({
+          message: "是否确认退出登录？"
+        })
+        .then(() => {
+          this.$store
+            .dispatch("LogOut")
+            .then(res => {
+              if (res) {
+                this.$router.push({ path: "/" });
+                this.$toast.success("登出成功！");
+              }
+            })
+            .catch(err => {});
+        })
+        .catch(() => {});
+    }
+  }
 };
 </script>
 <style lang="scss" scope>

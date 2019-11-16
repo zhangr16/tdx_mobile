@@ -9,13 +9,26 @@
       </header>
       <section>
         <div class="login_main">
-          <van-field v-model.trim="form.user" placeholder="请输入账号" />
-          <van-field v-model.trim="form.pwd" placeholder="请输入密码" type="password">
+          <van-field
+            clearable
+            v-model.trim="userForm.user"
+            placeholder="请输入账号"
+            @input="validateMobile"
+            :error-message="validateMsg.user"
+          />
+          <van-field
+            clearable
+            v-model.trim="userForm.pwd"
+            placeholder="请输入密码"
+            type="password"
+            @input="validatePassword"
+            :error-message="validateMsg.pwd"
+          >
             <template slot="right-icon">
               <span class="tips">忘记密码</span>
             </template>
           </van-field>
-          <div class="l_btn" @click="handleLogin">登 录</div>
+          <div class="l_btn" @click="handleLogin()">登 录</div>
           <div class="r_btn" @click="$router.push('/register')">注 册</div>
         </div>
       </section>
@@ -23,28 +36,53 @@
   </div>
 </template>
 <script>
-import {Toast} from 'vant';
-
-// 登录
 export default {
   name: "login",
   data() {
     return {
-      form: {
-        user: "18827035411",
-        pwd: "123456",
-        platform: '2c'
+      userForm: {
+        user: "",
+        pwd: "",
+        platform: "2c"
+      },
+      validateMsg: {
+        user: "",
+        pwd: ""
       }
     };
   },
   methods: {
+    validateMobile() {
+      if (this.userForm.user == "") {
+        this.validateMsg.user = "请输入手机号码";
+      } else if (!/^1[3456789]\d{9}$/.test(this.userForm.user)) {
+        this.validateMsg.user = "请输入11位手机号码";
+      } else {
+        this.validateMsg.user = "";
+        return true;
+      }
+    },
+    validatePassword() {
+      if (this.userForm.pwd.length < 5 || this.userForm.pwd.length > 13) {
+        this.validateMsg.pwd = "密码长度不能小于5位或大于13位";
+      } else if (escape(this.userForm.pwd).indexOf("%u") >= 0) {
+        this.validateMsg.pwd = "密码不能有中文";
+      } else {
+        this.validateMsg.pwd = "";
+        return true;
+      }
+    },
     handleLogin() {
-      this.$store.dispatch("Login", this.form).then(res => {
-        if (res) {
-          this.$router.push({ path: "/" });
-          Toast.success("登录成功！");
-        }
-      });
+      this.validateMobile();
+      this.validatePassword();
+      if (this.validateMsg.user == "" && this.validateMsg.pwd == "") {
+        this.$store.dispatch("Login", this.userForm).then(res => {
+          if (res) {
+            this.$router.push({ path: "/" });
+            this.$toast.success("登录成功！");
+          }
+        });
+      }
     }
   }
 };

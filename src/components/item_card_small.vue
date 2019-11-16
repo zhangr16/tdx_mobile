@@ -1,17 +1,17 @@
 <template>
-  <div class="item_card_small" @click="$router.push('/getSoon')">
-    <img src="@/assets/404_images/404.png" alt />
+  <div class="item_card_small" @click="handleClick">
+    <van-image :src="entity.img">
+      <template v-slot:loading>
+        <van-loading type="spinner" size="20" />
+      </template>
+    </van-image>
     <main>
-      <div class="title">纯棉加厚搜索棉袄</div>
+      <div class="title">{{entity.title}}</div>
       <div class="content">
-        <div class="content_price">￥9.9</div>
+        <div class="content_price">￥{{entity.price}}</div>
         <div class="content_desc">
-          <van-progress
-            pivot-text=""
-            color="#ff5500"
-            :percentage="50"
-          />
-          <span class="">已抢8件共50件</span>
+          <van-progress pivot-text color="#ff5500" :percentage="50" />
+          <span class>已抢{{entity.order_count || 0}}件共{{entity.task_count || 1}}件</span>
         </div>
       </div>
       <div class="btn">马上抢</div>
@@ -22,9 +22,24 @@
 // 首页推荐小卡片
 export default {
   name: "item_card_small",
+  props: {
+    entity: {
+      default: {},
+      type: Object
+    }
+  },
   data() {
     return {};
-  }
+  },
+  methods: {
+    handleClick() {
+      if(this.entity.task_number > 1) {
+        this.$router.push('/getSoon?pa_id=' + this.entity.pa_id)
+      } else {
+        this.$router.push('/purchase?t_id=' + this.entity.t_id)
+      }
+    }
+  },
 };
 </script>
 <style lang="scss" scope>
@@ -55,16 +70,16 @@ export default {
         font-size: 14px;
         color: #ff5500;
         text-decoration: line-through;
-        margin-right: 5px;
       }
       &_desc {
-        display: flex;
-        flex-direction: column;
-        transform: scale(0.8);
-        margin-left: -10%;
+        // display: flex;
+        // flex-direction: column;
+        transform: scale(0.75);
+        margin-left: -8%;
         color: #999;
-        span {
-          padding-top: 5px; 
+        & > span {
+          display: block;
+          margin: 5px 0;
           overflow: hidden;
           white-space: nowrap;
           text-overflow: ellipsis;
@@ -80,7 +95,7 @@ export default {
       height: 20px;
       line-height: 20px;
       color: #fff;
-      border-radius: 5px; 
+      border-radius: 5px;
       background-image: linear-gradient(-90deg, #f95e26 0%, #fb9a0f 100%);
       box-shadow: 0px 3px 1px 0px rgba(255, 201, 169, 0.43);
     }

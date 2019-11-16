@@ -1,24 +1,23 @@
 <template>
-  <div class="item_card_mid" @click="$router.push('/getSoon')">
+  <div class="item_card_mid" @click="handleClick">
     <!-- 图片 -->
-    <img src="@/assets/404_images/404.png" alt />
+    <img :src="entity.img" alt />
     <!-- 内容部分 -->
     <main>
       <div class="title">
         <i v-if="!scored">需晒图</i>
-        <span>纯棉加厚搜索棉袄</span>
+        <span>{{entity.title}}</span>
       </div>
       <div v-if="scored" class="two_icons">
         <i>需晒图</i>
         <i>积分奖励100</i>
       </div>
       <div class="content">
-        <div class="content_price">￥29.9</div>
+        <div class="content_price">￥{{entity.price}}</div>
         <div class="content_desc">
           <van-progress pivot-text color="#ff5500" :percentage="50" />
           <span class="word">
-            已抢
-            <i>20</i>件 共50件
+            已抢<i>{{entity.order_count}}</i>件 共{{entity.task_count}}件
           </span>
         </div>
       </div>
@@ -34,11 +33,24 @@ export default {
     scored: {
       type: Boolean,
       default: false
+    },
+    entity: {
+      type: Object,
+      default: {}
     }
   },
   data() {
     return {};
-  }
+  },
+  methods: {
+    handleClick() {
+      if(this.entity.task_number > 1) {
+        this.$router.push('/getSoon?pa_id=' + this.entity.pa_id)
+      } else {
+        this.$router.push('/purchase?t_id=' + this.entity.t_id)
+      }
+    }
+  },
 };
 </script>
 <style lang="scss" scope>

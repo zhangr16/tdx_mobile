@@ -8,13 +8,21 @@ export function login(obj) {
         params: obj
     })
 }
+// 登出
 export function logout() {
     return request({
         url: '/sys/logout',
         method: 'get'
     })
 }
-
+// 注册
+export function userRegister(obj) {
+    return request({
+        url: '/u/register',
+        method: 'post',
+        params: obj
+    })
+}
 
 // 用户（PC活动列表）
 export function order_list(obj) {
@@ -85,5 +93,54 @@ export function saleApplyHistory(obj) {
         url: '/s/saleapplyhistory',
         method: 'post',
         data: obj
+    })
+}
+
+// 商品活动列表
+export function indexSearch(obj) {
+    return request({
+        url: '/pa/index',
+        method: 'post',
+        data: obj
+    })
+}
+// 商品活动 分类活动列表
+export function cateSearch() {
+    return request({
+        url: '/pa/cateactivity',
+        method: 'get',
+    })
+}
+// 商品活动分类
+export function cateTitle() {
+    return request({
+        url: '/pa/cate',
+        method: 'get'
+    })
+}
+// 商品活动详情
+export function paDetail(obj) {
+    return request({
+        url: '/pa/detail',
+        method: 'post',
+        data: obj
+    })
+}
+
+// 子任务商品详情
+export function tDetail(obj) {
+    return request({
+        url: '/t/detail',
+        method: 'post',
+        data: obj
+    })
+}
+
+// 发送验证码
+export function sendVerify(obj) {
+    return request({
+        url: '/sys/sendsmsverify',
+        method: 'post',
+        params: obj
     })
 }

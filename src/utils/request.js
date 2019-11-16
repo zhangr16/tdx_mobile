@@ -1,8 +1,6 @@
 import axios from 'axios'
 import {Toast} from 'vant';
 
-import { getToken, removeToken } from '@/utils/auth'
-
 // 创建axios实例
 const service = axios.create({
     timeout: 10000 // 请求超时时间

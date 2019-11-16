@@ -7,32 +7,36 @@
 
     <van-swipe class="img_banner" :initial-swipe="0" :autoplay="3000" ref="swiper">
       <van-swipe-item>
-        <img src="@/assets/sy_banner1.png" alt />
-      </van-swipe-item>
-      <van-swipe-item>
-        <img src="@/assets/sy_banner2.png" alt />
+        <van-image :src="entity.img">
+          <template v-slot:loading>
+            <van-loading type="spinner" size="20" />
+          </template>
+        </van-image>
       </van-swipe-item>
     </van-swipe>
 
-    <!-- <img src="@/assets/404_images/404.png" alt /> -->
     <!-- 抢购信息 -->
     <section class="purchase_info">
       <!-- 顶部 -->
       <div class="_top">
-        <div class="title">童装女童吊带连衣裙夏装新款韩童装女童吊带连衣裙夏装新款韩...</div>
-        <div class="num">
-          <span style="color:#333">商品价值:</span>&nbsp;99元&nbsp;&nbsp;&nbsp;
-          <span style="color:#333">剩余份数:</span>&nbsp;1/9份
-        </div>
+        <div class="title">{{entity.title}}</div>
       </div>
       <!-- 中部 -->
       <div class="_mid">
         <div class="num">
-          <span style="color:#999">任务金额:</span>&nbsp;99元&nbsp;&nbsp;&nbsp;
-          <span style="color:#999">返还金额:</span>&nbsp;999元
+          <span>任务金额:</span>
+          &nbsp;{{entity.price}}元&nbsp;&nbsp;&nbsp;
+          <span>返还金额:</span>
+          &nbsp;{{entity.price - entity.current_price}}元
+        </div>
+        <div class="num">
+          <span>商品价值:</span>
+          &nbsp;{{entity.price}}元&nbsp;&nbsp;&nbsp;
+          <span>剩余份数:</span>
+          &nbsp;{{entity.remain_count}}/{{entity.task_count}}份
         </div>
         <div class="time">
-          <span>截止日期：2019-07-07 00:00:00</span>
+          <span>截止日期：{{entity.end_time}}</span>
         </div>
       </div>
       <!-- 底部 -->
@@ -113,14 +117,26 @@
   </div>
 </template>
 <script>
+import { tDetail } from "@/api";
+
 export default {
   name: "purchase",
   data() {
     return {
-      showConfirm: false
+      showConfirm: false,
+      entity: {}
     };
   },
+  mounted() {
+    this.getData();
+  },
   methods: {
+    async getData() {
+      let res = await tDetail({ t_id: this.$route.query.t_id });
+      if (res && res.error.errno == 200) {
+        this.entity = res.data;
+      }
+    },
     handleConfirm() {
       this.showConfirm = false;
       setTimeout(() => {
@@ -157,6 +173,7 @@ export default {
     .num {
       color: #fa2742;
       font-size: 12px;
+      padding: 5px 0;
     }
   }
   // 图片样式
@@ -172,14 +189,11 @@ export default {
     }
     & > ._top {
       .title {
+        font-weight: 500;
         font-size: 16px;
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
-        margin-bottom: 10px;
-      }
-      .num {
-        font-size: 14px;
       }
     }
     & > ._mid {

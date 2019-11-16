@@ -1,24 +1,24 @@
 <template>
-  <div class="item_card_mid2" @click="$router.push('/getSoon')">
+  <div class="item_card_mid2" @click="handleClick">
     <!-- 图片 -->
-    <img src="@/assets/404_images/404.png" alt />
+    <img :src="entity.img " alt />
     <!-- 内容部分 -->
     <main>
       <div class="title">
-        <span>纯棉加厚搜索棉袄纯棉加厚搜索棉袄纯棉加厚搜索棉袄纯棉加厚搜索棉袄</span>
+        <span>{{entity.title}}</span>
       </div>
       <div class="content2" v-if="isBearBuy">
         <div class="content2_price">
-          <span>优惠价: ￥9.9</span>
-          <span>原价: ￥9.9</span>
+          <span>优惠价: ￥{{entity.current_price}}</span>
+          <span>原价: ￥{{entity.price}}</span>
         </div>
-        <div class="content2_desc">拍下平台返还3元</div>
+        <div class="content2_desc">拍下平台返还{{entity.price - entity.current_price}}元</div>
       </div>
       <div class="content" v-else>
-        <div class="content_price">￥12.9</div>
+        <div class="content_price">￥{{entity.price}}</div>
         <div class="content_desc">
           <van-progress pivot-text color="#ff5500" :percentage="50" />
-          <span class="word">已抢<i>20</i>件 共50件</span>
+          <span class="word">已抢<i>{{entity.order_count}}</i>件 共{{entity.task_count}}件</span>
         </div>
       </div>
       <div class="btn">马上抢</div>
@@ -29,6 +29,12 @@
 // 限量免单、熊抢购中卡片
 export default {
   name: "item_card_mid2",
+  props: {
+    entity: {
+      default: {},
+      type: Object
+    }
+  },
   data() {
     return {};
   },
@@ -38,7 +44,16 @@ export default {
     isBearBuy() {
       return this.$route.name == 'bearBuy'
     }
-  }
+  },
+  methods: {
+    handleClick() {
+      if(this.entity.task_number > 1) {
+        this.$router.push('/getSoon?pa_id=' + this.entity.pa_id)
+      } else {
+        this.$router.push('/purchase?t_id=' + this.entity.t_id)
+      }
+    }
+  },
 };
 </script>
 <style lang="scss" scope>

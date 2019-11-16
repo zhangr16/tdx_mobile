@@ -10,7 +10,7 @@
             </div>
           </van-search>
           <van-tabs>
-            <van-tab v-for="index in types" :title="index" :key="index"></van-tab>
+            <van-tab v-for="(item, index) in classicTabs" :title="item.short_name" :key="index"></van-tab>
           </van-tabs>
         </div>
 
@@ -59,53 +59,35 @@
 
     <section>
       <ul class="top_ul">
-        <li :class="{'is_active': active_type == 0}" @click="active_type = 0">推荐好货</li>
-        <li :class="{'is_active': active_type == 1}" @click="active_type = 1">最新上线</li>
-        <li :class="{'is_active': active_type == 2}" @click="active_type = 2">新品预告</li>
+        <li :class="{'is_active': active_type == 0}" @click="active_type = 0;queryData.w_type = 1;getData()">推荐好货</li>
+        <li :class="{'is_active': active_type == 1}" @click="active_type = 1;queryData.w_type = 2;getData()">最新上线</li>
+        <li :class="{'is_active': active_type == 2}" @click="active_type = 2;queryData.w_type = 3;getData()">新品预告</li>
       </ul>
       <div class="ul_wrapper">
-        <ul>
-          <li v-for="item in 6" :key="item">
-            <item-card-small />
+        <ul v-if="topList.length > 0">
+          <li v-for="(item, x) in topList" :key="x">
+            <item-card-small :entity="item" />
           </li>
         </ul>
+        <div class="no_data" v-else>
+          暂无数据
+        </div>
       </div>
     </section>
     <!-- 种类推荐 -->
-    <section>
+    <section v-for="(cate, x) in cateList" :key="x">
       <div class="sy_banner">
-        <img src="@/assets/sy_banner1.png" @click="$router.push('/limitFree')" />
+        <img :src="cate.images_h5" @click="$router.push('/limitFree?p_id=' + cate.id)" />
       </div>
       <div class="ul_wrapper">
-        <ul>
-          <li v-for="item in 6" :key="item">
-            <item-card-small />
+        <ul v-if="cate.activity_list.length > 0">
+          <li v-for="(item, y) in cate.activity_list" :key="y">
+            <item-card-small :entity="item" />
           </li>
         </ul>
-      </div>
-    </section>
-    <section>
-      <div class="sy_banner">
-        <img src="@/assets/sy_banner2.png" @click="$router.push('/limitFree')" />
-      </div>
-      <div class="ul_wrapper">
-        <ul>
-          <li v-for="item in 6" :key="item">
-            <item-card-small />
-          </li>
-        </ul>
-      </div>
-    </section>
-    <section>
-      <div class="sy_banner">
-        <img src="@/assets/sy_banner3.png" @click="$router.push('/limitFree')" />
-      </div>
-      <div class="ul_wrapper">
-        <ul>
-          <li v-for="item in 6" :key="item">
-            <item-card-small />
-          </li>
-        </ul>
+        <div class="no_data" v-else>
+          暂无数据
+        </div>
       </div>
     </section>
 
@@ -116,8 +98,8 @@
       </header>
       <div class="ul_free">
         <ul>
-          <li :class="{'margin_right': index%2 == 0}" v-for="(item, index) in 4" :key="index">
-            <item-card-mid :scored="index > 1" />
+          <li :class="{'margin_right': index%2 == 0}" v-for="(item, index) in topList" :key="index">
+            <item-card-mid :scored="index > 1" :entity="item" />
           </li>
         </ul>
       </div>
@@ -127,33 +109,44 @@
 <script>
 import itemCardSmall from "@/components/item_card_small";
 import itemCardMid from "@/components/item_card_mid";
+import { indexSearch, cateSearch } from "@/api";
 
 export default {
   name: "home",
   components: { itemCardSmall, itemCardMid },
   data() {
     return {
-      loading: true,
       isWhite: false,
       active_type: 0,
       value: "",
-      types: [
-        "全部",
-        "女装",
-        "男装",
-        "内衣",
-        "母婴",
-        "彩妆",
-        "家居",
-        "鞋包",
-        "美食",
-        "文体",
-        "家电",
-        "其他"
-      ]
+      classicTabs: [],
+      queryData: {
+        type: 1,
+        w_type: 1,
+        module_type: 1,
+        page_no: 1,
+        page_size: 6
+      },
+      topList: [], //3个大块
+      cateList: [] //分类列表
     };
   },
   methods: {
+    async getData() {
+      let res = await indexSearch(this.queryData);
+      // let res2 = await indexSearch({
+      //   status: 2,
+      //   ...this.queryData
+      // })
+      if (res && res.error.errno == 200) this.topList = res.data;
+      // if (res2 && res2.error.errno == 200) this.bottomList = res.data
+    },
+    async getCateData() {
+      let res = await cateSearch();
+      if (res && res.error.errno == 200) {
+        this.cateList = res.data;
+      }
+    },
     onSearch() {
       this.$toast.success(this.value);
     },
@@ -169,10 +162,15 @@ export default {
     }
   },
   mounted() {
-    this.loading = false;
+    if(window.localStorage.getItem('invite_code')) {
+      this.$router.push('/register?code=' + window.localStorage.getItem('invite_code'))
+    }
     this.$nextTick(() => {
       window.addEventListener("scroll", this.handleScroll);
     });
+    this.classicTabs = JSON.parse(window.localStorage.getItem('tpyeArr'))
+    this.getData();
+    this.getCateData()
   }
 };
 </script>
@@ -301,10 +299,10 @@ export default {
       width: calc(100vw - 30px);
       overflow-x: scroll;
       ul {
-        // width: 170%;
         overflow-x: scroll;
         display: flex;
         li {
+          width: calc((100vw - 30px)/3);
           flex: 1;
           margin-right: 4px;
           &:last-child {

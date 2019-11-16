@@ -1,23 +1,41 @@
 <template>
   <div class="getSoon">
     <header>
-      <van-icon class="left_arrow" name="arrow-left" @click="$router.go(-1)" />
-      马上抢
+      <van-icon class="left_arrow" name="arrow-left" @click="$router.go(-1)" />马上抢
     </header>
     <ul>
-      <li v-for="item in 9" :key="item">
-        <item-card-large />
+      <li v-for="(item, x) in paList" :key="x">
+        <item-card-large :entity="item" />
       </li>
     </ul>
   </div>
 </template> 
 <script>
-import itemCardLarge from "@/components/item_card_large"
-
+import itemCardLarge from "@/components/item_card_large";
+import { paDetail } from "@/api";
 export default {
   name: "getSoon",
   components: { itemCardLarge },
-  methods: {}
+  data() {
+    return {
+      paList: []
+    }
+  },
+  mounted() {
+    this.getData();
+  },
+  methods: {
+    async getData() {
+      let res = await paDetail({ pa_id: this.$route.query.pa_id });
+      if (res && res.error.errno == 200) {
+        this.paList = res.data.task_list;
+        this.paList.map(el => {
+          el.img = res.data.img
+          el.activity_type = res.data.activity_type
+        })
+      }
+    }
+  }
 };
 </script>
 <style lang="scss" scope>
