@@ -3,8 +3,7 @@
   技术栈主要使用vue-cli3.0 + vue + vantUI + vuex + axios<br>
 
 ### 测试地址（暂定）
- https://zhangr16.github.io/tdx_mobile/dist/index.html
-
+http://106.54.237.151/uh5/#/index
 
 ### Project setup
 ```

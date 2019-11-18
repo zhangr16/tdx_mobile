@@ -39,7 +39,10 @@
         <i></i>
       </div>
       <!-- 任务卡 -->
-      <ul class="ul_items" v-if="taskList.length > 0">
+      <div class="no_data" v-if="isloading">
+        <van-loading type="spinner" />
+      </div>
+      <ul class="ul_items" v-else-if="taskList.length > 0">
         <li v-for="(item, key) in taskList" :key="key">
           <itemTask :entity="item" @update="getData" />
         </li>
@@ -60,6 +63,7 @@ export default {
   components: { itemTask },
   data() {
     return {
+      isloading: false,
       isActive: 1,
       activeTab: 0,
       isVisible: false,
@@ -95,8 +99,10 @@ export default {
       this.getData();
     },
     async getData() {
+      this.isloading = true
       let res = await order_list(this.formData);
       if(res && res.error.errno == 200)  this.taskList = res.orderList
+      this.isloading = false
     },
     handleTabClick(num) {
       if (num != this.isActive) {

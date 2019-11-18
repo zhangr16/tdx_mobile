@@ -1,13 +1,13 @@
 <template>
   <div class="classify">
     <header class="let_fixed">
-      <van-search placeholder="搜索你喜欢的宝贝" shape="round" v-model="searchValue">
+      <van-search placeholder="搜索你喜欢的宝贝" shape="round" v-model="queryData.keywords">
         <div slot="left-icon"></div>
-        <div slot="right-icon" @click="getData()">
+        <div slot="right-icon">
           <span class="iconfont iconsousuo"></span>
         </div>
       </van-search>
-      <van-tabs>
+      <van-tabs v-model="activeTab" @click="handleTabClick">
         <van-tab v-for="(item, index) in classicTabs" :title="item.short_name" :key="index"></van-tab>
       </van-tabs>
     </header>
@@ -24,22 +24,31 @@
     </header>
     <section>
       <ul class="top_ul">
-        <li :class="{'is_active': active_type == 0}" @click="active_type = 0">全 部</li>
-        <li :class="{'is_active': active_type == 1}" @click="active_type = 1">进行中</li>
-        <li :class="{'is_active': active_type == 2}" @click="active_type = 2">明日预告</li>
+        <li
+          v-for="(item, index) in ['全部', '进行中', '明日预告']"
+          :key="index"
+          :class="{'is_active': active_type == index}"
+          @click="active_type = index"
+        >{{item}}</li>
       </ul>
     </section>
 
     <section>
-      <ul class="ul_free">
+      <!-- <div class="no_data" v-if="isloading">
+        <van-loading type="spinner" />
+      </div>-->
+      <ul v-if="cardList.length > 0" class="ul_free">
         <li :class="{'margin_right': index%2 == 0}" v-for="(item, index) in cardList" :key="index">
           <item-card-mid2 :entity="item" />
         </li>
+        <div class="no_more" v-if="isfinished">没有更多数据了</div>
       </ul>
-      <div class="no_more" v-if="isloading">
+      <div v-if="!isloading && cardList.length <= 0" class="no_data">暂无数据</div>
+
+      <div v-if="isloading" class="no_data">
         <van-loading type="spinner" />
       </div>
-      <div class="no_more" v-else>没有更多了</div>
+      
     </section>
   </div>
 </template>
@@ -54,18 +63,21 @@ export default {
     return {
       isloading: false,
       isfinished: false,
+      timer: null, // 防抖计时器
 
       topH: 0,
       cardList: [],
-      active_type: 0,
-      searchValue: "",
+      active_type: 0, //全部，进行中，明日预告
+      activeTab: 0,
+
       classicTabs: [],
       total_count: 0,
       queryData: {
         type: 2,
         module_type: 0, //1免单 2熊抢购
         page_no: 1,
-        page_size: 10
+        page_size: 10,
+        keywords: ""
       }
     };
   },
@@ -73,12 +85,25 @@ export default {
     this.$nextTick(() => {
       window.addEventListener("scroll", this.handleScroll);
     });
+
     this.queryData.module_type = this.isBearbuy ? 2 : 1;
     this.classicTabs = JSON.parse(window.localStorage.getItem("tpyeArr"));
+
+    if (this.$route.query.cid) {
+      this.queryData.cid = this.$route.query.cid;
+      this.classicTabs.find((el, i) => {
+        if (el.id == this.queryData.cid) {
+          this.activeTab = i;
+        }
+      });
+    }
+    if (this.$route.query.keyword)
+      this.queryData.keywords = this.$route.query.keyword;
     this.getData();
   },
+  // 离开时销毁监听scroll
   beforeDestroy() {
-    window.removeEventListener("scroll", this.handleScroll)
+    window.removeEventListener("scroll", this.handleScroll);
   },
   computed: {
     isBearbuy() {
@@ -89,8 +114,24 @@ export default {
     $route: function(newV, oldv) {
       this.queryData.page_size = 10;
       this.isfinished = false;
-      this.queryData.module_type = newV.name == "bearBuy" ? 2 : 1
+      this.active_type = 0;
+      this.queryData.module_type = newV.name == "bearBuy" ? 2 : 1;
       this.getData();
+    },
+    active_type: function(val) {
+      if (val || val == 0) {
+        this.cardList = []
+        this.queryData.status = val;
+        this.getData();
+      }
+    },
+    // input防抖
+    "queryData.keywords": function(val) {
+      this.queryData.keywords = val;
+      clearTimeout(this.timer);
+      this.timer = setTimeout(() => {
+        this.getData();
+      }, 500);
     }
   },
   methods: {
@@ -103,21 +144,26 @@ export default {
       }
       this.isloading = false;
     },
+    handleTabClick(index, name) {
+      let _target = this.classicTabs.find(el => el.short_name == name);
+      this.queryData.cid = _target.id;
+      this.getData();
+    },
     handleScroll() {
       let scrollTop =
         window.pageYOffset ||
         document.documentElement.scrollTop ||
         document.body.scrollTop; // 滚动条偏移量
-      let innerHeight = document.querySelector(".ul_free").clientHeight;
+      let innerHeight = document.querySelector(".index").clientHeight; // 滚动ul的高度
+      let viewHeight = window.innerHeight; // 视口高度
+      // console.log(scrollTop, innerHeight, viewHeight);
 
-      if (innerHeight <= 470 + scrollTop) {
-        // 触发加载方法
+      if ((scrollTop + viewHeight >= innerHeight) && !this.isloading) {
         if (this.total_count > this.queryData.page_size) {
           this.queryData.page_size += 10;
           this.getData();
         } else {
-          this.isfinished = true;
-          this.isloading = false;
+          this.isfinished = true
         }
       }
     }
@@ -168,6 +214,9 @@ export default {
       }
       .margin_right {
         margin-right: 5px;
+      }
+      .no_more {
+        width: 100%;
       }
     }
   }

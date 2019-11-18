@@ -3,21 +3,26 @@
     <header>
       <div class="msg">
         <span class="iconfont iconxiaoxi" @click="$router.push('/msg')"></span>
-        <span @click="$router.push('/msg')">(20)</span>
+        <span @click="$router.push('/msg')">({{entity.msg_num || 0}})</span>
       </div>
-      <div class="desc">
-        <span class="iconfont iconmorentouxiang"></span>
+      <div v-if="isloading" class="desc">
+        <van-loading type="spinner" />
+      </div>
+      <div v-else class="desc">
+        <img v-if="entity.avatar" :src="entity.avatar" alt />
+        <span v-else class="iconfont iconmorentouxiang"></span>
         <div>
-          <div class="desc_top">用户名:15877187876</div>
+          <div class="desc_top">用户名:{{entity.mobile}}</div>
           <div class="desc_bottom">
-            <span>邀请码：12345678</span>
-            <span>免单30天总单量：210单</span>
+            <span>邀请码：{{invited_code}}</span>
+            <span>免单30天总单量：{{entity.order_month_num}}单</span>
           </div>
         </div>
       </div>
+      
       <div class="nums">
-        <span>账户余额：10.00</span>
-        <span>积分：0</span>
+        <span>账户余额：{{entity.balance}}</span>
+        <span>积分：{{entity.integral}}</span>
       </div>
     </header>
     <main>
@@ -26,40 +31,77 @@
           <span :class="{'is_active': is_active == 0}" @click="is_active = 0">免单任务</span>
           <span :class="{'is_active': is_active == 1}" @click="is_active = 1">熊抢购任务</span>
         </div>
-        <div class="states">
+        <div class="states" v-if="is_active == 0">
           <span>
-            <span style="font-weight:600" class="iconfont iconyilingqu"></span>
+            <span style="font-weight:500" class="iconfont iconyilingqu"></span>
             <a>
               已领取
-              <i>(1)</i>
+              <i>({{entity.order_num.free.received_num}})</i>
             </a>
           </span>
           <span>
             <span class="iconfont iconyitijiao"></span>
             <a>
               已提交
-              <i>(2)</i>
+              <i>({{entity.order_num.free.submitted_num}})</i>
             </a>
           </span>
           <span>
             <span class="iconfont icondaishenhe"></span>
             <a>
               待审核
-              <i>(3)</i>
+              <i>({{entity.order_num.free.pending_review_num}})</i>
             </a>
           </span>
           <span>
             <span class="iconfont iconyiwancheng"></span>
             <a>
               已完成
-              <i>(41)</i>
+              <i>({{entity.order_num.free.completed_num}})</i>
             </a>
           </span>
           <span>
             <span class="iconfont iconshouhou"></span>
             <a>
               售后
-              <i>(5)</i>
+              <i>({{entity.order_num.free.after_sale_num}})</i>
+            </a>
+          </span>
+        </div>
+        <div class="states" v-else-if="is_active == 1">
+          <span>
+            <span style="font-weight:500" class="iconfont iconyilingqu"></span>
+            <a>
+              已领取
+              <i>({{entity.order_num.xqg.received_num}})</i>
+            </a>
+          </span>
+          <span>
+            <span class="iconfont iconyitijiao"></span>
+            <a>
+              已提交
+              <i>({{entity.order_num.xqg.submitted_num}})</i>
+            </a>
+          </span>
+          <span>
+            <span class="iconfont icondaishenhe"></span>
+            <a>
+              待审核
+              <i>({{entity.order_num.xqg.pending_review_num}})</i>
+            </a>
+          </span>
+          <span>
+            <span class="iconfont iconyiwancheng"></span>
+            <a>
+              已完成
+              <i>({{entity.order_num.xqg.completed_num}})</i>
+            </a>
+          </span>
+          <span>
+            <span class="iconfont iconshouhou"></span>
+            <a>
+              售后
+              <i>({{entity.order_num.xqg.after_sale_num}})</i>
             </a>
           </span>
         </div>
@@ -71,14 +113,14 @@
               <span class="iconfont iconfensi"></span>&nbsp;
               <span>粉丝</span>
             </span>
-            <span class="_numbers">0</span>
+            <span class="_numbers">{{entity.fan_num}}</span>
           </div>
           <div>
             <span>
               <span class="iconfont iconmiandanzongshu"></span>&nbsp;
               <span>免单总数</span>
             </span>
-            <span class="_numbers">0</span>
+            <span class="_numbers">{{entity.amount_raised}}</span>
           </div>
         </div>
       </section>
@@ -141,12 +183,36 @@
   </div>
 </template> 
 <script>
+import { userIndex } from "@/api";
+
 export default {
   name: "mine",
   data() {
     return {
-      is_active: 0
+      isloading: false,
+      is_active: 0,
+      entity: {
+        order_num: {
+          free: {},
+          xqg: {}
+        }
+      }
     };
+  },
+  computed: {
+    invited_code() {
+      if(this.$store.state.user.name) {
+        return this.$store.state.user.name.invite_code
+      } else {
+        return ''
+      }
+    }
+  },
+  async mounted() {
+    this.isloading = true
+    let res = await userIndex();
+    if (res && res.error.errno == 200) this.entity = res.data;
+    this.isloading = false
   },
   methods: {
     handleLogout() {
@@ -192,6 +258,10 @@ export default {
       display: flex;
       align-items: center;
       padding-right: 30px;
+      & > img {
+        width: 50px;
+        height: 50px;
+      }
       & > span {
         font-size: 48px;
       }

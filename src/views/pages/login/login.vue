@@ -3,7 +3,7 @@
     <div class="login_wrapper">
       <header>
         <div class="icon">
-          <van-icon name="arrow-left" @click="$router.push('/mine')" />
+          <van-icon name="arrow-left" @click="$router.push('/index')" />
         </div>
         <div class="text">登 录</div>
       </header>
@@ -11,6 +11,7 @@
         <div class="login_main">
           <van-field
             clearable
+            type="number"
             v-model.trim="userForm.user"
             placeholder="请输入账号"
             @input="validateMobile"
@@ -128,18 +129,8 @@ export default {
           color: #ff5500;
         }
         .van-cell {
-          padding-top: 20px;
-          &::after {
-            position: absolute;
-            box-sizing: border-box;
-            content: " ";
-            pointer-events: none;
-            right: 0;
-            bottom: 0;
-            left: 0.42667rem;
-            border-bottom: 0.02667rem solid #ebedf0;
-            -webkit-transform: scaleY(0.5);
-            transform: scaleY(0.5);
+          input {
+            padding-top: 20px;
           }
         }
         .l_btn,

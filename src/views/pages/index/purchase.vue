@@ -107,8 +107,8 @@
       :closeOnClickOverlay="true"
       @confirm="handleConfirm()"
     >
-      <van-cell title="商品名称" value />
-      <van-cell title="商品价格" value />
+      <van-cell title="商品名称" :value="entity.title" />
+      <van-cell title="商品价格" :value="'¥' + entity.price" />
       <ul>
         <li>注：1.领取任务后，2小时有效，超过2小时，任务自动退回，请在自动时间内完成任务！</li>
         <li>2.每天00:00平台停止抢单，00:00没有提交任务的订单将会自动退单，请及时完成任务</li>
@@ -133,15 +133,13 @@ export default {
   methods: {
     async getData() {
       let res = await tDetail({ t_id: this.$route.query.t_id });
-      if (res && res.error.errno == 200) {
-        this.entity = res.data;
-      }
+      if (res && res.error.errno == 200) this.entity = res.data;
     },
     handleConfirm() {
       this.showConfirm = false;
       setTimeout(() => {
-        this.$router.push("/getStart");
-      }, 100);
+        this.$router.push("/getStart?t_id=" + this.$route.query.t_id);
+      }, 200);
     }
   }
 };
@@ -153,8 +151,8 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 30px;
-    height: 30px;
+    width: 35px;
+    height: 35px;
     color: #fff;
     position: absolute;
     z-index: 9999;
@@ -162,7 +160,7 @@ export default {
     left: 15px;
     background: #666;
     border-radius: 50%;
-    opacity: 0.25;
+    opacity: 0.5;
     i {
       font-size: 14px;
     }
@@ -189,7 +187,7 @@ export default {
     }
     & > ._top {
       .title {
-        font-weight: 500;
+        font-weight: 600;
         font-size: 16px;
         overflow: hidden;
         white-space: nowrap;

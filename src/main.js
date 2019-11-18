@@ -3,6 +3,7 @@ import VueRouter from 'vue-router';
 import App from "./App.vue";
 import routes from "./router/index";
 import store from "./store";
+import VueClipboard from 'vue-clipboard2'
 
 // 解决移动端click事件300毫秒延迟方法
 import FastClick from 'fastclick'
@@ -27,6 +28,9 @@ backtop.install(Vue);
 import "@/assets/iconfont/iconfont.css"
 import '@/styles/index.scss'
 
+VueClipboard.config.autoSetContainer = true // add this line
+
+Vue.use(VueClipboard)
 Vue.use(VueRouter)
 Vue.use(Vant);
 import { cateTitle } from "@/api"
@@ -46,12 +50,13 @@ if (!JSON.parse(window.localStorage.getItem('tpyeArr'))) {
 router.beforeEach((to, from, next) => {
   /* 路由发生变化修改页面title, 回到顶部 */
   document.title = to.meta.title || ' ';
-  
-  Toast.loading({
-    mask: false,
-    message: '加载中...',
-    duration: 500
-  });
+  console.log(to)
+  if (to.name == 'bearBuy' || to.name == 'limitFree') {
+    Toast.loading({
+      message: '加载中...',
+      duration: 500
+    });
+  }
 
   window.scrollTo(0, 0);
   next()

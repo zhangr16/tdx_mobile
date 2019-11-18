@@ -3,13 +3,13 @@
     <header>
       <div class="fixer">
         <div class="let_fixed" :class="{'white_background': isWhite}">
-          <van-search placeholder="搜索你喜欢的宝贝" shape="round" v-model="value">
+          <van-search placeholder="搜索你喜欢的宝贝" shape="round" v-model="searchValue">
             <div slot="left-icon"></div>
             <div slot="right-icon" @click="onSearch">
               <span class="iconfont iconsousuo"></span>
             </div>
           </van-search>
-          <van-tabs>
+          <van-tabs @click="handleTabClick">
             <van-tab v-for="(item, index) in classicTabs" :title="item.short_name" :key="index"></van-tab>
           </van-tabs>
         </div>
@@ -59,21 +59,32 @@
 
     <section>
       <ul class="top_ul">
-        <li :class="{'is_active': active_type == 0}" @click="active_type = 0;queryData.w_type = 1;getData()">推荐好货</li>
-        <li :class="{'is_active': active_type == 1}" @click="active_type = 1;queryData.w_type = 2;getData()">最新上线</li>
-        <li :class="{'is_active': active_type == 2}" @click="active_type = 2;queryData.w_type = 3;getData()">新品预告</li>
+        <li
+          :class="{'is_active': active_type == 0}"
+          @click="active_type = 0;queryData.w_type = 1;getData()"
+        >推荐好货</li>
+        <li
+          :class="{'is_active': active_type == 1}"
+          @click="active_type = 1;queryData.w_type = 2;getData()"
+        >最新上线</li>
+        <li
+          :class="{'is_active': active_type == 2}"
+          @click="active_type = 2;queryData.w_type = 3;getData()"
+        >新品预告</li>
       </ul>
+
       <div class="ul_wrapper">
-        <ul v-if="topList.length > 0">
+        <van-loading v-if="isloading" type="spinner" />
+
+        <ul v-else-if="topList.length > 0">
           <li v-for="(item, x) in topList" :key="x">
             <item-card-small :entity="item" />
           </li>
         </ul>
-        <div class="no_data" v-else>
-          暂无数据
-        </div>
+        <div class="no_data" v-else>暂无数据</div>
       </div>
     </section>
+
     <!-- 种类推荐 -->
     <section v-for="(cate, x) in cateList" :key="x">
       <div class="sy_banner">
@@ -85,9 +96,7 @@
             <item-card-small :entity="item" />
           </li>
         </ul>
-        <div class="no_data" v-else>
-          暂无数据
-        </div>
+        <div class="no_data" v-else>暂无数据</div>
       </div>
     </section>
 
@@ -99,7 +108,7 @@
       <div class="ul_free">
         <ul>
           <li :class="{'margin_right': index%2 == 0}" v-for="(item, index) in topList" :key="index">
-            <item-card-mid :scored="index > 1" :entity="item" />
+            <item-card-mid :entity="item" />
           </li>
         </ul>
       </div>
@@ -116,9 +125,11 @@ export default {
   components: { itemCardSmall, itemCardMid },
   data() {
     return {
+      isloading: false,
       isWhite: false,
+
       active_type: 0,
-      value: "",
+      searchValue: "", // 搜索词
       classicTabs: [],
       queryData: {
         type: 1,
@@ -133,13 +144,10 @@ export default {
   },
   methods: {
     async getData() {
+      this.isloading = true
       let res = await indexSearch(this.queryData);
-      // let res2 = await indexSearch({
-      //   status: 2,
-      //   ...this.queryData
-      // })
       if (res && res.error.errno == 200) this.topList = res.data;
-      // if (res2 && res2.error.errno == 200) this.bottomList = res.data
+      this.isloading = false
     },
     async getCateData() {
       let res = await cateSearch();
@@ -147,8 +155,14 @@ export default {
         this.cateList = res.data;
       }
     },
+    handleTabClick(index, name) {
+      let _target = this.classicTabs.find(el => el.short_name == name);
+      setTimeout(() => {
+        this.$router.push("/limitFree?cid=" + _target.id);
+      }, 300);
+    },
     onSearch() {
-      this.$toast.success(this.value);
+      if(this.searchValue) this.$router.push('/limitFree?keyword='+ this.searchValue)
     },
     onChange(i, v) {
       this.$refs["swiper2"].swipeTo(i, { immediate: true });
@@ -162,15 +176,17 @@ export default {
     }
   },
   mounted() {
-    if(window.localStorage.getItem('invite_code')) {
-      this.$router.push('/register?code=' + window.localStorage.getItem('invite_code'))
+    if (window.localStorage.getItem("invite_code")) {
+      this.$router.push(
+        "/register?code=" + window.localStorage.getItem("invite_code")
+      );
     }
     this.$nextTick(() => {
       window.addEventListener("scroll", this.handleScroll);
     });
-    this.classicTabs = JSON.parse(window.localStorage.getItem('tpyeArr'))
+    this.classicTabs = JSON.parse(window.localStorage.getItem("tpyeArr"));
     this.getData();
-    this.getCateData()
+    this.getCateData();
   }
 };
 </script>
@@ -298,12 +314,12 @@ export default {
     .ul_wrapper {
       width: calc(100vw - 30px);
       overflow-x: scroll;
+      text-align: center;
       ul {
         overflow-x: scroll;
         display: flex;
         li {
-          width: calc((100vw - 30px)/3);
-          flex: 1;
+          width: calc((100vw - 30px) / 3);
           margin-right: 4px;
           &:last-child {
             margin-right: 0;

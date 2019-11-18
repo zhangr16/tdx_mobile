@@ -9,8 +9,8 @@
       </div>
       <div class="content2" v-if="isBearBuy">
         <div class="content2_price">
-          <span>优惠价: ￥{{entity.current_price}}</span>
-          <span>原价: ￥{{entity.price}}</span>
+          <span>优惠价: ¥{{entity.current_price}}</span>
+          <span>原价: ¥{{entity.price}}</span>
         </div>
         <div class="content2_desc">拍下平台返还{{entity.price - entity.current_price}}元</div>
       </div>

@@ -4,11 +4,13 @@
     <main>
       <div class="title">{{entity.title}}</div>
       <div class="content">
-        <van-progress pivot-text color="#ff5500" :percentage="30" />
+        <van-progress
+          pivot-text
+          color="#ff5500"
+          :percentage="100 * (entity.remain_count/entity.task_count)"
+        />
         <div class="content_word">
-          已抢
-          <i>{{entity.task_count - entity.remain_count}}</i>件 共
-          <i>{{entity.task_count}}</i>件
+          已抢<i>{{entity.task_count - entity.remain_count}}</i>件 共<i>{{entity.task_count}}</i>件
         </div>
         <!-- <div class="content_price1"><span>商品价值:</span> 99元&nbsp;&nbsp;<span>剩余份数:</span> 1/9份</div> -->
         <div class="content_price2">

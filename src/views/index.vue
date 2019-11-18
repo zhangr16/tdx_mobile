@@ -51,6 +51,7 @@ export default {
   overflow: auto;
   min-height: 100vh;
   .bottom_tabs {
+    // display: none;
     .iconfont {
       font-size: 18px;
     }

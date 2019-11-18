@@ -41,11 +41,11 @@
               <li>* 复制关键词切换到淘宝APP搜索</li>
               <li>
                 * 关键词：
-                <span class="change_keyword">更换关键词</span>
+                <span class="change_keyword" @click="changeKeyword">更换关键词</span>
               </li>
-              <li>
-                <input type="text" class="inp" />
-                <span class="search1">搜 索</span>
+              <li class="copy_wrapper">
+                <input type="text" class="inp" readonly v-model="key_word" />
+                <span class="search1" @click="handleCopykeyword">复 制</span>
               </li>
               <li>
                 找不到商品?
@@ -72,11 +72,14 @@
             <ul>
               <li style="color:#666">货比三家，每个商品页从上到下浏览三分钟左右</li>
               <li>* 店铺名称：老板的店</li>
-              <li>* 商品价格：合计18元（18元/*1件）</li>
-              <li>* 发货地</li>
-              <li>* 价格区间</li>
+              <li>* 商品价格：合计{{entity.price*entity.order_number}}元（{{entity.price + '元/*' + entity.order_number + '件'}}）</li>
+              <li>* 发货地：{{entity.area}}</li>
+              <li>* 价格区间：{{entity.price_start}}~{{entity.price_end}}元</li>
               <li>* 注意事项：麻烦货比三家后下单。海外，港澳台，新疆，西藏，内蒙，青海，海南，宁夏不发。</li>
-              <li>* 商品主图：</li>
+              <li>
+                * 商品主图：
+                <img class="main_img" :src="entity.img" alt />
+              </li>
               <li>* 核对宝贝，请提交宝贝链接或淘口令</li>
               <li>
                 <input type="text" class="inp" />
@@ -117,6 +120,9 @@
         <van-field v-model="form.a" label="订单编号" placeholder="请输入订单编号" />
         <van-field v-model="form.a" label="买家备注" placeholder="20字以内(可不填)" />
       </van-cell-group>
+      <div style="text-align:center;margin-top:10px">
+        <van-button square type="primary" @click="handleSubmit">提 交</van-button>
+      </div>
     </section>
 
     <van-dialog v-model="showDialog" title="举报内容" show-cancel-button>
@@ -141,15 +147,18 @@
       </van-radio-group>
     </van-dialog>
   </div>
-</template> 
+</template>
 <script>
 import itemCardLarge from "@/components/item_card_large";
+import { tDetail } from "@/api";
 
 export default {
   name: "getStart",
   components: { itemCardLarge },
   data() {
     return {
+      entity: {},
+      key_word: "",
       showInfos: false,
       showDialog: false,
       radio: "",
@@ -160,11 +169,34 @@ export default {
       }
     };
   },
+  mounted() {
+    this.getData();
+  },
   methods: {
+    async getData() {
+      let res = await tDetail({ t_id: this.$route.query.t_id });
+      if (res && res.error.errno == 200) {
+        this.entity = res.data;
+        this.key_word = this.entity.keyword;
+      }
+    },
+    changeKeyword() {
+      this.key_word =
+        this.key_word == this.entity.keyword2
+          ? this.entity.keyword
+          : this.entity.keyword2;
+    },
+    handleCopykeyword() {
+      this.$copyText(this.key_word).then(
+        () => this.$toast.success("成功复制关键词到剪贴板！"),
+        e => this.$toast.success(e)
+      );
+    },
     handleConfirm() {
-      this.$toast.success('验证成功, 请填写下方活动信息')
-      this.showInfos = true
-    }
+      this.$toast.success("验证成功, 请填写下方活动信息");
+      this.showInfos = true;
+    },
+    handleSubmit() {}
   }
 };
 </script>
@@ -184,7 +216,7 @@ export default {
       position: absolute;
       left: 15px;
       top: 10px;
-      font-size: 20px
+      font-size: 20px;
     }
   }
   & > nav {
@@ -248,14 +280,19 @@ export default {
             padding: 5px 0;
             line-height: 1.5;
             font-size: 14px;
+            .main_img {
+              width: 100%;
+            }
             .inp {
               width: 245px;
               height: 40px;
+              padding: 0 15px;
               line-height: 40px;
               border: 1px solid #ccc;
               border-right: 0;
               outline: none;
               border-radius: 0;
+              color: #929292;
             }
             .search1 {
               display: inline-block;

@@ -1,17 +1,17 @@
 <template>
   <div class="item_card_small" @click="handleClick">
-    <van-image :src="entity.img">
-      <template v-slot:loading>
-        <van-loading type="spinner" size="20" />
-      </template>
-    </van-image>
+    <img :src="entity.img" alt="" />
     <main>
       <div class="title">{{entity.title}}</div>
       <div class="content">
-        <div class="content_price">￥{{entity.price}}</div>
+        <div class="content_price">¥{{entity.price}}</div>
         <div class="content_desc">
-          <van-progress pivot-text color="#ff5500" :percentage="50" />
-          <span class>已抢{{entity.order_count || 0}}件共{{entity.task_count || 1}}件</span>
+          <van-progress
+            pivot-text
+            color="#ff5500"
+            :percentage="100 * (1 - entity.order_count/entity.task_count)"
+          />
+          <span>已抢<i>{{entity.order_count}}</i>件共{{entity.task_count || 1}}件</span>
         </div>
       </div>
       <div class="btn">马上抢</div>
@@ -33,13 +33,13 @@ export default {
   },
   methods: {
     handleClick() {
-      if(this.entity.task_number > 1) {
-        this.$router.push('/getSoon?pa_id=' + this.entity.pa_id)
+      if (this.entity.task_number > 1) {
+        this.$router.push("/getSoon?pa_id=" + this.entity.pa_id);
       } else {
-        this.$router.push('/purchase?t_id=' + this.entity.t_id)
+        this.$router.push("/purchase?t_id=" + this.entity.t_id);
       }
     }
-  },
+  }
 };
 </script>
 <style lang="scss" scope>
@@ -59,7 +59,7 @@ export default {
       overflow: hidden;
       white-space: nowrap;
       text-overflow: ellipsis;
-      margin: 5px 0;
+      padding: 5px 0;
       font-weight: bold;
     }
     .content {
@@ -67,6 +67,7 @@ export default {
       justify-content: space-between;
       align-items: center;
       &_price {
+        width: 40px;
         font-size: 14px;
         color: #ff5500;
         text-decoration: line-through;
@@ -83,6 +84,9 @@ export default {
           overflow: hidden;
           white-space: nowrap;
           text-overflow: ellipsis;
+          i {
+            color: #ff464f;
+          }
         }
       }
     }

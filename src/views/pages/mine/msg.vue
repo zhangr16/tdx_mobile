@@ -3,9 +3,9 @@
     <header>
       <van-icon class="left_arrow" name="arrow-left" @click="$router.go(-1)" />消 息
     </header>
-    <ul>
-      <li v-for="item in 5" :key="item">
-        <img src="@/assets/mine/msg.png" alt="" />
+    <ul v-if="msgs.length > 0">
+      <li v-for="(item, x) in msgs" :key="x">
+        <img src="@/assets/mine/msg.png" alt />
         <div>
           <span class="_title">奖励金打款通知</span>
           <span class="_desc">订单号为1234567890123456在任务中使用花呗，注意不要违规</span>
@@ -13,15 +13,29 @@
         </div>
       </li>
     </ul>
+    <div class="no_data" v-else>
+      <img src="@/assets/empty/img_xitongxiaoxi@2x.png" alt="" />
+    </div>
   </div>
 </template> 
 <script>
+import { getMsg } from "@/api";
+
 export default {
   // 定制评价攻略
   name: "msg",
   components: {},
   data() {
-    return {};
+    return {
+      msgs: []
+    };
+  },
+  async mounted() {
+    let res = await getMsg({
+      platform: "2c",
+      page_no: 1,
+      page_size: 100
+    });
   },
   methods: {}
 };
@@ -67,9 +81,9 @@ export default {
       & > div {
         flex: 1;
         display: flex;
-        flex-direction: column; 
+        flex-direction: column;
         ._title {
-          color:#333;
+          color: #333;
           font-size: 14px;
         }
         ._desc {

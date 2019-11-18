@@ -23,6 +23,23 @@ export function userRegister(obj) {
         params: obj
     })
 }
+// 消息获取
+export function getMsg(obj) {
+    return request({
+        url: '/sys/messagelist',
+        method: 'post',
+        params: obj
+    })
+}
+
+
+// 用户首页信息
+export function userIndex() {
+    return request({
+      url: '/u/index',
+      method: 'get',
+    })
+  }
 
 // 用户（PC活动列表）
 export function order_list(obj) {

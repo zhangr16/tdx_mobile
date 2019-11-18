@@ -5,17 +5,20 @@
     <!-- 内容部分 -->
     <main>
       <div class="title">
-        <i v-if="!scored">需晒图</i>
         <span>{{entity.title}}</span>
       </div>
-      <div v-if="scored" class="two_icons">
-        <i>需晒图</i>
-        <i>积分奖励100</i>
+      <div class="two_icons">
+        <i class="two_icons_first" v-if="entity.is_img">需晒图</i>
+        <i class="two_icons_last" v-if="entity.integral">积分奖励{{entity.integral}}</i>
       </div>
       <div class="content">
-        <div class="content_price">￥{{entity.price}}</div>
+        <div class="content_price">¥{{entity.price}}</div>
         <div class="content_desc">
-          <van-progress pivot-text color="#ff5500" :percentage="50" />
+          <van-progress
+            pivot-text
+            color="#ff5500"
+            :percentage="100 * (1 - entity.order_count/entity.task_count)"
+          />
           <span class="word">
             已抢<i>{{entity.order_count}}</i>件 共{{entity.task_count}}件
           </span>
@@ -30,10 +33,6 @@
 export default {
   name: "item_card_mid",
   props: {
-    scored: {
-      type: Boolean,
-      default: false
-    },
     entity: {
       type: Object,
       default: {}
@@ -44,13 +43,13 @@ export default {
   },
   methods: {
     handleClick() {
-      if(this.entity.task_number > 1) {
-        this.$router.push('/getSoon?pa_id=' + this.entity.pa_id)
+      if (this.entity.task_number > 1) {
+        this.$router.push("/getSoon?pa_id=" + this.entity.pa_id);
       } else {
-        this.$router.push('/purchase?t_id=' + this.entity.t_id)
+        this.$router.push("/purchase?t_id=" + this.entity.t_id);
       }
     }
-  },
+  }
 };
 </script>
 <style lang="scss" scope>
@@ -65,7 +64,6 @@ export default {
     width: calc((100vw - 4px) / 2);
     padding: 0 14px;
     .title {
-      margin: 5px 0;
       display: flex;
       align-items: center;
       font-size: 12px;
@@ -75,11 +73,13 @@ export default {
         display: inline-block;
         color: #fff;
         padding: 3px 5px;
+        text-align: center;
         background: linear-gradient(-90deg, #ff0c46 0%, #ff797d 100%);
         border-radius: 3px;
-        margin-right: 5px;
       }
       span {
+        flex: 1;
+        padding-top: 5px;
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
@@ -94,10 +94,10 @@ export default {
         border-radius: 3px;
         margin-right: 10px;
       }
-      & > i:first-child {
+      &_first {
         background: linear-gradient(-90deg, #ff0c46 0%, #ff797d 100%);
       }
-      & > i:last-child {
+      &_last {
         background: linear-gradient(90deg, #769dff 0%, #316ded 100%);
       }
     }
@@ -105,9 +105,10 @@ export default {
       display: flex;
       align-items: center;
       &_price {
-        font-size: 14px;
+        font-size: 18px;
         color: #ff5500;
         text-decoration: line-through;
+        width: 100px;
       }
       &_desc {
         flex: 1;
