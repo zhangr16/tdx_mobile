@@ -4,18 +4,17 @@
       <van-icon class="left_arrow" name="arrow-left" @click="$router.go(-1)" />账户提现
     </header>
     <main>
-      <van-field v-model="form.a" label="可提现金额" placeholder readonly />
+      <van-field v-model="entity.balance" label="可提现金额" placeholder disabled />
       <van-cell class="_exchanger" title="提现方式">
-        <van-radio-group v-model="form.b" :checked-color="`#ff5500`">
+        <van-radio-group value="1" :checked-color="`#ff5500`" disabled>
           <van-radio name="1">银行卡</van-radio>
         </van-radio-group>
       </van-cell>
-      <van-field v-model="form.b" label="姓名" placeholder="请输入姓名" />
-      <van-field v-model="form.c" label="所属银行" placeholder="请输入所属银行" />
-      <van-field v-model="form.d" label="银行卡号" placeholder="请输入银行卡号" />
-      <van-field v-model="form.e" label="提现金额" placeholder="请输入提现金额" />
+      <van-field v-model="entity.real_name" label="姓名" placeholder="请输入姓名" disabled />
+      <van-field v-model="entity.bank" label="所属银行" placeholder="请输入所属银行" disabled />
+      <van-field v-model="entity.bank_card" label="银行卡号" placeholder="请输入银行卡号" disabled />
       <van-cell>
-        <div class="submit_btn">提交申请</div>
+        <div class="submit_btn" @click="handleSubmit">提交申请</div>
       </van-cell>
     </main>
     <ul>
@@ -29,16 +28,30 @@
   </div>
 </template> 
 <script>
+import {withdraw} from "@/api/mine.js"
+
 export default {
   // 定制评价攻略
   name: "zhtx",
   components: {},
   data() {
     return {
-      form: { a: "", b: "", c: "", d: "", e: "" }
+      entity: {},
     };
   },
-  methods: {}
+  async mounted() {
+    let res = await withdraw()
+    if(res && res.error.errno == 200) this.entity = res.data
+  },
+  methods: {
+    async handleSubmit() {
+      let res = await withdraw(this.entity)
+      if(res && res.error.errno == 200) this.$toast.success('提现成功！')
+      setTimeout(() => {
+        this.$router.push('/mine')
+      }, 500);
+    }
+  }
 };
 </script>
 <style lang="scss" scope>

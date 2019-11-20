@@ -3,18 +3,21 @@
     <header>
       <van-icon class="left_arrow" name="arrow-left" @click="$router.go(-1)" />消 息
     </header>
-    <ul v-if="msgs.length > 0">
+    <div class="is_loading" v-if="isloading">
+      <van-loading type="spinner" />
+    </div>
+    <ul v-else-if="msgs.length > 0">
       <li v-for="(item, x) in msgs" :key="x">
         <img src="@/assets/mine/msg.png" alt />
         <div>
-          <span class="_title">奖励金打款通知</span>
-          <span class="_desc">订单号为1234567890123456在任务中使用花呗，注意不要违规</span>
-          <span class="_time">2019-08-13 00:00:00</span>
+          <span class="_title">通知</span>
+          <span class="_desc">{{item.content}}</span>
+          <span class="_time">{{item.create_time}}</span>
         </div>
       </li>
     </ul>
     <div class="no_data" v-else>
-      <img src="@/assets/empty/img_xitongxiaoxi@2x.png" alt="" />
+      <img src="@/assets/empty/img_xitongxiaoxi@2x.png" alt />
     </div>
   </div>
 </template> 
@@ -27,15 +30,19 @@ export default {
   components: {},
   data() {
     return {
+      isloading: false,
       msgs: []
     };
   },
   async mounted() {
+    this.isloading = true
     let res = await getMsg({
       platform: "2c",
       page_no: 1,
       page_size: 100
     });
+    if (res && res.error.errno == 200) this.msgs = res.data;
+    this.isloading = false
   },
   methods: {}
 };

@@ -1,7 +1,8 @@
 <template>
   <div class="classify">
     <header class="let_fixed">
-      <van-search placeholder="搜索你喜欢的宝贝" shape="round" v-model="queryData.keywords">
+      <van-icon v-if="isFamily" class="_left_" name="arrow-left" @click="$router.go(-1)" />
+      <van-search :class="{'padding_left': !isFamily}" placeholder="搜索你喜欢的宝贝" shape="round" v-model="queryData.keywords">
         <div slot="left-icon"></div>
         <div slot="right-icon">
           <span class="iconfont iconsousuo"></span>
@@ -34,9 +35,6 @@
     </section>
 
     <section>
-      <!-- <div class="no_data" v-if="isloading">
-        <van-loading type="spinner" />
-      </div>-->
       <ul v-if="cardList.length > 0" class="ul_free">
         <li :class="{'margin_right': index%2 == 0}" v-for="(item, index) in cardList" :key="index">
           <item-card-mid2 :entity="item" />
@@ -57,6 +55,7 @@ import itemCardMid2 from "@/components/item_card_mid2";
 import { indexSearch } from "@/api";
 
 export default {
+  // 限量免单 + 熊抢购 + 亲友团
   name: "classify",
   components: { itemCardMid2 },
   data() {
@@ -74,6 +73,7 @@ export default {
       total_count: 0,
       queryData: {
         type: 2,
+        is_family: null,
         module_type: 0, //1免单 2熊抢购
         page_no: 1,
         page_size: 10,
@@ -87,6 +87,7 @@ export default {
     });
 
     this.queryData.module_type = this.isBearbuy ? 2 : 1;
+    this.queryData.is_family = this.isFamily ? 1 : null;
     this.classicTabs = JSON.parse(window.localStorage.getItem("tpyeArr"));
 
     if (this.$route.query.cid) {
@@ -108,6 +109,9 @@ export default {
   computed: {
     isBearbuy() {
       return this.$route.name == "bearBuy";
+    },
+    isFamily() {
+      return this.$route.name == "friendShip";
     }
   },
   watch: {
@@ -178,6 +182,15 @@ export default {
     width: 100%;
     background: #fff;
     margin-bottom: 15px;
+    ._left_ {
+      font-size: 20px;
+      left: 15px;
+      top: 18px;
+      position: absolute;
+    }
+    .padding_left {
+      padding-left: 30px; 
+    }
   }
   & > section {
     // 三个选项卡

@@ -96,7 +96,6 @@
       <div class="_s">
         <span class="iconfont iconkefu"></span> 客服
       </div>
-      <!-- $router.push('/getStart') -->
       <div class="_l" @click="showConfirm = true">立即领取</div>
     </footer>
 
@@ -117,7 +116,7 @@
   </div>
 </template>
 <script>
-import { tDetail } from "@/api";
+import { tDetail, tReceive } from "@/api";
 
 export default {
   name: "purchase",
@@ -135,11 +134,12 @@ export default {
       let res = await tDetail({ t_id: this.$route.query.t_id });
       if (res && res.error.errno == 200) this.entity = res.data;
     },
-    handleConfirm() {
-      this.showConfirm = false;
-      setTimeout(() => {
-        this.$router.push("/getStart?t_id=" + this.$route.query.t_id);
-      }, 200);
+    async handleConfirm() {
+      let res = await tReceive({t_id: this.$route.query.t_id})
+      if(res && res.error.errno == 200) {
+        this.$toast.success('领取成功！')
+        this.$router.push("/getStart?o_id=" + res.order_id);
+      }
     }
   }
 };

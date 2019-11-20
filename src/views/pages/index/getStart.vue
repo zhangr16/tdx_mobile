@@ -71,7 +71,7 @@
           <article style="border:none">
             <ul>
               <li style="color:#666">货比三家，每个商品页从上到下浏览三分钟左右</li>
-              <li>* 店铺名称：老板的店</li>
+              <li>* 店铺名称：{{entity.shop_name}}</li>
               <li>* 商品价格：合计{{entity.price*entity.order_number}}元（{{entity.price + '元/*' + entity.order_number + '件'}}）</li>
               <li>* 发货地：{{entity.area}}</li>
               <li>* 价格区间：{{entity.price_start}}~{{entity.price_end}}元</li>
@@ -82,7 +82,7 @@
               </li>
               <li>* 核对宝贝，请提交宝贝链接或淘口令</li>
               <li>
-                <input type="text" class="inp" />
+                <input type="text" class="inp" v-model="checkUrl" />
                 <span class="search2" @click="handleConfirm">验 证</span>
               </li>
               <li class="scale_li">1、获取链接方法：长按宝贝标题获取宝贝链接</li>
@@ -105,43 +105,59 @@
       <div class="attention">注意 ：收到货后再确认收货，五星好评，然后上传好评截图到平台，等待商家审核之后申请提现返款</div>
     </section>
     <!-- 活动信息 -->
-    <section class="active_info" v-if="showInfos">
+    <section class="active_info">
       <header>活动信息</header>
       <van-cell-group>
-        <van-field v-model="form.a" label="接手旺旺" placeholder="请输入接手旺旺" />
-        <van-field v-model="form.a" label="实际支付金额" placeholder="请输入实际支付金额" />
+        <van-field v-model="activityForm.user_ww" label="接手旺旺" placeholder disabled />
+        <van-field
+          v-model.trim="activityForm.pay_amount"
+          type="number"
+          label="实际支付金额"
+          placeholder="请输入实际支付金额"
+        />
         <van-cell class="_exchanger" title="积分抵换">
-          <van-radio-group v-model="form.b" :checked-color="`#ff5500`">
+          <van-radio-group v-model="is_integral" :checked-color="`#ff5500`">
             <van-radio name="1">是</van-radio>
             <van-radio name="2">否</van-radio>
           </van-radio-group>
         </van-cell>
-        <van-field v-model="form.a" label="积分兑换数量" placeholder="请输入积分兑换数量" />
-        <van-field v-model="form.a" label="订单编号" placeholder="请输入订单编号" />
-        <van-field v-model="form.a" label="买家备注" placeholder="20字以内(可不填)" />
+        <van-field
+          v-if="is_integral == 1"
+          type="number"
+          v-model.trim="activityForm.integral"
+          label="积分兑换数量"
+          placeholder="请输入积分兑换数量"
+        />
+        <van-field v-model.trim="activityForm.order_sn" label="订单编号" placeholder="请输入订单编号" />
+        <van-field
+          v-model.trim="activityForm.user_comment"
+          label="买家备注"
+          placeholder="20字以内(可不填)"
+          maxlength="20"
+        />
       </van-cell-group>
       <div style="text-align:center;margin-top:10px">
         <van-button square type="primary" @click="handleSubmit">提 交</van-button>
       </div>
     </section>
 
-    <van-dialog v-model="showDialog" title="举报内容" show-cancel-button>
-      <van-radio-group v-model="radio">
+    <van-dialog v-model="showDialog" title="举报内容" show-cancel-button @confirm="handleInform">
+      <van-radio-group v-model="informRadio">
         <van-cell-group>
-          <van-cell title="任务价格不一致" clickable @click="radio = '1'">
-            <van-radio slot="right-icon" checked-color="#ff5500" name="1" />
+          <van-cell title="任务价格不一致" clickable @click="informRadio = '任务价格不一致'">
+            <van-radio slot="right-icon" checked-color="#ff5500" name="任务价格不一致" />
           </van-cell>
-          <van-cell title="淘宝找不到宝贝" clickable @click="radio = '2'">
-            <van-radio slot="right-icon" checked-color="#ff5500" name="2" />
+          <van-cell title="淘宝找不到宝贝" clickable @click="informRadio = '淘宝找不到宝贝'">
+            <van-radio slot="right-icon" checked-color="#ff5500" name="淘宝找不到宝贝" />
           </van-cell>
-          <van-cell title="任务图片不一致" clickable @click="radio = '3'">
-            <van-radio slot="right-icon" checked-color="#ff5500" name="3" />
+          <van-cell title="任务图片不一致" clickable @click="informRadio = '任务图片不一致'">
+            <van-radio slot="right-icon" checked-color="#ff5500" name="任务图片不一致" />
           </van-cell>
-          <van-cell title="没有指定规格的宝贝" clickable @click="radio = '4'">
-            <van-radio slot="right-icon" checked-color="#ff5500" name="4" />
+          <van-cell title="没有指定规格的宝贝" clickable @click="informRadio = '没有指定规格的宝贝'">
+            <van-radio slot="right-icon" checked-color="#ff5500" name="没有指定规格的宝贝" />
           </van-cell>
-          <van-cell title="商家有运费" clickable @click="radio = '5'">
-            <van-radio slot="right-icon" checked-color="#ff5500" name="5" />
+          <van-cell title="商家有运费" clickable @click="informRadio = '商家有运费'">
+            <van-radio slot="right-icon" checked-color="#ff5500" name="商家有运费" />
           </van-cell>
         </van-cell-group>
       </van-radio-group>
@@ -150,34 +166,48 @@
 </template>
 <script>
 import itemCardLarge from "@/components/item_card_large";
-import { tDetail } from "@/api";
+import { oDetail, oFeedback, oUrlcheck, oSubmit } from "@/api";
 
 export default {
   name: "getStart",
   components: { itemCardLarge },
   data() {
     return {
-      entity: {},
+      entity: {
+        user_ww: ""
+      },
       key_word: "",
       showInfos: false,
       showDialog: false,
-      radio: "",
-      form: {
-        a: "",
-        b: "",
-        c: ""
+
+      informRadio: "",
+      checkUrl: "",
+
+      is_integral: "1",
+      activityForm: {
+        user_ww: "", // 接手旺旺
+        pay_amount: "",
+        integral: "",
+        order_sn: "",
+        user_comment: ""
       }
     };
   },
   mounted() {
     this.getData();
   },
+  watch: {
+    is_integral: function(val) {
+      if(val == 2) delete this.activityForm.integral
+    }
+  },
   methods: {
     async getData() {
-      let res = await tDetail({ t_id: this.$route.query.t_id });
+      let res = await oDetail({ order_id: this.$route.query.o_id });
       if (res && res.error.errno == 200) {
         this.entity = res.data;
         this.key_word = this.entity.keyword;
+        this.activityForm.user_ww = this.entity.user_ww;
       }
     },
     changeKeyword() {
@@ -192,11 +222,44 @@ export default {
         e => this.$toast.success(e)
       );
     },
-    handleConfirm() {
-      this.$toast.success("验证成功, 请填写下方活动信息");
-      this.showInfos = true;
+    // 验证
+    async handleConfirm() {
+      let res = await oUrlcheck({
+        order_id: this.$route.query.o_id,
+        product_url: this.checkUrl
+      });
+      if (res && res.error.errno == 200) {
+        this.$toast.success("验证成功, 请填写下方活动信息");
+        this.showInfos = true;
+      }
     },
-    handleSubmit() {}
+    // 举报
+    async handleInform() {
+      let res = await oFeedback({
+        order_id: this.$route.query.o_id,
+        type: this.entity.activity_type,
+        reason: this.informRadio
+      });
+      if (res && res.error.errno == 200) this.$toast.success("举报成功！");
+    },
+    async handleSubmit() {
+      if (!this.activityForm.pay_amount) {
+        this.$toast.fail("请输入支付金额");
+      } else if (this.is_integral == 1 && !this.activityForm.integral) {
+        this.$toast.fail("请输入积分兑换数量");
+      } else if (!this.activityForm.order_sn) {
+        this.$toast.fail("请输入订单编号");
+      } else {
+        let res = await oSubmit({
+          order_id: this.$route.query.o_id,
+          ...this.activityForm
+        });
+        if(res && res.error.errno == 200) {
+          this.$toast.success('提交成功！')
+          this.$router.push('/task')
+        }
+      }
+    }
   }
 };
 </script>

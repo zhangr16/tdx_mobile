@@ -50,7 +50,6 @@ if (!JSON.parse(window.localStorage.getItem('tpyeArr'))) {
 router.beforeEach((to, from, next) => {
   /* 路由发生变化修改页面title, 回到顶部 */
   document.title = to.meta.title || ' ';
-  console.log(to)
   if (to.name == 'bearBuy' || to.name == 'limitFree') {
     Toast.loading({
       message: '加载中...',

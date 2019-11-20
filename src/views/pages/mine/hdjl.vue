@@ -18,42 +18,76 @@
     </header>
     <main>
       <nav>
-        <van-tabs>
+        <van-tabs v-model="activeTab">
           <van-tab v-for="tab in tabs" :title="tab" :key="tab"></van-tab>
         </van-tabs>
       </nav>
-      <ul class="table_ul">
+      <div class="is_loading" v-if="isloading">
+        <van-loading type="spinner" />
+      </div>
+      <ul class="table_ul" v-else-if="entity.length > 0">
         <li>
           <div class="time">日期</div>
           <div class="type">活动类型</div>
           <div class="order">订单号</div>
           <div class="amount">奖励金额</div>
         </li>
-        <li v-for="item in 3" :key="item">
-          <div class="time">2017-07-22</div>
-          <div class="type">亲友团奖励</div>
-          <div class="order">1232142134321</div>
-          <div class="amount">¥12</div>
+        <li v-for="(item, index) in entity" :key="index">
+          <div class="time">{{item.time}}</div>
+          <div class="type">{{item.type}}</div>
+          <div class="order">{{item.order_sn}}</div>
+          <div class="amount">¥{{item.price}}</div>
         </li>
       </ul>
+      <div v-else style="text-align:center">
+        <img src="@/assets/empty/img_qinyoutuanrenwu@2x.png" alt="" />
+      </div>
     </main>
   </div>
 </template> 
 <script>
+import { activityAward } from "@/api/mine.js";
+
 export default {
-  // 资金明细
+  // 活动奖励
   name: "hdjl",
   components: {},
   data() {
     return {
-      tabs: ['亲友团奖励', '派单奖励', '拉新奖励', '推荐奖励'],
+      isloading: false,
+      activeTab: 0,
+      tabs: ["亲友团奖励", "派单奖励", "拉新奖励", "推荐奖励"],
       isVisible: false,
-      myDate: null
+      queryForm: {
+        type: 1,
+        start_time: "",
+        end_time: ""
+      },
+      myDate: null,
+      entity: {}
     };
   },
+  mounted() {
+    this.getData();
+  },
+  watch: {
+    activeTab: function(val) {
+      console.log(val);
+      this.queryForm.type = val + 1;
+      this.getData();
+    }
+  },
   methods: {
+    async getData() {
+      this.isloading = true
+      let res = await activityAward(this.queryForm);
+      if (res && res.error.errno == 200) this.entity = res.data;
+      this.isloading = false
+    },
     setChooseValue(param) {
-      this.myDate = [...[param[0][3], param[1][3]]];
+      this.queryForm.start_time = param[0][3]
+      this.queryForm.end_time = param[1][3]
+      this.getData()
     }
   }
 };

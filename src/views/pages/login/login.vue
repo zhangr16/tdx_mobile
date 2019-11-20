@@ -26,7 +26,7 @@
             :error-message="validateMsg.pwd"
           >
             <template slot="right-icon">
-              <span class="tips">忘记密码</span>
+              <span class="tips" @click="$router.push('/findPwd')">忘记密码</span>
             </template>
           </van-field>
           <div class="l_btn" @click="handleLogin()">登 录</div>
@@ -37,6 +37,7 @@
   </div>
 </template>
 <script>
+// 登录
 export default {
   name: "login",
   data() {
@@ -130,7 +131,7 @@ export default {
         }
         .van-cell {
           input {
-            padding-top: 20px;
+            padding: 10px 0;
           }
         }
         .l_btn,

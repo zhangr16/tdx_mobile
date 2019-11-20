@@ -3,7 +3,10 @@
     <header>
       <van-icon class="left_arrow" name="arrow-left" @click="$router.go(-1)" />马上抢
     </header>
-    <ul>
+    <div v-if="isloading" class="center_loading">
+      <van-loading type="spinner" />
+    </div>
+    <ul v-else>
       <li v-for="(item, x) in paList" :key="x">
         <item-card-large :entity="item" />
       </li>
@@ -18,6 +21,7 @@ export default {
   components: { itemCardLarge },
   data() {
     return {
+      isloading: false,
       paList: []
     }
   },
@@ -26,6 +30,7 @@ export default {
   },
   methods: {
     async getData() {
+      this.isloading = true
       let res = await paDetail({ pa_id: this.$route.query.pa_id });
       if (res && res.error.errno == 200) {
         this.paList = res.data.task_list;
@@ -34,6 +39,7 @@ export default {
           el.activity_type = res.data.activity_type
         })
       }
+      this.isloading = false
     }
   }
 };
@@ -63,12 +69,20 @@ export default {
     padding-top: 40px;
     display: flex;
     flex-direction: column;
-    // background: #f6f6f6;
     li {
       background: #fff;
       width: 100%;
       margin-bottom: 10px;
     }
+  }
+  .center_loading {
+    display: block;
+    position: absolute;
+    margin: 0 auto;
+    top: 100px;
+    left: 0;
+    right: 0;
+    bottom: 0;
   }
 }
 </style>

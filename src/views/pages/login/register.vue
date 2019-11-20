@@ -55,7 +55,7 @@
 </template>
 <script>
 import { sendVerify, userRegister } from "@/api";
-// 登录
+// 注册
 export default {
   name: "register",
   data() {
@@ -212,7 +212,9 @@ export default {
           border: none;
         }
         .van-cell {
-          padding-top: 20px;
+          input {
+            padding: 10px 0;
+          }
           &::after {
             position: absolute;
             box-sizing: border-box;

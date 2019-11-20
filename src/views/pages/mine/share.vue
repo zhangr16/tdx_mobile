@@ -6,13 +6,12 @@
     <ul>
       <li>
         <div>1、复制链接分享给好友或朋友圈</div>
-        <div>http://www.taodaxiong.com/Mobile/MobileRegister?code=79217450</div>
+        <div>http://106.54.237.151/uh5/#/register?code={{invite_code}}</div>
       </li>
       <li>
         <div>2、长按二维码保存到手机分享给好友或朋友圈</div>
         <div class="qr_code">
-          <!-- <span></span> -->
-          <qrcode :wid="100" :hei="100" url="http://www.taodaxiong.com/Mobile/MobileRegister?code=79217450"></qrcode>
+          <qrcode :wid="100" :hei="100" :url="'http://106.54.237.151/uh5/#/register?code=' + invite_code"></qrcode>
         </div>
       </li>
     </ul>
@@ -27,6 +26,11 @@ export default {
   components: { qrcode },
   data() {
     return {};
+  },
+  computed: {
+    invite_code() {
+      return this.$store.state.user.name.invite_code || ''
+    }
   },
   methods: {}
 };

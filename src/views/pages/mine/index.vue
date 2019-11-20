@@ -3,15 +3,19 @@
     <header>
       <div class="msg">
         <span class="iconfont iconxiaoxi" @click="$router.push('/msg')"></span>
-        <span @click="$router.push('/msg')">({{entity.msg_num || 0}})</span>
+        <span @click="$router.push('/msg')">({{entity.un_msg_num || 0}})</span>
       </div>
-      <div v-if="isloading" class="desc">
+
+      <div v-if="isloading">
         <van-loading type="spinner" />
       </div>
       <div v-else class="desc">
-        <img v-if="entity.avatar" :src="entity.avatar" alt />
-        <span v-else class="iconfont iconmorentouxiang"></span>
-        <div>
+        <div class="img">
+          <van-image v-if="entity.avatar" :src="entity.avatar" use-error-slot>
+            <span slot="error" class="iconfont iconmorentouxiang"></span>
+          </van-image>
+        </div>
+        <div class="text">
           <div class="desc_top">用户名:{{entity.mobile}}</div>
           <div class="desc_bottom">
             <span>邀请码：{{invited_code}}</span>
@@ -120,7 +124,7 @@
               <span class="iconfont iconmiandanzongshu"></span>&nbsp;
               <span>免单总数</span>
             </span>
-            <span class="_numbers">{{entity.amount_raised}}</span>
+            <span class="_numbers">{{free_total}}</span>
           </div>
         </div>
       </section>
@@ -130,11 +134,15 @@
             <img src="@/assets/mine/wd_icon_zhanghutixian@2x.png" alt />
             <span>账户提现</span>
           </li>
-          <li @click="$router.push('/funds')">
+          <li @click="$router.push('/bindCard')">
+            <img src="@/assets/mine/yinhangkabangding@2x.png" alt />
+            <span>绑定银行卡</span>
+          </li>
+          <li class="br_none" @click="$router.push('/funds')">
             <img src="@/assets/mine/wd_icon_zijinmingxi@2x.png" alt />
             <span>资金明细</span>
           </li>
-          <li class="br_none" @click="$router.push('/score')">
+          <li @click="$router.push('/score')">
             <img src="@/assets/mine/wd_icon_jifenmingxi@2x.png" alt />
             <span>积分明细</span>
           </li>
@@ -142,11 +150,11 @@
             <img src="@/assets/mine/wd_icon_fenxianghaoyou@2x.png" alt />
             <span>分享给好友</span>
           </li>
-          <li @click="$router.push('/certification')">
+          <li class="br_none" @click="$router.push('/certification')">
             <img src="@/assets/mine/wd_icon_shimingrenzheng@2x.png" alt />
             <span>实名认证</span>
           </li>
-          <li class="br_none" @click="$router.push('/personal')">
+          <li @click="$router.push('/personal')">
             <img src="@/assets/mine/wd_icon_jibenziliao@2x.png" alt />
             <span>基本资料</span>
           </li>
@@ -154,19 +162,19 @@
             <img src="@/assets/mine/wd_icon_wentiji@2x.png" alt />
             <span>问题集</span>
           </li>
-          <li @click="$router.push('/suggestions')">
+          <li class="br_none" @click="$router.push('/suggestions')">
             <img src="@/assets/mine/wd_icon_tousujianyi@2x.png" alt />
             <span>投诉与建议</span>
           </li>
-          <li class="br_none" @click="$router.push('/resetPassword')">
+          <li @click="$router.push('/resetPassword')">
             <img src="@/assets/mine/wd_icon_xiugaimima@2x.png" alt />
             <span>修改密码</span>
           </li>
-          <li class="bb_none" @click="$router.push('/friendShip')">
+          <li @click="$router.push('/friendShip')">
             <img src="@/assets/mine/wd_icon_qinyoutuan@2x.png" alt />
             <span>亲友团</span>
           </li>
-          <li class="bb_none" @click="$router.push('/hdjl')">
+          <li class="br_none" @click="$router.push('/hdjl')">
             <img src="@/assets/mine/wd_icon_huodongjiangli@2x.png" alt />
             <span>活动奖励</span>
           </li>
@@ -191,6 +199,7 @@ export default {
     return {
       isloading: false,
       is_active: 0,
+      free_total: 0,
       entity: {
         order_num: {
           free: {},
@@ -202,7 +211,7 @@ export default {
   computed: {
     invited_code() {
       if(this.$store.state.user.name) {
-        return this.$store.state.user.name.invite_code
+        return this.$store.state.user.name.invite_code 
       } else {
         return ''
       }
@@ -211,7 +220,15 @@ export default {
   async mounted() {
     this.isloading = true
     let res = await userIndex();
-    if (res && res.error.errno == 200) this.entity = res.data;
+    if (res && res.error.errno == 200) {
+      this.entity = res.data;
+      // 计算免单
+      let sum = 0
+      Object.keys(this.entity.order_num.free).map(el => {
+        sum += this.entity.order_num.free[el]
+      })
+      this.free_total = sum
+    }
     this.isloading = false
   },
   methods: {
@@ -258,14 +275,19 @@ export default {
       display: flex;
       align-items: center;
       padding-right: 30px;
-      & > img {
+      & > .img {
         width: 50px;
         height: 50px;
+        .van-image {
+          width: 100%;
+          height: 100%;
+          background: #fff;
+        }
+        .iconmorentouxiang {
+          font-size: 48px;
+        }
       }
-      & > span {
-        font-size: 48px;
-      }
-      & > div {
+      & > .text {
         padding: 5px 10px;
         flex: 1;
         .desc_top {
@@ -279,7 +301,7 @@ export default {
       }
     }
     .nums {
-      padding: 15px 30px 15px 50px;
+      padding: 15px;
       display: flex;
       justify-content: space-between;
       span {
@@ -381,15 +403,9 @@ export default {
             height: 25px;
             margin-bottom: 10px;
           }
-          &:last-child {
-            border: none;
-          }
         }
         .br_none {
           border-right: none;
-        }
-        .bb_none {
-          border-bottom: none;
         }
       }
     }

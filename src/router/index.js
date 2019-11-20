@@ -127,11 +127,25 @@ export default [
     component: () => import('@/views/pages/login/register'),
     meta: { title: '注册' }
   },
+  // 忘记密码
+  {
+    path: '/findPwd',
+    name: 'findPwd',
+    component: () => import('@/views/pages/login/findPwd'),
+    meta: { title: '找回密码' }
+  },
   // 账户提现
   {
     path: '/zhtx',
     name: 'zhtx',
     component: () => import('@/views/pages/mine/zhtx'),
+    meta: { title: '' }
+  },
+  // 绑定银行卡
+  {
+    path: '/bindCard',
+    name: 'bindCard',
+    component: () => import('@/views/pages/mine/bindCard'),
     meta: { title: '' }
   },
   // 修改密码
@@ -166,7 +180,8 @@ export default [
   {
     path: '/friendShip',
     name: 'friendShip',
-    component: () => import('@/views/pages/mine/friendShip'),
+    component: () => import('@/views/pages/classify'),
+    // component: () => import('@/views/pages/mine/friendShip'),
     meta: { title: '淘大熊' }
   },
   // 个人基本资料

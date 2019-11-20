@@ -161,3 +161,48 @@ export function sendVerify(obj) {
         params: obj
     })
 }
+
+// 获取订单id
+export function tReceive(obj) {
+    return request({
+        url: 't/receive',
+        method: 'post',
+        params: obj
+    })
+}
+
+// 订单详情
+export function oDetail(obj) {
+    return request({
+        url: '/o/detail',
+        method: 'post',
+        params: obj
+    })
+}
+
+// 举报订单
+export function oFeedback(obj) {
+    return request({
+        url: '/o/Feedback',
+        method: 'post',
+        params: obj
+    })
+}
+
+// 验证订单url
+export function oUrlcheck(obj) {
+    return request({
+        url: '/o/Urlcheck',
+        method: 'post',
+        params: obj
+    })
+}
+
+// 验证订单url
+export function oSubmit(obj) {
+    return request({
+        url: '/o/submit',
+        method: 'post',
+        params: obj
+    })
+}

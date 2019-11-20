@@ -13,8 +13,7 @@
     ></nut-calendar>
 
     <header>
-      <van-icon class="left_arrow" name="arrow-left" @click="$router.go(-1)" />
-      积分明细
+      <van-icon class="left_arrow" name="arrow-left" @click="$router.go(-1)" />积分明细
       <span class="iconfont iconrili right_date" @click="isVisible = true"></span>
     </header>
     <main>
@@ -22,17 +21,17 @@
         <li>
           总积分
           <br />
-          <span>10000</span>
+          <span>{{topList.integral_total}}</span>
         </li>
         <li class="mid">
           已消耗积分
           <br />
-          <span>5000</span>
+          <span>{{topList.integral_use}}</span>
         </li>
         <li>
           积分余额
           <br />
-          <span>5000</span>
+          <span>{{topList.integral}}</span>
         </li>
       </ul>
       <nav>
@@ -42,7 +41,7 @@
           clearable
           label="积分类型"
           right-icon="arrow-down"
-          :value="form.type"
+          :value="label_status"
           placeholder="请选择"
           @click="showType = true"
         />
@@ -52,24 +51,44 @@
         <van-picker
           show-toolbar
           :default-index="0"
-          :columns="['全部' ,'消耗积分', '积分奖励']"
+          :columns="[{
+            text: '全部',
+            value: 0
+          } ,{
+            text: '消耗积分',
+            value: 1
+          }, {
+            text: '积分奖励',
+            value: 2
+          }]"
           @cancel="showType = false"
-          @confirm="(val) => { form.type = val; showType = false }"
+          @confirm="(val) => {
+            label_status = val.text;
+            queryForm.status = val.value
+            showType = false;
+            getData();
+          }"
         />
       </van-popup>
-      <ul class="item_ul">
-        <li>
+
+      <div class="is_loading" v-if="isloading">
+        <van-loading type="spinner" />
+      </div>
+      <ul class="item_ul" v-else-if="dataList.length > 0">
+        <li v-for="(item, index) in dataList" :key="index">
           <img src="@/assets/mine/score1.png" alt />
           <div>
             <span class="_title">
-              <span>消耗积分-返利任务兑换</span>
-              <i style="color:#333">- 12.00</i>
+              <span>{{item.type}}-{{item.comment}}</span>
+              <i :class="{'positive_num': item.integral_num > 0}">
+                {{item.integral_num > 0 ? '+'+item.integral_num : item.integral_num}}
+              </i>
             </span>
-            <span class="_desc">订单号：1234567890123456</span>
-            <span class="_time">2019-08-13 00:00:00</span>
+            <span class="_desc">订单号：{{item.order_sn}}</span>
+            <span class="_time">{{item.create_time}}</span>
           </div>
         </li>
-        <li>
+        <!-- <li>
           <img src="@/assets/mine/score2.png" alt />
           <div>
             <span class="_title">
@@ -79,29 +98,56 @@
             <span class="_desc">订单号：1234567890123456</span>
             <span class="_time">2019-08-13 00:00:00</span>
           </div>
-        </li>
+        </li>-->
       </ul>
+      <div v-else style="text-align:center">
+        <img src="@/assets/empty/img_jifenmingxi@2x.png" alt="" />
+      </div>
     </main>
   </div>
 </template> 
 <script>
+import { integraldetail, fundsummary } from "@/api/mine.js";
+
 export default {
   // 资金明细
   name: "score",
   components: {},
   data() {
     return {
-      form: {
-        type: "全部",
+      label_status: '全部',
+      queryForm: {
+        status: "0",
+        start_time: "",
+        end_time: "",
+        page_no: 1,
+        page_size: 100
       },
+      dataList: [],
+      topList: [],
+
+      isloading: false,
       showType: false,
       isVisible: false,
       myDate: null
     };
   },
+  async mounted() {
+    this.getData();
+    let res1 = await fundsummary();
+    if (res1 && res1.error.errno == 200) this.topList = res1.data;
+  },
   methods: {
+    async getData() {
+      this.isloading = true
+      let res = await integraldetail(this.queryForm);
+      if (res && res.error.errno == 200) this.dataList = res.data;
+      this.isloading = false
+    },
     setChooseValue(param) {
-      this.myDate = [...[param[0][3], param[1][3]]];
+      this.queryForm.start_time = param[0][3]
+      this.queryForm.end_time = param[1][3]
+      this.getData()
     }
   }
 };
@@ -165,7 +211,7 @@ export default {
         }
         .van-field__control {
           font-weight: bold;
-          text-align: center
+          text-align: center;
         }
       }
     }
@@ -194,7 +240,7 @@ export default {
             font-size: 14px;
             display: flex;
             justify-content: space-between;
-            i {
+            .positive_num {
               color: #fa2a44;
             }
           }
