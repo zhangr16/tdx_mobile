@@ -18,7 +18,11 @@
         <div class="content_price">￥{{entity.price}}</div>
         <div class="content_desc">
           <van-progress pivot-text color="#ff5500" :percentage="50" />
-          <span class="word">已抢<i>{{entity.order_count}}</i>件 共{{entity.task_count}}件</span>
+          <span class="word">
+            已抢
+            <i>{{entity.order_count}}</i>
+            件 共{{entity.task_count}}件
+          </span>
         </div>
       </div>
       <div class="btn">马上抢</div>
@@ -33,27 +37,34 @@ export default {
     entity: {
       default: {},
       type: Object
+    },
+    isFamily: {
+      default: false,
+      type: Boolean
     }
   },
   data() {
     return {};
   },
-  mounted() {
-  },
+  mounted() {},
   computed: {
     isBearBuy() {
-      return this.$route.name == 'bearBuy'
+      return this.$route.name == "bearBuy";
     }
   },
   methods: {
     handleClick() {
-      if(this.entity.task_number > 1) {
-        this.$router.push('/getSoon?pa_id=' + this.entity.pa_id)
+      if (this.entity.task_number > 1) {
+        this.$router.push(
+          "/getSoon?pa_id=" + this.entity.pa_id + "&isFamily=" + this.isFamily
+        );
       } else {
-        this.$router.push('/purchase?t_id=' + this.entity.t_id)
+        this.$router.push(
+          "/purchase?t_id=" + this.entity.t_id + "&isFamily=" + this.isFamily
+        );
       }
     }
-  },
+  }
 };
 </script>
 <style lang="scss" scope>

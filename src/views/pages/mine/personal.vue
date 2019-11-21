@@ -31,7 +31,12 @@
       <van-cell title="教育程度" is-link @click="showEducation = true">{{ entity.education }}</van-cell>
       <van-cell title="所属人群" is-link @click="showType = true">{{ entity.crowd }}</van-cell>
 
-      <van-cell title="所属地区" is-link @click="showArea = true">{{entity.province}}/{{entity.city}}</van-cell>
+      <van-cell title="所属地区" is-link @click="showArea = true">
+        <span
+          v-if="entity.province || entity.city"
+        >{{entity.province}}/{{entity.city}}</span>
+        <span v-else>暂无</span>
+      </van-cell>
       <div class="submit_btn" @click="handleSubmit">
         <van-loading v-if="isloading" type="spinner" />
         <span v-else>提 交</span>
@@ -131,7 +136,7 @@ export default {
   computed: {
     ageColumns() {
       let arr = [];
-      for (let i = 18; i < 50; i++) {
+      for (let i = 16; i < 60; i++) {
         arr.push(i);
       }
       return arr;
@@ -161,10 +166,15 @@ export default {
     },
     // 省市级联选择回调
     handleAreaSelect(val) {
-      this.area_code = val[1].code;
-
-      this.entity.province = val[0].name;
-      this.entity.city = val[1].name;
+      if(val[1]) {
+        this.area_code = val[1].code
+        this.entity.province = val[0].name;
+        this.entity.city = val[1].name;
+      } else {
+        this.area_code = '110100'
+        this.entity.province = '北京市';
+        this.entity.city = '北京市';
+      }
       this.showArea = false;
     }
   }

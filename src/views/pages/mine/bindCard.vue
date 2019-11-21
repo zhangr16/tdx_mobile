@@ -25,12 +25,12 @@
           @click="handleSendVerify"
         >获取验证码</van-button>
       </van-field>
-      <van-cell
-        is-link
-        @click="showArea = true"
-        title="开户地区"
-        placeholder="请输入开户地区"
-      >{{entity.regist_province}}/{{entity.regist_city}}</van-cell>
+      <van-cell is-link @click="showArea = true" title="开户地区" placeholder="请输入开户地区">
+        <span
+          v-if="entity.regist_province || entity.regist_city"
+        >{{entity.regist_province}}/{{entity.regist_city}}</span>
+        <span v-else>暂无</span>
+      </van-cell>
       <van-cell>
         <div class="submit_btn" @click="handleSubmit">提交申请</div>
       </van-cell>
@@ -59,7 +59,7 @@
   </div>
 </template> 
 <script>
-import { sendVerify } from "@/api/index.js"
+import { sendVerify } from "@/api/index.js";
 import { ubankInfo } from "@/api/mine.js";
 import areaList from "@/utils/area.js";
 
@@ -75,7 +75,8 @@ export default {
         { value: "10806311", label: "中国工商银行" },
         { value: "10806312", label: "中国银行" },
         { value: "10806313", label: "交通银行" },
-        { value: "10806325", label: "招商银行" }
+        { value: "10806325", label: "招商银行" },
+        { value: "", label: "暂无" }
       ],
       bankNameArr: [
         "中国建设银行",
@@ -85,7 +86,7 @@ export default {
         "交通银行",
         "招商银行"
       ],
-      bankText: "",
+      bankText: "暂无",
 
       areaList: {},
       area_code: "", // 城市编码
@@ -106,9 +107,8 @@ export default {
       this.area_code = Object.keys(this.areaList.city_list).filter(
         el => this.areaList.city_list[el] == this.entity.regist_city
       )[0];
-      this.bankText = this.bankArr.filter(
-        el => this.entity.bank == el.value
-      )[0].label;
+      this.bankText =
+        this.bankArr.filter(el => this.entity.bank == el.value)[0].label || "暂无";
     }
   },
   watch: {
@@ -135,10 +135,15 @@ export default {
     },
     // 省市级联选择回调
     handleAreaSelect(val) {
-      this.area_code = val[1].code;
-
-      this.entity.regist_province = val[0].name;
-      this.entity.regist_city = val[1].name;
+      if(val[1]) {
+        this.area_code = val[1].code
+        this.entity.regist_province = val[0].name;
+        this.entity.regist_city = val[1].name;
+      } else {
+        this.area_code = '110100'
+        this.entity.regist_province = '北京市';
+        this.entity.regist_city = '北京市';
+      }
       this.showArea = false;
     },
     async handleSubmit() {

@@ -127,6 +127,7 @@ export default {
     };
   },
   mounted() {
+    console.log(this.$route.query.isFamily)
     this.getData();
   },
   methods: {
@@ -135,7 +136,10 @@ export default {
       if (res && res.error.errno == 200) this.entity = res.data;
     },
     async handleConfirm() {
-      let res = await tReceive({t_id: this.$route.query.t_id})
+      let res = await tReceive({
+        t_id: this.$route.query.t_id,
+        is_family: this.$route.query.isFamily == 'true' ? 1 : null
+      })
       if(res && res.error.errno == 200) {
         this.$toast.success('领取成功！')
         this.$router.push("/getStart?o_id=" + res.order_id);

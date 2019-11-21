@@ -8,7 +8,7 @@
     </div>
     <ul v-else>
       <li v-for="(item, x) in paList" :key="x">
-        <item-card-large :entity="item" />
+        <item-card-large :entity="item" :isFamily="$route.query.isFamily" />
       </li>
     </ul>
   </div>

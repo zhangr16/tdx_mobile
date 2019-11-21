@@ -403,6 +403,9 @@ export default {
             height: 25px;
             margin-bottom: 10px;
           }
+          &:last-child {
+            border-bottom: none 
+          }
         }
         .br_none {
           border-right: none;

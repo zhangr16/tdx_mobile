@@ -313,17 +313,13 @@ export default {
     // 子项目item
     .ul_wrapper {
       width: calc(100vw - 30px);
-      overflow-x: scroll;
       text-align: center;
-      ul {
+      & > ul {
         overflow-x: scroll;
         display: flex;
         li {
           width: calc((100vw - 30px) / 3);
-          margin-right: 4px;
-          &:last-child {
-            margin-right: 0;
-          }
+          padding-right: 5px;
         }
       }
     }

@@ -37,7 +37,7 @@
     <section>
       <ul v-if="cardList.length > 0" class="ul_free">
         <li :class="{'margin_right': index%2 == 0}" v-for="(item, index) in cardList" :key="index">
-          <item-card-mid2 :entity="item" />
+          <item-card-mid2 :entity="item" :isFamily="isFamily" />
         </li>
         <div class="no_more" v-if="isfinished">没有更多数据了</div>
       </ul>
@@ -158,9 +158,8 @@ export default {
         window.pageYOffset ||
         document.documentElement.scrollTop ||
         document.body.scrollTop; // 滚动条偏移量
-      let innerHeight = document.querySelector(".index").clientHeight; // 滚动ul的高度
+      let innerHeight = document.querySelector(".classify").clientHeight; // 滚动ul的高度
       let viewHeight = window.innerHeight; // 视口高度
-      // console.log(scrollTop, innerHeight, viewHeight);
 
       if ((scrollTop + viewHeight >= innerHeight) && !this.isloading) {
         if (this.total_count > this.queryData.page_size) {
