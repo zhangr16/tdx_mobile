@@ -165,7 +165,7 @@ export function sendVerify(obj) {
 // 获取订单id
 export function tReceive(obj) {
     return request({
-        url: 't/receive',
+        url: '/t/receive',
         method: 'post',
         params: obj
     })

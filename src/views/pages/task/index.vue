@@ -101,7 +101,7 @@ export default {
     async getData() {
       this.isloading = true
       let res = await order_list(this.formData);
-      if(res && res.error.errno == 200)  this.taskList = res.orderList
+      if(res && res.error.errno == 200)  this.taskList = res.orderList || []
       this.isloading = false
     },
     handleTabClick(num) {

@@ -34,7 +34,7 @@
       <!-- 图片 -->
       <img :src="entity.sipping_url" alt />
       <!-- 限量免单 -->
-      <ul v-if="entity.order_type == 1">
+      <ul v-if="entity.module_type == 'free'">
         <li style="font-weight:bold">{{ entity.title }}</li>
         <li class="scale_num">订单编号：{{ entity.order_sn }}</li>
         <li>
