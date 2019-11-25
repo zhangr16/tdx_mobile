@@ -32,7 +32,10 @@
     return (false);
   }
   let _p = getQueryVariable('code')
-  if (_p) window.localStorage.setItem('invite_code', _p.substring(0, _p.length - 1))
+  if (_p) {
+    window.localStorage.setItem('invite_code', _p.substring(0, _p.length - 1))
+    window.localStorage.setItem('isfirst_come', 1)
+  } 
 </script>
 
 </html>
