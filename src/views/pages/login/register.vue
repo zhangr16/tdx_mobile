@@ -166,7 +166,7 @@ export default {
     },
     handleCancle() {
       window.localStorage.removeItem('invite_code')
-      this.$router.go(-1)
+      this.$router.push('/index')
     }
   }
 };

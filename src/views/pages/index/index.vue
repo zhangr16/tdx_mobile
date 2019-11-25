@@ -144,10 +144,10 @@ export default {
   },
   methods: {
     async getData() {
-      this.isloading = true
+      this.isloading = true;
       let res = await indexSearch(this.queryData);
       if (res && res.error.errno == 200) this.topList = res.data;
-      this.isloading = false
+      this.isloading = false;
     },
     async getCateData() {
       let res = await cateSearch();
@@ -162,7 +162,8 @@ export default {
       }, 300);
     },
     onSearch() {
-      if(this.searchValue) this.$router.push('/limitFree?keyword='+ this.searchValue)
+      if (this.searchValue)
+        this.$router.push("/limitFree?keyword=" + this.searchValue);
     },
     onChange(i, v) {
       this.$refs["swiper2"].swipeTo(i, { immediate: true });
@@ -176,11 +177,6 @@ export default {
     }
   },
   mounted() {
-    if (window.localStorage.getItem("invite_code")) {
-      this.$router.push(
-        "/register?code=" + window.localStorage.getItem("invite_code")
-      );
-    }
     this.$nextTick(() => {
       window.addEventListener("scroll", this.handleScroll);
     });

@@ -41,6 +41,17 @@ export default {
       loading: true
     };
   },
+  mounted() {
+    if (
+      window.localStorage.getItem("invite_code") &&
+      window.localStorage.getItem("isfirst_come") == 1
+    ) {
+      window.localStorage.setItem("isfirst_come", 0);
+      this.$router.push(
+        "/register?code=" + window.localStorage.getItem("invite_code")
+      );
+    }
+  },
 };
 </script>
 
