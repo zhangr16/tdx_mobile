@@ -33,7 +33,21 @@ export default [
         name: 'mine',
         component: () => import('@/views/pages/mine'),
         meta: { title: '我的淘大熊' }
-      }
+      },
+      // 亲友团
+      {
+        path: '/friendShip',
+        name: 'friendShip',
+        component: () => import('@/views/pages/classify'),
+        meta: { title: '淘大熊' }
+      },
+      // 问题集
+      {
+        path: '/questions',
+        name: 'questions',
+        component: () => import('@/views/pages/mine/questions'),
+        meta: { title: '' }
+      },
     ]
   },
   // 马上抢
@@ -168,21 +182,6 @@ export default [
     name: 'certification',
     component: () => import('@/views/pages/mine/certification'),
     meta: { title: '' }
-  },
-  // 问题集
-  {
-    path: '/questions',
-    name: 'questions',
-    component: () => import('@/views/pages/mine/questions'),
-    meta: { title: '' }
-  },
-  // 亲友团
-  {
-    path: '/friendShip',
-    name: 'friendShip',
-    component: () => import('@/views/pages/classify'),
-    // component: () => import('@/views/pages/mine/friendShip'),
-    meta: { title: '淘大熊' }
   },
   // 个人基本资料
   {

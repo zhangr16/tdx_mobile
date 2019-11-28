@@ -1,59 +1,63 @@
 <template>
   <div class="fundDesc">
-    <!-- 日历控件 -->
-    <nut-calendar
-      :is-visible="isVisible"
-      :default-value="myDate"
-      type="range"
-      :start-date="null"
-      :end-date="null"
-      :animation="`nutSlideUp`"
-      @close="isVisible = false"
-      @choose="setChooseValue"
-    ></nut-calendar>
-
     <header>
-      <van-icon class="left_arrow" name="arrow-left" @click="$router.go(-1)" />
-      资金详情
-      <span class="iconfont iconrili right_date" @click="isVisible = true"></span>
+      <van-icon class="left_arrow" name="arrow-left" @click="$router.go(-1)" />提现记录详情
     </header>
     <main>
       <nav>
-        总金额<span>¥10000</span>
+        总金额
+        <span>¥{{entitys.amount}}</span>
       </nav>
-      <ul class="table_ul">
+      <div class="is_loading" v-if="isloading">
+        <van-loading type="spinner" />
+      </div>
+      <ul class="table_ul" v-else-if="entitys.data.length > 0">
         <li>
           <div class="time">日期</div>
           <div class="type">任务类型</div>
           <div class="order">订单号</div>
           <div class="amount">任务金额</div>
         </li>
-        <li v-for="item in 4" :key="item">
-          <div class="time">2017-07-22</div>
-          <div class="type">免单任务</div>
-          <div class="order">123214213421321</div>
-          <div class="amount">¥1000</div>
+        <li v-for="(item, index) in entitys.data" :key="index">
+          <div class="time">{{item.create_time}}</div>
+          <div class="type">{{item.type}}</div>
+          <div class="order">{{item.order_sn}}</div>
+          <div class="amount">{{item.money}}</div>
         </li>
       </ul>
+      <div v-else class="empty">
+        <img src="@/assets/empty/img_zijinmingxi@2x.png" alt />
+      </div>
     </main>
   </div>
 </template> 
 <script>
+import { withdrawdetail } from "@/api/mine.js";
+
 export default {
   // 资金明细
   name: "fundDesc",
   components: {},
   data() {
     return {
-      isVisible: false,
-      myDate: null
+      isloading: false,
+      entitys: {
+        data: [],
+        amount: 0
+      }
     };
   },
-  methods: {
-    setChooseValue(param) {
-      this.myDate = [...[param[0][3], param[1][3]]];
-    }
-  }
+  async mounted() {
+    this.isloading = true
+    let res = await withdrawdetail({
+      id: this.$route.query.id,
+      page_no: 1,
+      page_size: 100
+    });
+    if(res && res.error.errno == 200) this.entitys = res
+    this.isloading = false
+  },
+  methods: {}
 };
 </script>
 <style lang="scss" scope>
@@ -105,7 +109,7 @@ export default {
         padding: 10px 0;
         display: flex;
         &:first-child {
-          color:#333;
+          color: #333;
           font-weight: bold;
         }
         & > div {

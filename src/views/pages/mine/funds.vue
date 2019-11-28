@@ -62,7 +62,7 @@
       <van-popup v-model="showType" position="bottom">
         <van-picker
           show-toolbar
-          :default-index="0"
+          :default-index="4"
           :columns="[{text: '任务金额', value: 1}, {text: '定制金额', value: 2}, {text: '售后金额', value: 3}, {text: '提现记录', value: 4}]"
           @cancel="showType = false"
           @confirm="(val) => { type_label = val.text; queryForm.type = val.value; showType = false; getData() }"
@@ -82,20 +82,22 @@
         <van-loading type="spinner" />
       </div>
       <ul class="item_ul" v-else-if="dataList.length > 0">
-        <li v-for="(item, index) in dataList" :key="index" @click="$router.push('/fundDesc')">
+        <li v-for="(item, index) in dataList" :key="index" @click="goDesc(item.id)">
           <img src="@/assets/mine/money1.png" alt />
           <div>
             <span class="_title">
-              <span>{{item.type}}-{{item.status}}</span>
+              <span>
+                {{item.type}}<template v-if="queryForm.type == 4">--{{item.status}}</template>
+              </span>
               <i>{{item.money > 0 ? '+' + item.money : item.money}}</i>
             </span>
-            <span class="_desc">{{item.comment}}</span>
+            <span class="_desc" v-if="queryForm.type != 4">{{item.comment}}</span>
             <span class="_time">{{item.time}}</span>
           </div>
         </li>
       </ul>
       <div v-else class="empty">
-        <img src="@/assets/empty/img_zijinmingxi@2x.png" alt="" />
+        <img src="@/assets/empty/img_zijinmingxi@2x.png" alt />
       </div>
     </main>
   </div>
@@ -109,11 +111,11 @@ export default {
   components: {},
   data() {
     return {
-      type_label: "任务金额",
+      type_label: "提现记录",
       status_label: "全部",
       queryForm: {
         status: "0",
-        type: "1",
+        type: "4",
         start_time: "",
         end_time: "",
         page_no: 1,
@@ -136,10 +138,13 @@ export default {
   },
   methods: {
     async getData() {
-      this.isloading = true
+      this.isloading = true;
       let res = await transactionDetail(this.queryForm);
       if (res && res.error.errno == 200) this.dataList = res.data;
-      this.isloading = false
+      this.isloading = false;
+    },
+    goDesc(val) {
+      if(this.queryForm.type == 4) this.$router.push('/fundDesc?id=' + val)
     },
     setChooseValue(param) {
       this.queryForm.start_time = param[0][3];
@@ -234,7 +239,10 @@ export default {
           display: flex;
           flex-direction: column;
           border-bottom: 1px solid #e5e5e5;
-          padding: 15px 0;
+          padding: 10px 0;
+          & > span {
+            padding: 1px 0;
+          }
           ._title {
             color: #333;
             font-size: 14px;

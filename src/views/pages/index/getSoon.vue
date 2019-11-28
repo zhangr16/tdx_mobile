@@ -36,7 +36,9 @@ export default {
         this.paList = res.data.task_list;
         this.paList.map(el => {
           el.img = res.data.img
+          el.title = res.data.title
           el.activity_type = res.data.activity_type
+          el.module_type = res.data.module_type
         })
       }
       this.isloading = false

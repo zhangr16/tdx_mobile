@@ -324,9 +324,6 @@ export default {
   position: relative;
   width: 100%;
   padding-top: 40px;
-  .van-skeleton__content {
-    margin: 60px 0;
-  }
   & > header {
     width: 100%;
     position: fixed;

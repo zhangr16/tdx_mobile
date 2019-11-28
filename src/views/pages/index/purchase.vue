@@ -15,32 +15,63 @@
       </van-swipe-item>
     </van-swipe>
 
+    <van-cell-group v-if="isloading">
+      <van-skeleton title :row="2" />
+    </van-cell-group>
     <!-- 抢购信息 -->
-    <section class="purchase_info">
+    <section v-else class="purchase_info">
       <!-- 顶部 -->
       <div class="_top">
         <div class="title">{{entity.title}}</div>
       </div>
       <!-- 中部 -->
       <div class="_mid">
-        <div class="num">
-          <span>任务金额:</span>
-          &nbsp;{{entity.price}}元&nbsp;&nbsp;&nbsp;
-          <span>返还金额:</span>
-          &nbsp;{{entity.price - entity.current_price}}元
-        </div>
-        <div class="num">
-          <span>商品价值:</span>
-          &nbsp;{{entity.price}}元&nbsp;&nbsp;&nbsp;
-          <span>剩余份数:</span>
-          &nbsp;{{entity.remain_count}}/{{entity.task_count}}份
-        </div>
+        <template v-if="entity.module_type == 'free'">
+          <div class="num">
+            <span>任务金额:</span>
+            &nbsp;{{entity.price * entity.order_number}}元&nbsp;&nbsp;&nbsp;
+            <span>返还金额:</span>
+            &nbsp;{{entity.price * entity.order_number}}元
+          </div>
+          <div class="num">
+            <span>商品价值:</span>
+            &nbsp;{{entity.price * entity.order_number}}元&nbsp;&nbsp;&nbsp;
+            <span>剩余份数:</span>
+            &nbsp;{{entity.remain_count}}/{{entity.task_count}}份
+          </div>
+        </template>
+        <template v-else>
+          <div class="xqg">
+            剩余
+            <i>{{entity.remain_count}}</i>
+            份/
+            限量
+            <i>{{entity.task_count}}</i> 份
+          </div>
+          <div class="xqg fanli">
+            <span>任务金额: {{entity.price}}元</span>
+            <div>
+              <span>返利</span>
+              <span>¥ {{entity.price - entity.current_price}}</span>
+            </div>
+          </div>
+          <div class="xqg">
+            <span>
+              最低价:
+              <i>{{entity.current_price}}元</i>
+            </span>
+          </div>
+        </template>
         <div class="time">
           <span>截止日期：{{entity.end_time}}</span>
         </div>
       </div>
       <!-- 底部 -->
-      <div class="_bottom">商家已存入保证金99元平台担保返款</div>
+      <div
+        class="_bottom"
+        v-if="entity.module_type == 'free'"
+      >商家已存入保证金{{entity.price * entity.order_number}}元平台担保返款</div>
+      <div class="_bottom2" v-else>熊抢购非免单任务，返款金额 = 任务金额 - 最低价 + 积分金额</div>
     </section>
     <!-- 任务流程 -->
     <section class="purchase_flow">
@@ -49,10 +80,10 @@
       </header>
       <ul>
         <li>1、点击“立即领取”,获取免单资格</li>
-        <li>2、点击"开始任务",按照任务提示，以￥99.00元价格去指定平台</li>
+        <li>2、点击"开始任务",按照任务提示，以￥{{entity.price * entity.order_number}}元价格去指定平台</li>
         <li>3、复制宝贝链接，点击验证通过之后，填写订单号，并提交任务</li>
         <li>4、卖家发货→收到快递后到淘宝确认收货→给予五星好评并上传好评截图到平台→等待卖家确认</li>
-        <li>5、卖家确认无误后，平台返款￥10.00元到您的账户中供您提现</li>
+        <li>5、卖家确认无误后，平台返款￥{{ entity.module_type == 'free' ? entity.price * entity.order_number : entity.price - entity.current_price}}元到您的账户中供您提现</li>
       </ul>
     </section>
     <!-- 注意事项 -->
@@ -114,11 +145,7 @@
       </ul>
     </van-dialog>
     <!-- 服务弹窗 -->
-    <van-dialog
-      v-model="showService"
-      title="客服信息"
-      :closeOnClickOverlay="true"
-    >
+    <van-dialog v-model="showService" title="客服信息" :closeOnClickOverlay="true">
       <ul>
         <li style="font-size:14px">注：如有疑问，请及时联系淘大熊客服（晴天或熊大）</li>
       </ul>
@@ -132,6 +159,7 @@ export default {
   name: "purchase",
   data() {
     return {
+      isloading: false,
       showService: false,
       showConfirm: false,
       entity: {}
@@ -142,19 +170,21 @@ export default {
   },
   methods: {
     async getData() {
+      this.isloading = true;
       let res = await tDetail({ t_id: this.$route.query.t_id });
       if (res && res.error.errno == 200) this.entity = res.data;
+      this.isloading = false;
     },
     async handleConfirm() {
       let res = await tReceive({
         t_id: this.$route.query.t_id,
-        is_family: this.$route.query.isFamily == 'true' ? 1 : null
-      })
-      if(res && res.error.errno == 200) {
-        this.$toast.success('领取成功！')
+        is_family: this.$route.query.isFamily == "true" ? 1 : null
+      });
+      if (res && res.error.errno == 200) {
+        this.$toast.success("领取成功！");
         this.$router.push("/getStart?o_id=" + res.order_id);
       }
-    },
+    }
   }
 };
 </script>
@@ -212,6 +242,36 @@ export default {
     & > ._mid {
       border-top: 1px solid #e5e5e5;
       border-bottom: 1px solid #e5e5e5;
+      .xqg {
+        & > span {
+          color: #333;
+        }
+        margin-bottom: 10px;
+        i {
+          font-size: 16px;
+          color: #fa2742;
+        }
+      }
+      .fanli {
+        display: flex;
+        align-items: center;
+        & > div {
+          margin-left: 10px;
+          border: 1px solid #fa2742;
+          & > span {
+            display: inline-block;
+            padding: 2px 5px;
+          }
+          & > span:first-child {
+            background: #fa2742;
+            color: #fff;
+          }
+          & > span:last-child {
+            background: #fff;
+            color: #fa2742;
+          }
+        }
+      }
       span {
         color: #999;
         font-size: 14px;
@@ -230,6 +290,10 @@ export default {
     & > ._bottom {
       font-size: 14px;
       color: #999;
+    }
+    & > ._bottom2 {
+      font-size: 12px;
+      color: #fa2742;
     }
   }
 

@@ -112,7 +112,7 @@
       <div class="attention">注意 ：收到货后再确认收货，五星好评，然后上传好评截图到平台，等待商家审核之后申请提现返款</div>
     </section>
     <!-- 活动信息 -->
-    <section class="active_info" v-if="entity.verify_url > 0">
+    <section class="active_info">
       <header>活动信息</header>
       <van-cell-group>
         <van-field v-model="activityForm.user_ww" label="接手旺旺" placeholder readonly />
@@ -455,11 +455,18 @@ export default {
 <style lang="scss">
 .active_info {
   .van-cell {
-    padding: 15px 0;
+    padding: 15px 0 !important;
+  }
+  .van-field {
+    border-bottom: 1px solid #ebedf0; 
+  }
+  .van-cell:not(:last-child)::after {
+    border: none;
   }
   .van-field__control {
-    padding-left: 6px;
+    padding-left: 8px;
   }
+  
   ._exchanger {
     display: flex;
     .van-cell__value {

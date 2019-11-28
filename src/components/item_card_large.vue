@@ -4,31 +4,51 @@
     <main>
       <div class="title">{{entity.title}}</div>
       <div class="content">
-        <van-progress
-          pivot-text
-          color="#ff5500"
-          :percentage="100 * (entity.remain_count/entity.task_count)"
-        />
-        <div class="content_word">
-          已抢
-          <i>{{entity.task_count - entity.remain_count}}</i>件 共
-          <i>{{entity.task_count}}</i>件
-        </div>
-        <!-- <div class="content_price1"><span>商品价值:</span> 99元&nbsp;&nbsp;<span>剩余份数:</span> 1/9份</div> -->
-        <div class="content_price2">
-          <span>任务金额:</span>
-          {{entity.price}}元&nbsp;&nbsp;
-          <span>返还金额:</span>
-          {{entity.price - entity.current_price}}元
-        </div>
-        <div class="content_time">
-          <span>截止日期：{{entity.task_end}}</span>
-        </div>
+        <!-- free -->
+        <template v-if="entity.module_type == 'free'">
+          <van-progress
+            pivot-text
+            color="#ff5500"
+            :percentage="100 * (entity.remain_count/entity.task_count)"
+          />
+          <div class="content_word">
+            已抢
+            <i>{{entity.task_count - entity.remain_count}}</i>件 共
+            <i>{{entity.task_count}}</i>件
+          </div>
+          <!-- <div class="content_price1"><span>商品价值:</span> 99元&nbsp;&nbsp;<span>剩余份数:</span> 1/9份</div> -->
+          <div class="content_price2">
+            <span>任务金额:</span>
+            {{entity.price}}元&nbsp;&nbsp;
+            <span>返还金额:</span>
+            {{entity.price - entity.current_price}}元
+          </div>
+          <div class="content_time">
+            <span>截止日期：{{entity.task_end}}</span>
+          </div>
+        </template>
+        <!-- xqg -->
+        <template v-else>
+          <div class="xqg_num">
+            剩余
+            <i>{{entity.remain_count}}</i>
+            份/
+            限量 {{entity.task_count}} 份
+          </div>
+          <div class="xqg_price">
+            最低价:
+            <i>¥{{entity.current_price}}</i>
+            <span>¥{{entity.price}}</span>
+          </div>
+          <div class="xqg_fanli">
+            <span>返利30元</span>
+          </div>
+        </template>
         <div
           class="content_insure"
         >商家已存入保证金{{entity.activity_type == 1 ? entity.price*entity.order_number : entity.price - entity.current_price }}元平台担保返款</div>
         <div class="content_btn">
-          <span>抢购</span>
+          <span>马上抢</span>
         </div>
       </div>
     </main>
@@ -81,12 +101,43 @@ export default {
       white-space: nowrap;
       text-overflow: ellipsis;
       margin-bottom: 5px;
+      font-weight: bold;
     }
     .content {
       width: 100%;
       font-size: 12px;
       & > div {
         width: 100%;
+      }
+      .xqg_price,
+      .xqg_num,
+      .xqg_fanli {
+        margin-bottom: 5px;
+        color: #999;
+        font-size: 12px;
+        i {
+          font-weight: bold;
+          color: #ff5500;
+        }
+      }
+      .xqg_price {
+        i {
+          padding: 0 10px;
+          font-size: 16px;
+        }
+        span {
+          text-decoration: line-through;
+        }
+      }
+      .xqg_fanli {
+        margin-bottom: 0;
+        span {
+          display: inline-block;
+          padding: 3px 7px;
+          background: #ff5500;
+          color: #fff;
+          border-radius: 0 15px 15px 0;
+        }
       }
       &_word {
         padding: 5px 0;
@@ -122,16 +173,16 @@ export default {
       }
       &_insure {
         color: #999;
-        margin: 8px 0;
+        padding: 7px 0;
       }
       &_btn {
-        text-align: center;
         span {
+          text-align: center;
           color: #fff;
           display: inline-block;
-          width: 92px;
-          height: 20px;
-          line-height: 20px;
+          width: 150px;
+          height: 22px;
+          line-height: 22px;
           border-radius: 5px;
           box-shadow: 0px 3px 1px 0px rgba(255, 201, 169, 0.43);
           background-image: linear-gradient(-90deg, #f95e26 0%, #fb9a0f 100%);

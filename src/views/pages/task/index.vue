@@ -71,27 +71,40 @@ export default {
   data() {
     return {
       isloading: false,
-      isActive: 1,
-      activeTab: 0,
       isVisible: false,
       myDate: null,
+      
+      isActive: this.$store.state.task.isActive, // free或者xqg
+      activeTab: this.$store.state.task.activeTab, // 状态标签
 
       formData: {
         task_start: "",
         task_end: "",
         page_num: 100,
         page: 1,
-        order_type: "1",
-        status: "0"
+        order_type: this.$store.state.task.isActive,
+        status: this.$store.state.task.activeTab
       },
       taskList: []
     };
   },
   watch: {
     isActive: function(val) {
-      if (val) this.formData.order_type = val + "";
+      if (val) {
+        // 改变状态缓存store
+        this.$store.dispatch('setTemp', {
+          isActive: val,
+          activeTab: this.activeTab
+        })
+        this.formData.order_type = val + "";
+      }
     },
     activeTab: function(val) {
+      // 改变状态缓存store
+      this.$store.dispatch('setTemp', {
+        isActive: this.isActive,
+        activeTab: val
+      })
       this.formData.status = val;
       this.getData();
     }
@@ -116,7 +129,7 @@ export default {
         this.isActive = num;
         this.getData();
       }
-    }
+    },
   }
 };
 </script>

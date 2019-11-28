@@ -42,6 +42,15 @@ export function transactionDetail(obj) {
     params: obj
   })
 }
+// 提现记录详情
+export function withdrawdetail(obj) {
+  return request({
+    url: '/u/Withdrawdetail',
+    method: 'post',
+    params: obj
+  })
+}
+
 
 // 个人基本信息
 export function userInfo(obj) {

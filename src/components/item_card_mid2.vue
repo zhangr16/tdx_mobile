@@ -7,13 +7,25 @@
       <div class="title">
         <span>{{entity.title}}</span>
       </div>
+      <!-- xqg -->
       <div class="content2" v-if="isBearBuy">
         <div class="content2_price">
-          <span>优惠价: ¥{{entity.current_price}}</span>
-          <span>原价: ¥{{entity.price}}</span>
+          <span>¥ {{entity.current_price}}</span>
+          <div>
+            <span>返利</span>
+            <span>¥{{entity.price - entity.current_price}}</span>
+          </div>
         </div>
-        <div class="content2_desc">拍下平台返还{{entity.price - entity.current_price}}元</div>
+        <div class="content2_desc">
+          <span>
+            最低价
+            <i>{{entity.price}}</i>元
+          </span>
+          <img v-if="entity.shop_type == 1" src="@/assets/tianmao.png" alt />
+          <img v-else src="@/assets/taobao.png" alt />
+        </div>
       </div>
+      <!-- free -->
       <div class="content" v-else>
         <div class="content_price">￥{{entity.price}}</div>
         <div class="content_desc">
@@ -98,23 +110,49 @@ export default {
     .content2 {
       &_price {
         display: flex;
-        justify-content: space-between;
-        font-size: 14px;
-        color: #ff5500;
-        & > span:last-child {
-          color: #999;
+        align-items: center;
+        font-size: 12px;
+        & > span {
+          font-size: 16px;
+          color: #ff464f;
           text-decoration: line-through;
-          font-size: 12px;
+        }
+        & > div {
+          margin-left: 10px;
+          border: 1px solid #ff464f;
+          & > span {
+            display: inline-block;
+            padding: 2px 5px;
+          }
+          & > span:first-child {
+            background: #ff464f;
+            color: #fff;
+          }
+          & > span:last-child {
+            background: #fff;
+            color: #ff464f;
+          }
         }
       }
       &_desc {
-        margin-top: 5px;
-        display: inline-block;
-        color: #fff;
-        background: #ff464f;
-        border-radius: 10px;
-        padding: 4px 7px;
-        font-size: 12px;
+        margin-top: 8px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        & > span:first-child {
+          color: #fff;
+          background: #ff464f;
+          border-radius: 0 15px 15px 0;
+          padding: 4px 7px;
+          font-size: 10px;
+          i {
+            font-size: 14px;
+          }
+        }
+        & > img {
+          width: 20px;
+          color: #ff464f;
+        }
       }
     }
     .content {
