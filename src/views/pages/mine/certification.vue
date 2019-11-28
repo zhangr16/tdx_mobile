@@ -1,7 +1,7 @@
 <template>
   <div class="certification">
     <header>
-      <van-icon class="left_arrow" name="arrow-left" @click="$router.go(-1)" />实名认证
+      <van-icon class="left_arrow" name="arrow-left" @click="$router.push('/mine')" />实名认证
     </header>
     <main>
       <van-field
@@ -119,6 +119,7 @@ export default {
           })
           .then(async () => {
             this.entity.prove_img = this.fileList[0].url;
+            // delete this.entity.is_submit
             let res = await verifyProve(this.entity);
             if (res && res.error.errno == 200) {
               this.$toast.success("认证申请成功！");

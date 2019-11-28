@@ -17,7 +17,11 @@
       <div class="content" v-else>
         <div class="content_price">￥{{entity.price}}</div>
         <div class="content_desc">
-          <van-progress pivot-text color="#ff5500" :percentage="50" />
+          <van-progress
+            pivot-text
+            color="#ff5500"
+            :percentage="100 * (1 - entity.order_count/entity.task_count)"
+          />
           <span class="word">
             已抢
             <i>{{entity.order_count}}</i>
@@ -126,7 +130,7 @@ export default {
         display: flex;
         flex-direction: column;
         color: #999;
-        margin-left: 5px;
+        margin: 0 20px;
         .van-progress {
           height: 5px;
         }

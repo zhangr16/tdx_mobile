@@ -77,8 +77,8 @@
     <van-popup v-model="showEducation" position="bottom">
       <van-picker
         show-toolbar
-        :default-index="['高中(中专)以下', '高中(中专)', '大专', '本科', '硕士', '硕士以上'].indexOf(entity.education)"
-        :columns="['高中(中专)以下', '高中(中专)', '大专', '本科', '硕士', '硕士以上']"
+        :default-index="['高中(中专)以下', '高中(中专)', '大专', '本科', '研究生', '博士'].indexOf(entity.education)"
+        :columns="['高中(中专)以下', '高中(中专)', '大专', '本科', '研究生', '博士']"
         @cancel="showEducation = false"
         @confirm="(val) => { entity.education = val; showEducation = false }"
       />

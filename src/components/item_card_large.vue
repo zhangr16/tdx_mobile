@@ -45,7 +45,7 @@ export default {
     },
     isFamily: {
       default: false,
-      type: Object
+      type: [Object, String]
     }
   },
   data() {

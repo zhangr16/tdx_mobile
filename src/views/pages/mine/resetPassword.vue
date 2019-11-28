@@ -82,6 +82,8 @@ export default {
         this.validateMsg.new_pwd = "新密码长度不能小于5位或大于13位";
       } else if (escape(this.userForm.new_pwd).indexOf("%u") >= 0) {
         this.validateMsg.new_pwd = "新密码不能有中文";
+      } else if(this.userForm.new_pwd == this.userForm.old_pwd) {
+        this.validateMsg.new_pwd = "新旧密码不能相同";
       } else {
         if (this.userForm.re_pwd != "") {
           this.validateRepassword();
@@ -168,7 +170,7 @@ export default {
       text-align: center;
       height: 44px;
       line-height: 44px;
-      background-color: #76cf7b;
+      background: linear-gradient(-90deg, #fc5303 0%, #fa8c05 100%);
       border-radius: 22px;
     }
   }

@@ -7,8 +7,8 @@
     </header>
     <main>
       <van-cell-group>
-        <van-field readonly v-model="form.user_ww" label="买家旺旺" placeholder="请输入买家旺旺" />
-        <van-field readonly v-model="form.order_sn" label="订单编号" placeholder="请输入订单编号" />
+        <van-field readonly v-model="form.user_ww" label="买家旺旺" placeholder="买家旺旺" />
+        <van-field readonly v-model="form.order_sn" label="订单编号" placeholder="订单编号" />
         <van-cell v-if="isEdit" class="uploads" title="上传截图" label="（最多3张）">
           <van-uploader :after-read	="afterRead" :before-delete="beforeDel" v-model="fileList" multiple :max-count="3" />
         </van-cell>
@@ -16,7 +16,7 @@
           <img v-for="(item, key) in form.img" :key="key" :src="item" alt="" />
         </van-cell>
       </van-cell-group>
-      <div class="submit_btn" v-if="isEdit" @click="handleSubmit">提交评论</div>
+      <div class="submit_btn" v-if="isEdit" @click="handleSubmit">提交好评截图</div>
     </main>
   </div>
 </template> 
@@ -136,7 +136,7 @@ export default {
       width: 345px;
       height: 44px;
       line-height: 44px;
-      background-color: #51c757;
+      background-color: #ff5500;
       border-radius: 22px;
     }
   }

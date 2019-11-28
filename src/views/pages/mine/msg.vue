@@ -16,7 +16,7 @@
         </div>
       </li>
     </ul>
-    <div class="no_data" v-else>
+    <div class="empty" v-else>
       <img src="@/assets/empty/img_xitongxiaoxi@2x.png" alt />
     </div>
   </div>

@@ -5,7 +5,11 @@
       {{ '售后详情' }}
     </header>
     <main>
-      <van-cell-group>
+      <van-cell-group v-if="isloading">
+        <van-skeleton title :row="3" />
+      </van-cell-group>
+      
+      <van-cell-group v-else>
         <!-- 状态层 -->
         <van-cell
           class="status_class"
@@ -53,7 +57,7 @@
             <span
               v-if="(entity.sale_status == 1 || entity.sale_status == 2) && isFans"
               style="background:#909399"
-              @click="handleClickBtns(-1)"
+              @click="chexiaoApply"
             >撤销申请</span>
             <!-- 申请方 -->
             <span
@@ -90,17 +94,21 @@
 
       <van-cell class="mid_history" title="协商历史" is-link @click="goTohistory" />
 
-      <section>
+      <van-cell-group v-if="isloading">
+        <van-skeleton title :row="5" />
+      </van-cell-group>
+      <template v-else>
+        <section>
         <div class="_title">售后信息</div>
         <div class="viewAfterDesc_body">
           <img :src="entity.img" alt />
           <!-- 限量免单 -->
-          <ul v-if="entity.order_type != 3">
+          <ul v-if="entity.module_type != 'xqg'">
             <li>{{entity.title}}</li>
             <li class="scale_num">订单编号：{{entity.order_sn}}</li>
             <li>
               原价：
-              <i>¥{{entity.task_price}}</i>
+              <i>¥{{entity.price}}</i>
             </li>
             <li>
               实拍：
@@ -146,7 +154,7 @@
             </li>
             <li v-if="entity.sale_type == 1">
               <i>任务原价：</i>
-              ￥{{entity.task_price}}
+              ￥{{entity.price}}
             </li>
             <li v-if="entity.sale_type == 1">
               <i>实拍价：</i>
@@ -167,6 +175,7 @@
           </ul>
         </van-cell>
       </van-cell-group>
+      </template>
     </main>
   </div>
 </template> 
@@ -179,6 +188,7 @@ export default {
   components: {},
   data() {
     return {
+      isloading: false, // 上部分
       columns: ["资金问题", "物流问题", "礼品问题", "其他"],
       fileList: [],
       entity: {},
@@ -186,6 +196,7 @@ export default {
     };
   },
   async mounted() {
+    this.isloading = true
     let res = await saleApply({
       sale_id: this.$route.query.id,
       action: 3
@@ -194,6 +205,7 @@ export default {
       this.entity = res.data;
       this.countDown();
     }
+    this.isloading = false
   },
   computed: {
     // 是否为粉丝 --> 申请方
@@ -237,6 +249,13 @@ export default {
     }
   },
   methods: {
+    chexiaoApply() {
+      this.$dialog.confirm({
+        message: '确认撤销任务么?'
+      }).then(() => {
+        this.handleClickBtns(-1)
+      })
+    },
     timeFormat(param) {
       return param < 10 ? "0" + param : param;
     },
@@ -262,13 +281,6 @@ export default {
         } else {
           clearInterval(interval);
           return (this.countDownList = "已过期"); 
-          // obj = {
-          //   day: "00",
-          //   hou: "00",
-          //   min: "00",
-          //   sec: "00"
-          // };
-          // clearInterval(interval);
         }
         this.countDownList =
           "还剩" +
@@ -312,6 +324,9 @@ export default {
   position: relative;
   width: 100%;
   padding-top: 40px;
+  .van-skeleton__content {
+    margin: 60px 0;
+  }
   & > header {
     width: 100%;
     position: fixed;

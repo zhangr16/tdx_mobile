@@ -120,6 +120,7 @@ export default {
   components: {},
   data() {
     return {
+      isloading: false,
       showImg: false,
       entity: {},
       typeArr: ["资金", "物流", "礼品", "其他"],
@@ -131,8 +132,10 @@ export default {
   },
   methods: {
     async getData() {
+      this.isloading = true
       let res = await saleHistory({ id: this.$route.query.id });
       if (res && res.error.errno == 200) this.entity = res.salehistory;
+      this.isloading = false
     },
     async handleReplay() {
       if (this.msg != "") {
@@ -228,7 +231,6 @@ export default {
 
   & > footer {
     width: 100%;
-    border: 1px solid red;
     position: fixed;
     background: #fff;
     bottom: 0;

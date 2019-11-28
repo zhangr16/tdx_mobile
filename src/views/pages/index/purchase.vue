@@ -1,7 +1,7 @@
 <template>
   <div class="purchase">
     <!-- 回退按钮 -->
-    <i class="backBtn" @click="$router.go(-1)">
+    <i class="backBtn" @click.passive="$router.go(-1)">
       <van-icon class="left_arrow" name="arrow-left" />
     </i>
 
@@ -50,7 +50,7 @@
       <ul>
         <li>1、点击“立即领取”,获取免单资格</li>
         <li>2、点击"开始任务",按照任务提示，以￥99.00元价格去指定平台</li>
-        <li>3、填写店铺名称，点击验证通过之后，填写订单号，并提交任务</li>
+        <li>3、复制宝贝链接，点击验证通过之后，填写订单号，并提交任务</li>
         <li>4、卖家发货→收到快递后到淘宝确认收货→给予五星好评并上传好评截图到平台→等待卖家确认</li>
         <li>5、卖家确认无误后，平台返款￥10.00元到您的账户中供您提现</li>
       </ul>
@@ -93,7 +93,7 @@
       <div class="_s" @click="$router.push('/index')">
         <span class="iconfont iconshouye-mashangqiangdangeshangpin"></span> 首页
       </div>
-      <div class="_s">
+      <div class="_s" @click="showService = true">
         <span class="iconfont iconkefu"></span> 客服
       </div>
       <div class="_l" @click="showConfirm = true">立即领取</div>
@@ -113,6 +113,16 @@
         <li>2.每天00:00平台停止抢单，00:00没有提交任务的订单将会自动退单，请及时完成任务</li>
       </ul>
     </van-dialog>
+    <!-- 服务弹窗 -->
+    <van-dialog
+      v-model="showService"
+      title="客服信息"
+      :closeOnClickOverlay="true"
+    >
+      <ul>
+        <li style="font-size:14px">注：如有疑问，请及时联系淘大熊客服（晴天或熊大）</li>
+      </ul>
+    </van-dialog>
   </div>
 </template>
 <script>
@@ -122,12 +132,12 @@ export default {
   name: "purchase",
   data() {
     return {
+      showService: false,
       showConfirm: false,
       entity: {}
     };
   },
   mounted() {
-    console.log(this.$route.query.isFamily)
     this.getData();
   },
   methods: {
@@ -144,13 +154,14 @@ export default {
         this.$toast.success('领取成功！')
         this.$router.push("/getStart?o_id=" + res.order_id);
       }
-    }
+    },
   }
 };
 </script>
 <style lang="scss">
 .purchase {
   position: relative;
+  margin-bottom: 50px;
   .backBtn {
     display: flex;
     justify-content: center;
@@ -252,6 +263,9 @@ export default {
     }
   }
   footer {
+    z-index: 999;
+    position: fixed;
+    bottom: 0;
     width: 100%;
     height: 50px;
     line-height: 50px;
@@ -263,6 +277,7 @@ export default {
       font-size: 14px;
       color: #666;
       text-align: center;
+      background: #fff;
       &:first-child {
         border-right: 1px solid #e5e5e5;
       }

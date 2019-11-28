@@ -11,9 +11,8 @@
         <div class="login_main">
           <van-field
             clearable
-            type="number"
             v-model.trim="userForm.user"
-            placeholder="请输入账号"
+            placeholder="请输入用户名"
             @input="validateMobile"
             :error-message="validateMsg.user"
           />
@@ -56,9 +55,7 @@ export default {
   methods: {
     validateMobile() {
       if (this.userForm.user == "") {
-        this.validateMsg.user = "请输入手机号码";
-      } else if (!/^1[3456789]\d{9}$/.test(this.userForm.user)) {
-        this.validateMsg.user = "请输入11位手机号码";
+        this.validateMsg.user = "请输入用户名";
       } else {
         this.validateMsg.user = "";
         return true;
@@ -126,10 +123,12 @@ export default {
         padding: 10px 30px;
         // 忘记密码
         .tips {
+          padding-left: 10px;
           font-size: 12px;
           color: #ff5500;
         }
         .van-cell {
+          padding-right: 0;
           input {
             padding: 10px 0;
           }

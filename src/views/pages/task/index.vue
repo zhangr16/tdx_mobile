@@ -39,17 +39,24 @@
         <i></i>
       </div>
       <!-- 任务卡 -->
-      <div class="no_data" v-if="isloading">
-        <van-loading type="spinner" />
-      </div>
-      <ul class="ul_items" v-else-if="taskList.length > 0">
-        <li v-for="(item, key) in taskList" :key="key">
-          <itemTask :entity="item" @update="getData" />
-        </li>
+
+      <ul class="ul_items">
+        <template v-if="isloading">
+          <div class="no_data">
+            <van-loading type="spinner" />
+          </div>
+        </template>
+        <template v-else-if="taskList.length > 0">
+          <li v-for="(item, key) in taskList" :key="key">
+            <itemTask :entity="item" @update="getData" />
+          </li>
+        </template>
+        <template v-else>
+          <div class="empty">
+            <img src="@/assets/empty/img_renwuzhongxin@2x.png" alt />
+          </div>
+        </template>
       </ul>
-      <div v-else class="empty">
-        <img src="@/assets/empty/img_renwuzhongxin@2x.png" alt="" />
-      </div>
     </main>
   </div>
 </template>
@@ -82,11 +89,11 @@ export default {
   },
   watch: {
     isActive: function(val) {
-      if(val) this.formData.order_type = val + "";
+      if (val) this.formData.order_type = val + "";
     },
     activeTab: function(val) {
       this.formData.status = val;
-      this.getData()
+      this.getData();
     }
   },
   mounted() {
@@ -94,15 +101,15 @@ export default {
   },
   methods: {
     setChooseValue(param) {
-      this.formData.task_start = param[0][3]
-      this.formData.task_end = param[1][3]
+      this.formData.task_start = param[0][3];
+      this.formData.task_end = param[1][3];
       this.getData();
     },
     async getData() {
-      this.isloading = true
+      this.isloading = true;
       let res = await order_list(this.formData);
-      if(res && res.error.errno == 200)  this.taskList = res.orderList || []
-      this.isloading = false
+      if (res && res.error.errno == 200) this.taskList = res.orderList || [];
+      this.isloading = false;
     },
     handleTabClick(num) {
       if (num != this.isActive) {

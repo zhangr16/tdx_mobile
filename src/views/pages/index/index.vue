@@ -74,7 +74,7 @@
       </ul>
 
       <div class="ul_wrapper">
-        <van-loading v-if="isloading" type="spinner" />
+        <van-skeleton v-if="isloading" :title="false" :avatar="false" :row="3" />
 
         <ul v-else-if="topList.length > 0">
           <li v-for="(item, x) in topList" :key="x">
@@ -88,7 +88,7 @@
     <!-- 种类推荐 -->
     <section v-for="(cate, x) in cateList" :key="x">
       <div class="sy_banner">
-        <img :src="cate.images_h5" @click="$router.push('/limitFree?p_id=' + cate.id)" />
+        <img :src="cate.images_h5" @click="$router.push('/limitFree?cid=' + cate.id)" />
       </div>
       <div class="ul_wrapper">
         <ul v-if="cate.activity_list.length > 0">
@@ -101,7 +101,7 @@
     </section>
 
     <!-- 精选免单 -->
-    <section style="padding:0">
+    <section>
       <header>
         <span>精选免单</span>
       </header>
@@ -314,7 +314,7 @@ export default {
         overflow-x: scroll;
         display: flex;
         li {
-          width: calc((100vw - 30px) / 3);
+          width: calc((100vw - 45px) / 3);
           padding-right: 5px;
         }
       }
@@ -322,7 +322,7 @@ export default {
 
     // 精选免单
     & > header {
-      padding: 10px 15px;
+      padding: 10px 0;
       span {
         font-size: 16px;
         padding: 0 8px;
@@ -338,7 +338,6 @@ export default {
         flex-wrap: wrap;
         li {
           width: calc((100% - 6px) / 2);
-          // height: 250px;
           margin-bottom: 5px;
         }
         .margin_right {

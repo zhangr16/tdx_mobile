@@ -212,6 +212,7 @@ export default {
           border: none;
         }
         .van-cell {
+          padding-right: 0; 
           input {
             padding: 10px 0;
           }

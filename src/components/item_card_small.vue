@@ -47,7 +47,6 @@ export default {
   width: 100%;
   & > img {
     width: 100%;
-    height: calc((100vw - 60px) / 3);
     background: gainsboro;
     border-radius: 5px;
   }

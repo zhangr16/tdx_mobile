@@ -3,7 +3,13 @@
     <header>
       <van-icon class="left_arrow" name="arrow-left" @click="$router.go(-1)" />售后类型
     </header>
-    <div class="no_data" v-if="fan_list.length == 0 && saler_list.length == 0">
+    <template v-if="isloading">
+      <div class="no_data">
+        <van-loading type="spinner" />
+      </div>
+    </template>
+    <template v-else>
+      <div class="no_data" v-if="fan_list.length == 0 && saler_list.length == 0">
       暂无售后类型
     </div>
     <div v-else>
@@ -16,6 +22,7 @@
         <van-cell v-for="(item, index) in saler_list" :key="index" :title="issueArr[item.sale_type - 1]" is-link @click="goToDesc(item.id)"/>
       </main>
     </div>
+    </template>
   </div>
 </template>
 <script>
@@ -27,6 +34,7 @@ export default {
   components: {},
   data() {
     return {
+      isloading: false,
       issueArr: ['资金问题', '物流问题', '礼品问题', '其他问题'],
       form: { a: "", b: "" },
       _id: null,
@@ -40,11 +48,13 @@ export default {
   },
   methods: {
     async getData() {
+      this.isloading = true
       let res = await saleApplyList({id: this._id})
       if(res && res.error.errno == 200) {
         this.saler_list = res.saleList2b
         this.fan_list = res.saleList2c
       }
+      this.isloading = false
     },
     // 跳转申请售后页面
     goToDesc(val) {

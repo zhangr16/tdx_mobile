@@ -5,109 +5,112 @@
       {{ form.sale_type || '申请售后' }}
     </header>
     <main>
-      <div class="applyAfter_body">
-        <!-- 图片 -->
-        <img :src="entity.img" alt />
-        <!-- 限量免单 -->
-        <ul v-if="entity.order_type != 3">
-          <li>{{entity.title}}</li>
-          <li class="scale_num">订单编号：{{entity.order_sn}}</li>
-          <li>
-            <span>
-              原价：
-              <i>¥{{entity.price}}</i>
-            </span>
-          </li>
-          <li>
-            <span>
-              实拍：
-              <i>¥{{entity.reality_price}}</i>
-            </span>
-            <span>
-              可获积分：
-              <i>{{entity.get_integral}}</i>
-            </span>
-          </li>
-          <li>账号：{{entity.mobile}}</li>
-        </ul>
-        <!-- 熊抢购 -->
-        <ul v-else>
-          <li>{{entity.title}}</li>
-          <li class="scale_num">订单编号：{{entity.order_sn}}</li>
-          <li>账号：{{entity.mobile}}</li>
-          <li>
-            <span>
-              优惠价：
-              <i>¥{{entity.current_price}}</i>
-            </span>
-            <span>
-              返利：
-              <i>¥{{entity.price - entity.reality_price}}</i>
-            </span>
-          </li>
-          <li>
-            <span>
-              原价：
-              <i>¥{{entity.price}}</i>
-            </span>
-            <span>
-              实拍：
-              <i>¥{{entity.reality_price}}</i>
-            </span>
-            <span>
-              积分：
-              <i>{{-entity.integral}}</i>
-            </span>
-          </li>
-        </ul>
-      </div>
-      <van-cell-group>
-        <van-field
-          clearable
-          readonly
-          clickable
-          label="申请原因"
-          :value="form.sale_type"
-          placeholder="请选择"
-          @click="() => {
+      <van-skeleton v-if="isloading" title avatar :row="5" />
+      <div v-else class="wrapper">
+        <div class="applyAfter_body">
+          <!-- 图片 -->
+          <img :src="entity.img" alt />
+          <!-- 限量免单 -->
+          <ul v-if="entity.order_type != 3">
+            <li>{{entity.title}}</li>
+            <li class="scale_num">订单编号：{{entity.order_sn}}</li>
+            <li>
+              <span>
+                原价：
+                <i>¥{{entity.price}}</i>
+              </span>
+            </li>
+            <li>
+              <span>
+                实拍：
+                <i>¥{{entity.reality_price}}</i>
+              </span>
+              <span>
+                可获积分：
+                <i>{{entity.get_integral}}</i>
+              </span>
+            </li>
+            <li>账号：{{entity.mobile}}</li>
+          </ul>
+          <!-- 熊抢购 -->
+          <ul v-else>
+            <li>{{entity.title}}</li>
+            <li class="scale_num">订单编号：{{entity.order_sn}}</li>
+            <li>账号：{{entity.mobile}}</li>
+            <li>
+              <span>
+                优惠价：
+                <i>¥{{entity.current_price}}</i>
+              </span>
+              <span>
+                返利：
+                <i>¥{{entity.price - entity.reality_price}}</i>
+              </span>
+            </li>
+            <li>
+              <span>
+                原价：
+                <i>¥{{entity.price}}</i>
+              </span>
+              <span>
+                实拍：
+                <i>¥{{entity.reality_price}}</i>
+              </span>
+              <span>
+                积分：
+                <i>{{-entity.integral}}</i>
+              </span>
+            </li>
+          </ul>
+        </div>
+        <van-cell-group>
+          <van-field
+            clearable
+            readonly
+            clickable
+            label="申请原因"
+            :value="form.sale_type"
+            placeholder="请选择"
+            @click="() => {
             if(!isEdit) showPicker = true
           }"
-        />
-        <van-cell v-if="form.sale_type == '资金问题'" class="uploads" title="实拍金额">
-          <div class="_funds">
-            ¥
-            <van-stepper v-model="form.reality_price" step="0.01" :decimal-length="2" min="0" />
-            <br />任务金额: ¥
-            <van-stepper disabled :value="entity.price" step="0.01" :decimal-length="2" />差价金额: ¥
-            <van-stepper
-              disabled
-              :value="(form.reality_price - entity.price) || 0"
-              step="0.01"
-              :decimal-length="2"
-              min="-99999"
-            />
-          </div>
-        </van-cell>
-        <van-field
-          type="textarea"
-          rows="1"
-          autosize
-          v-model="form.comment"
-          label="售后说明"
-          placeholder="请填写售后说明"
-        />
-        <van-cell class="uploads" title="售后凭证" label="（最多3张）">
-          <van-uploader
-            :after-read="afterRead"
-            :before-delete="beforeDel"
-            v-model="fileList"
-            multiple
-            :max-count="3"
           />
-        </van-cell>
-      </van-cell-group>
+          <van-cell v-if="form.sale_type == '资金问题'" class="uploads" title="实拍金额">
+            <div class="_funds">
+              ¥
+              <van-stepper v-model="form.reality_price" step="0.01" :decimal-length="2" min="0" />
+              <br />任务金额: ¥
+              <van-stepper disabled :value="entity.price" step="0.01" :decimal-length="2" />差价金额: ¥
+              <van-stepper
+                disabled
+                :value="(form.reality_price - entity.price) || 0"
+                step="0.01"
+                :decimal-length="2"
+                min="-99999"
+              />
+            </div>
+          </van-cell>
+          <van-field
+            type="textarea"
+            rows="1"
+            autosize
+            v-model="form.comment"
+            label="售后说明"
+            placeholder="请填写售后说明"
+          />
+          <van-cell class="uploads" title="售后凭证" label="（最多3张）">
+            <van-uploader
+              :after-read="afterRead"
+              :before-delete="beforeDel"
+              v-model="fileList"
+              multiple
+              :max-count="3"
+            />
+          </van-cell>
+        </van-cell-group>
 
-      <div class="submit_btn" @click="handleSubmit">提 交</div>
+        <div class="submit_btn" @click="handleSubmit">提 交</div>
+      </div>
     </main>
 
     <van-popup v-model="showPicker" position="bottom">
@@ -130,6 +133,7 @@ export default {
   data() {
     return {
       showPicker: false,
+      isloading: false,
       columns: ["资金问题", "物流问题", "礼品问题", "其他"],
       fileList: [], // 图片
       form: { comment: "", sale_type: null, reality_price: null },
@@ -149,11 +153,12 @@ export default {
   },
   methods: {
     async getData() {
+      this.isloading = true;
       if (this.isEdit) {
         let res = await saleApply({
           action: 5,
           sale_id: this._id
-        })
+        });
         if (res && res.error.errno == 200) {
           this.entity = res.saleInfo;
           // 表单设值
@@ -161,13 +166,13 @@ export default {
             sale_type: this.columns[res.saleInfo.sale_type - 1],
             reality_price: res.saleInfo.reality_price,
             comment: res.saleInfo.comment
-          }
+          };
           // 图片
           res.saleInfo.apply_img.map(el => {
             this.fileList.push({
               url: el
-            })
-          })
+            });
+          });
         }
       } else {
         let res = await saleApply({
@@ -179,6 +184,7 @@ export default {
           this.form.reality_price = res.orderInfo.reality_price;
         }
       }
+      this.isloading = false;
     },
     onConfirm(value) {
       this.form.sale_type = value;
@@ -212,7 +218,7 @@ export default {
       this.fileList.map(el => {
         arr.push(el.url);
       });
-      if(this.isEdit) {
+      if (this.isEdit) {
         queryObj = {
           action: 6,
           sale_id: this._id,
@@ -229,7 +235,7 @@ export default {
           apply_img: arr
         };
       }
-      
+
       if (queryObj.sale_type == 1) {
         queryObj.reality_price = this.form.reality_price;
       }
@@ -270,6 +276,7 @@ export default {
   & > main {
     width: 100%;
     background: #fff;
+    padding-bottom: 15px;
     .van-cell {
       padding-right: 0;
     }

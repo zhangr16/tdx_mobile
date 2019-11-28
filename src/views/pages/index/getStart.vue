@@ -35,8 +35,7 @@
           <article>
             <ul>
               <li style="color:#666">
-                请打开淘宝APP使用账号
-                <i style="color:#f7687c">小熊</i>登录。如果已登录请点击“我的淘宝”“头像”，确认会员名是否一致
+                请打开淘宝APP使用账号<i style="color:#f7687c">小熊</i>登录。如果已登录请点击“我的淘宝”“头像”，确认会员名是否一致
               </li>
               <li>* 复制关键词切换到淘宝APP搜索</li>
               <li>
@@ -80,13 +79,21 @@
                 * 商品主图：
                 <img class="main_img" :src="entity.img" alt />
               </li>
-              <li>* 核对宝贝，请提交宝贝链接或淘口令</li>
-              <li>
-                <input type="text" class="inp" v-model="checkUrl" />
-                <span class="search2" @click="handleConfirm">验 证</span>
-              </li>
-              <li class="scale_li">1、获取链接方法：长按宝贝标题获取宝贝链接</li>
-              <li class="scale_li">2、淘口令获取方法：宝贝标题右边点击“分享”-左下角点击复制链接-粘贴至空格点击验证</li>
+              <template v-if="entity.verify_url < 0">
+                <li>* 核对宝贝，请提交宝贝链接或淘口令</li>
+                <li>
+                  <van-icon
+                    v-if="checkUrl.length > 0"
+                    name="close"
+                    class="_del"
+                    @click="checkUrl = ''"
+                  />
+                  <input type="text" class="inp" v-model.trim="checkUrl" />
+                  <span class="search2" @click="handleConfirm">验 证</span>
+                </li>
+                <li class="scale_li">1、获取链接方法：长按宝贝标题获取宝贝链接</li>
+                <li class="scale_li">2、淘口令获取方法：宝贝标题右边点击“分享”-左下角点击复制链接-粘贴至空格点击验证</li>
+              </template>
             </ul>
           </article>
         </li>
@@ -105,30 +112,36 @@
       <div class="attention">注意 ：收到货后再确认收货，五星好评，然后上传好评截图到平台，等待商家审核之后申请提现返款</div>
     </section>
     <!-- 活动信息 -->
-    <section class="active_info">
+    <section class="active_info" v-if="entity.verify_url > 0">
       <header>活动信息</header>
       <van-cell-group>
-        <van-field v-model="activityForm.user_ww" label="接手旺旺" placeholder disabled />
+        <van-field v-model="activityForm.user_ww" label="接手旺旺" placeholder readonly />
         <van-field
           v-model.trim="activityForm.pay_amount"
           type="number"
           label="实际支付金额"
           placeholder="请输入实际支付金额"
         />
-        <van-cell class="_exchanger" title="积分抵换">
+        <van-cell class="_exchanger" title="积分抵换" v-if="entity.module_type == 'xqg'">
           <van-radio-group v-model="is_integral" :checked-color="`#ff5500`">
             <van-radio name="1">是</van-radio>
             <van-radio name="2">否</van-radio>
           </van-radio-group>
         </van-cell>
         <van-field
-          v-if="is_integral == 1"
+          v-if="is_integral == 1 && entity.module_type == 'xqg'"
           type="number"
           v-model.trim="activityForm.integral"
           label="积分兑换数量"
           placeholder="请输入积分兑换数量"
         />
-        <van-field v-model.trim="activityForm.order_sn" label="订单编号" placeholder="请输入订单编号" />
+        <van-field
+          v-model.trim="activityForm.order_sn"
+          label="订单编号"
+          placeholder="请输入订单编号"
+          maxlength="18"
+          clearable
+        />
         <van-field
           v-model.trim="activityForm.user_comment"
           label="买家备注"
@@ -136,8 +149,14 @@
           maxlength="20"
         />
       </van-cell-group>
-      <div style="text-align:center;margin-top:10px">
-        <van-button square type="primary" @click="handleSubmit">提 交</van-button>
+      <div style="text-align:center;margin-top:15px">
+        <van-button
+          color="linear-gradient(-90deg, #fa2440 0%, #f7697d 100%)"
+          square
+          size="large"
+          type="primary"
+          @click="handleSubmit"
+        >提 交</van-button>
       </div>
     </section>
 
@@ -177,9 +196,7 @@ export default {
         user_ww: ""
       },
       key_word: "",
-      showInfos: false,
       showDialog: false,
-
       informRadio: "",
       checkUrl: "",
 
@@ -198,7 +215,7 @@ export default {
   },
   watch: {
     is_integral: function(val) {
-      if(val == 2) delete this.activityForm.integral
+      if (val == 2) delete this.activityForm.integral;
     }
   },
   methods: {
@@ -224,20 +241,24 @@ export default {
     },
     // 验证
     async handleConfirm() {
-      let res = await oUrlcheck({
-        order_id: this.$route.query.o_id,
-        product_url: this.checkUrl
-      });
-      if (res && res.error.errno == 200) {
-        this.$toast.success("验证成功, 请填写下方活动信息");
-        this.showInfos = true;
+      if (this.checkUrl) {
+        let res = await oUrlcheck({
+          order_id: this.$route.query.o_id,
+          product_url: this.checkUrl
+        });
+        if (res && res.error.errno == 200) {
+          this.$toast.success("验证成功, 请填写下方活动信息");
+          this.entity.verify_url = 1;
+        }
+      } else {
+        this.$toast.fail("请填写宝贝链接或淘口令");
       }
     },
     // 举报
     async handleInform() {
       let res = await oFeedback({
         order_id: this.$route.query.o_id,
-        type: this.entity.activity_type,
+        type: this.entity.module_type == "free" ? 1 : 2,
         reason: this.informRadio
       });
       if (res && res.error.errno == 200) this.$toast.success("举报成功！");
@@ -245,18 +266,29 @@ export default {
     async handleSubmit() {
       if (!this.activityForm.pay_amount) {
         this.$toast.fail("请输入支付金额");
-      } else if (this.is_integral == 1 && !this.activityForm.integral) {
+      } else if (
+        this.activityForm.pay_amount !=
+        this.entity.price * this.entity.order_number
+      ) {
+        this.$toast.fail("实际支付金额不一致");
+      } else if (
+        this.is_integral == 1 &&
+        !this.activityForm.integral &&
+        this.entity.module_type == "xqg"
+      ) {
         this.$toast.fail("请输入积分兑换数量");
       } else if (!this.activityForm.order_sn) {
         this.$toast.fail("请输入订单编号");
+      } else if (this.activityForm.order_sn.length != 18) {
+        this.$toast.fail("请订单编号输入18位订单编号");
       } else {
         let res = await oSubmit({
           order_id: this.$route.query.o_id,
           ...this.activityForm
         });
-        if(res && res.error.errno == 200) {
-          this.$toast.success('提交成功！')
-          this.$router.push('/task')
+        if (res && res.error.errno == 200) {
+          this.$toast.success("提交成功！");
+          this.$router.push("/task");
         }
       }
     }
@@ -340,11 +372,19 @@ export default {
           margin-left: 6.5px;
           border-left: 1px dashed #999;
           li {
+            position: relative;
             padding: 5px 0;
             line-height: 1.5;
             font-size: 14px;
             .main_img {
               width: 100%;
+            }
+            ._del {
+              color: #999;
+              font-size: 16px;
+              position: absolute;
+              right: 100px;
+              top: 16px;
             }
             .inp {
               width: 245px;
@@ -415,8 +455,7 @@ export default {
 <style lang="scss">
 .active_info {
   .van-cell {
-    padding-left: 0;
-    padding-right: 0;
+    padding: 15px 0;
   }
   .van-field__control {
     padding-left: 6px;

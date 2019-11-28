@@ -1,17 +1,18 @@
 <template>
   <div class="mine">
+
     <header>
       <div class="msg">
         <span class="iconfont iconxiaoxi" @click="$router.push('/msg')"></span>
         <span @click="$router.push('/msg')">({{entity.un_msg_num || 0}})</span>
       </div>
-
-      <div v-if="isloading">
+      <van-skeleton v-if="isloading" title avatar :row="1" />
+      <!-- <div v-if="isloading">
         <van-loading type="spinner" />
-      </div>
+      </div> -->
       <div v-else class="desc">
         <div class="img">
-          <van-image v-if="entity.avatar" :src="entity.avatar" use-error-slot>
+          <van-image :src="entity.avatar" use-error-slot>
             <span slot="error" class="iconfont iconmorentouxiang"></span>
           </van-image>
         </div>
@@ -19,14 +20,14 @@
           <div class="desc_top">用户名:{{entity.mobile}}</div>
           <div class="desc_bottom">
             <span>邀请码：{{invited_code}}</span>
-            <span>免单30天总单量：{{entity.order_month_num}}单</span>
+            <span>免单30天总单量：{{entity.order_month_num || 0}}单</span>
           </div>
         </div>
       </div>
       
       <div class="nums">
-        <span>账户余额：{{entity.balance}}</span>
-        <span>积分：{{entity.integral}}</span>
+        <span>账户余额：{{entity.balance || 0}}</span>
+        <span>积分：{{entity.integral || 0}}</span>
       </div>
     </header>
     <main>
@@ -225,7 +226,7 @@ export default {
       // 计算免单
       let sum = 0
       Object.keys(this.entity.order_num.free).map(el => {
-        sum += this.entity.order_num.free[el]
+        if(el != 'after_sale_num') sum += this.entity.order_num.free[el]
       })
       this.free_total = sum
     }

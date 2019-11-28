@@ -275,9 +275,9 @@ export default {
       font-weight: bold;
       font-size: 16px;
       & > span {
-        width: 2px;
-        height: 12px;
-        background: #333;
+        width: 3px;
+        height: 14px;
+        background: #ff5500;
         margin-right: 5px;
       }
     }

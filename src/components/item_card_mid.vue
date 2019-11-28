@@ -57,11 +57,10 @@ export default {
   width: 100%;
   & > img {
     width: 100%;
-    height: calc((100vw - 4px) / 2);
     background: gainsboro;
   }
   & > main {
-    width: calc((100vw - 4px) / 2);
+    width: 100%;
     padding: 0 14px;
     .title {
       display: flex;
@@ -108,14 +107,13 @@ export default {
         font-size: 18px;
         color: #ff5500;
         text-decoration: line-through;
-        width: 100px;
+        width: 70px;
       }
       &_desc {
         flex: 1;
         display: flex;
         flex-direction: column;
         color: #999;
-        margin-left: 5px;
         .van-progress {
           height: 5px;
         }
@@ -139,7 +137,7 @@ export default {
       font-size: 13px;
       margin: 10px 0;
       padding: 5px 6px;
-      width: calc(100%);
+      width: 100%;
       color: #ff5500;
       border: 1px solid #ff5500;
       border-radius: 5px;

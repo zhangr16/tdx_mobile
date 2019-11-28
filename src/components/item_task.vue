@@ -2,21 +2,11 @@
   <div class="item_task">
     <!-- 商品信息 -->
     <van-dialog v-model="showImg" title="商品信息" :closeOnClickOverlay="true">
-      <img
-        style="width:100%;"
-        :src="entity.img"
-        alt
-      />
+      <img style="width:100%;" :src="entity.img" alt />
     </van-dialog>
     <!-- 商家备注 -->
     <van-dialog v-model="showRemark" title="商家备注" :closeOnClickOverlay="true">
-      <van-field
-        :value="remarkEntity.mc_comment"
-        label="备注"
-        type="textarea"
-        autosize
-        disabled
-      />
+      <van-field :value="remarkEntity.mc_comment" label="备注" type="textarea" autosize disabled />
     </van-dialog>
     <!-- 查看定制评价 -->
     <van-dialog class="uploads" v-model="showEvaluate" title="定制评价" :closeOnClickOverlay="true">
@@ -80,10 +70,12 @@
         <span style="background:#409eff" @click="showImg = true">商品信息</span>
         <span
           style="background:#51c757"
+          v-if="entity.status >= 2"
           @click="$router.push('/applyAfter?id=' + entity.id)"
         >申请售后</span>
         <span
           style="background:#fa3950"
+          v-if="entity.status >= 2"
           @click="$router.push('/viewAfter?id=' + entity.id)"
         >查看售后</span>
         <span
@@ -100,19 +92,20 @@
       </div>
       <!-- 时间 -->
       <div class="times">
-        <span>申请时间：{{entity.task_start}}</span>
-        <!-- <span v-if="entity.status == '已领取'">完成时间：2019-08-06 12:11</span> -->
-        <span>完成时间：{{entity.task_end}}</span>
+        <span>申请时间：{{entity.create_time}}</span>
+        <span v-if="entity.finish_time">完成时间：{{entity.finish_time}}</span>
+        <!-- 待审核显示：最后审核时间 -->
+        <span v-if="entity.status == 3 && entity.audit_time">最后审核时间：{{entity.audit_time}}</span>
       </div>
       <div class="two_btns">
-        <span>
-          <i class="red" @click="$router.push('/getStart')">开始任务</i>
+        <span v-if="entity.status == 1">
+          <i class="red" @click="$router.push('/getStart?o_id=' + entity.id)">开始任务</i>
         </span>
         <span v-if="entity.status == 1">
           <i class="gray" @click="chargeBack">我要退单</i>
         </span>
       </div>
-      <div class="two_btns margin_top" v-if="entity.make_status != 0">
+      <div class="two_btns" v-if="entity.make_status != 0">
         <span>
           <i class="red" @click="viewEvaluation">查看定制评价</i>
         </span>
@@ -121,7 +114,7 @@
   </div>
 </template>
 <script>
-import { order_action } from "@/api/index"
+import { order_action } from "@/api/index";
 
 // 任务中心 任务卡
 export default {
@@ -149,12 +142,12 @@ export default {
       let res = await order_action({
         id: this.entity.id,
         type: 4
-      })
-      if(res && res.error.errno == 200) {
+      });
+      if (res && res.error.errno == 200) {
         this.evaluateEntity = {
           m_eva_explain: res.m_eva_explain,
           imgs: res.img
-        }
+        };
         this.showEvaluate = true;
       }
     },
@@ -162,23 +155,29 @@ export default {
       let res = await order_action({
         id: this.entity.id,
         type: 5
-      })
-      if(res && res.error.errno == 200) {
-        this.remarkEntity.mc_comment = res.mc_comment
+      });
+      if (res && res.error.errno == 200) {
+        this.remarkEntity.mc_comment = res.mc_comment;
         this.showRemark = true;
       }
     },
     // 退款
-    async chargeBack() {
-      let res = await order_action({
-        id: this.entity.id,
-        type: 6
-      })
-      if(res && res.error.errno == 200) {
-        this.$toast.success(res.error.usermsg)
-        this.$emit('update')
-      }
-    },
+    chargeBack() {
+      this.$dialog
+        .confirm({
+          message: "确认退单么?"
+        })
+        .then(async () => {
+          let res = await order_action({
+            id: this.entity.id,
+            type: 6
+          });
+          if (res && res.error.errno == 200) {
+            this.$toast.success(res.error.usermsg);
+            this.$emit("update");
+          }
+        });
+    }
   }
 };
 </script>
@@ -245,9 +244,6 @@ export default {
       span {
         flex: 1;
       }
-    }
-    .margin_top {
-      margin-top: 10px;
     }
     .two_btns {
       display: flex;

@@ -94,7 +94,7 @@
           </div>
         </li>
       </ul>
-      <div v-else style="text-align:center">
+      <div v-else class="empty">
         <img src="@/assets/empty/img_zijinmingxi@2x.png" alt="" />
       </div>
     </main>

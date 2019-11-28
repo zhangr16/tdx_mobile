@@ -5,34 +5,55 @@
     </header>
     <ul>
       <li>
-        <div>1、复制链接分享给好友或朋友圈</div>
+        <div class="title">1、复制链接分享给好友或朋友圈</div>
         <div>http://106.54.237.151/uh5/#/register?code={{invite_code}}</div>
       </li>
       <li>
-        <div>2、长按二维码保存到手机分享给好友或朋友圈</div>
+        <div class="title">2、长按二维码保存到手机分享给好友或朋友圈</div>
         <div class="qr_code">
-          <qrcode :wid="100" :hei="100" :url="'http://106.54.237.151/uh5/#/register?code=' + invite_code"></qrcode>
+          <qrcode
+            v-show="showing"
+            :wid="150"
+            :hei="150"
+            :url="'http://106.54.237.151/uh5/#/register?code=' + invite_code"
+          ></qrcode>
+          <div id="qrcode">
+            <img :src="image_src" alt="" />
+          </div>
         </div>
       </li>
     </ul>
   </div>
 </template> 
 <script>
-import qrcode from 'vue_qrcodes'
+import qrcode from "vue_qrcodes";
 
 export default {
   // 分享好友
   name: "share",
   components: { qrcode },
   data() {
-    return {};
+    return {
+      showing: true,
+      image_src: null
+    };
+  },
+  mounted() {
+    let canvas = document.getElementsByTagName("canvas")[0];
+    this.canvasToImage(canvas);
   },
   computed: {
     invite_code() {
-      return this.$store.state.user.name.invite_code || ''
+      return this.$store.state.user.name.invite_code || "";
     }
   },
-  methods: {}
+  methods: {
+    canvasToImage(canvas) {
+      // canvas.toDataURL 返回的是一串Base64编码的URL
+      this.image_src = canvas.toDataURL("image/png");
+      this.showing = false
+    }
+  },
 };
 </script>
 <style lang="scss" scope>
@@ -64,9 +85,12 @@ export default {
     li {
       width: 100%;
       font-weight: bold;
-      font-size: 13px;
+      font-size: 12px;
       padding: 15px;
       line-height: 1.5;
+      .title {
+        font-size: 14px;
+      }
       & > div {
         overflow: hidden;
       }
@@ -74,7 +98,10 @@ export default {
         display: flex;
         justify-content: center;
         align-items: center;
-        margin-top: 15px;
+        margin: 25px 0;
+        .logoimg {
+          background: #fff;
+        }
       }
     }
   }
