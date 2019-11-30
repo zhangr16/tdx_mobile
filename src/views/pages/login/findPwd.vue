@@ -16,12 +16,20 @@
           />
           <van-field v-model="userForm.sms_code" clearable placeholder="验证码">
             <van-button
+              v-if="showCount"
               class="tips"
               slot="button"
               size="small"
               type="primary"
               @click="handleSendVerify"
             >获取验证码</van-button>
+            <van-button
+              v-else
+              class="tips"
+              slot="button"
+              size="small"
+              type="primary"
+            >重新发送({{countNum}}s)</van-button>
           </van-field>
           <van-field
             clearable
@@ -48,26 +56,46 @@
 </template>
 <script>
 import { sendVerify } from "@/api/index.js";
-import { findPwd } from "@/api/mine.js"
+import { findPwd } from "@/api/mine.js";
 // 找回密码
 export default {
   name: "findPwd",
   data() {
     return {
+      timer: null,
+      countNum: "", // 倒计时
+      showCount: true,
+
       userForm: {
         mobile: "",
         pwd: "",
         re_password: "",
-        platform: '2c'
+        platform: "2c"
       },
       validateMsg: {
         mobile: "",
         pwd: "",
-        re_password: "",
+        re_password: ""
       }
     };
   },
   methods: {
+    // 倒计时计算
+    countVerifyNum() {
+      if (!this.timer) {
+        this.countNum = 60;
+        this.showCount = false;
+        this.timer = setInterval(() => {
+          if (this.countNum > 1 && this.countNum <= 60) {
+            this.countNum--;
+          } else {
+            this.showCount = true;
+            clearInterval(this.timer);
+            this.timer = null;
+          }
+        }, 1000);
+      }
+    },
     validateMobile() {
       if (this.userForm.mobile == "") {
         this.validateMsg.mobile = "请输入手机号码";
@@ -79,10 +107,7 @@ export default {
       }
     },
     validatePassword() {
-      if (
-        this.userForm.pwd.length < 5 ||
-        this.userForm.pwd.length > 13
-      ) {
+      if (this.userForm.pwd.length < 5 || this.userForm.pwd.length > 13) {
         this.validateMsg.pwd = "密码长度不能小于5位或大于13位";
       } else if (escape(this.userForm.pwd).indexOf("%u") >= 0) {
         this.validateMsg.pwd = "密码不能有中文";
@@ -118,12 +143,14 @@ export default {
         let queryObj = {
           mobile: this.userForm.mobile,
           platform: "2c",
-          is_repeat: true,
+          is_repeat: "false",
           type: 3
         };
         let res = await sendVerify(queryObj);
-        if (res && res.error.errno == 200)
-          this.$toast.success("验证码发送成功！请在手机上查看");
+        if (res && res.error.errno == 200) {
+          this.$toast.success("验证码发送成功！请查看");
+          this.countVerifyNum();
+        }
       }
     },
     async handleSubmit() {

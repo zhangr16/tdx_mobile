@@ -238,7 +238,7 @@ export default {
       return r;
     },
     status_label() {
-      if (this.entity.sale_status == 1 || this.entity.sale_status == 2) {
+      if (this.entity.sale_status == 1) {
         // 倒计时
         return this.countDownList;
       } else if (this.entity.sale_status == 3) {
@@ -251,7 +251,7 @@ export default {
   methods: {
     chexiaoApply() {
       this.$dialog.confirm({
-        message: '确认撤销任务么?'
+        message: '确认撤销申请吗?'
       }).then(() => {
         this.handleClickBtns(-1)
       })
@@ -280,7 +280,7 @@ export default {
           };
         } else {
           clearInterval(interval);
-          return (this.countDownList = "已过期"); 
+          return (this.countDownList = ""); 
         }
         this.countDownList =
           "还剩" +

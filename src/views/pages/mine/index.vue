@@ -171,15 +171,15 @@
             <img src="@/assets/mine/wd_icon_xiugaimima@2x.png" alt />
             <span>修改密码</span>
           </li>
-          <li @click="$router.push('/friendShip')">
+          <li v-if="entity.is_family > 0" @click="$router.push('/friendShip')">
             <img src="@/assets/mine/wd_icon_qinyoutuan@2x.png" alt />
             <span>亲友团</span>
           </li>
-          <li class="br_none" @click="$router.push('/hdjl')">
+          <li :class="{'br_none': entity.is_family > 0}" @click="$router.push('/hdjl')">
             <img src="@/assets/mine/wd_icon_huodongjiangli@2x.png" alt />
             <span>活动奖励</span>
           </li>
-          <li @click="$router.push('/update')">
+          <li :class="{'br_none': entity.is_family < 0}" @click="$router.push('/update')">
             <img src="@/assets/mine/wd_icon_gengxin@2x.png" alt />
             <span>更新说明</span>
           </li>
@@ -404,9 +404,9 @@ export default {
             height: 25px;
             margin-bottom: 10px;
           }
-          &:last-child {
-            border-bottom: none 
-          }
+        }
+        .bb_none {
+          border-bottom: none;
         }
         .br_none {
           border-right: none;

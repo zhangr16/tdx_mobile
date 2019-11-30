@@ -10,7 +10,7 @@
       <!-- xqg -->
       <div class="content2" v-if="isBearBuy">
         <div class="content2_price">
-          <span>¥ {{entity.current_price}}</span>
+          <span>¥ {{entity.price}}</span>
           <div>
             <span>返利</span>
             <span>¥{{entity.price - entity.current_price}}</span>
@@ -19,7 +19,7 @@
         <div class="content2_desc">
           <span>
             最低价
-            <i>{{entity.price}}</i>元
+            <i>{{entity.current_price}}</i>元
           </span>
           <img v-if="entity.shop_type == 1" src="@/assets/tianmao.png" alt />
           <img v-else src="@/assets/taobao.png" alt />

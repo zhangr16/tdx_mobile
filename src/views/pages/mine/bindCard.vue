@@ -29,12 +29,20 @@
         v-if="isReadonly"
       >
         <van-button
+          v-if="showCount"
           class="tips"
           slot="button"
           size="small"
           type="primary"
           @click="handleSendVerify"
         >获取验证码</van-button>
+        <van-button
+          v-else
+          class="tips"
+          slot="button"
+          size="small"
+          type="primary"
+        >重新发送({{countNum}}s)</van-button>
       </van-field>
       <van-cell is-link @click="openAreaSelect" title="开户地区" placeholder="请输入开户地区">
         <span
@@ -84,6 +92,10 @@ export default {
   components: {},
   data() {
     return {
+      timer: null,
+      countNum: "", // 倒计时
+      showCount: true,
+
       bankArr: [
         { value: "10806309", label: "中国建设银行" },
         { value: "10806310", label: "中国农业银行" },
@@ -145,6 +157,22 @@ export default {
     }
   },
   methods: {
+    // 倒计时计算
+    countVerifyNum() {
+      if (!this.timer) {
+        this.countNum = 60;
+        this.showCount = false;
+        this.timer = setInterval(() => {
+          if (this.countNum > 1 && this.countNum <= 60) {
+            this.countNum--;
+          } else {
+            this.showCount = true;
+            clearInterval(this.timer);
+            this.timer = null;
+          }
+        }, 1000);
+      }
+    },
     openBankSelect() {
       if (this.isReadonly) this.showBank = true;
     },
@@ -157,12 +185,14 @@ export default {
         let queryObj = {
           mobile: this.entity.mobile,
           platform: "2c",
-          is_repeat: true,
+          is_repeat: 'false',
           type: 4
         };
         let res = await sendVerify(queryObj);
-        if (res && res.error.errno == 200)
+        if (res && res.error.errno == 200) {
           this.$toast.success("验证码发送成功！请查看");
+          this.countVerifyNum();
+        }
       }
     },
     // 省市级联选择回调

@@ -9,6 +9,13 @@
         <div class="register_main">
           <van-field
             clearable
+            v-model="userForm.account"
+            placeholder="请输入用户名"
+            @input="validateAccount"
+            :error-message="validateMsg.account"
+          />
+          <van-field
+            clearable
             v-model="userForm.mobile"
             placeholder="请输入手机号"
             @input="validateMobile"
@@ -16,12 +23,20 @@
           />
           <van-field v-model="userForm.sms_code" clearable placeholder="验证码">
             <van-button
+            v-if="showCount"
               class="tips"
               slot="button"
               size="small"
               type="primary"
               @click="handleSendVerify"
             >获取验证码</van-button>
+            <van-button
+              v-else
+              class="tips"
+              slot="button"
+              size="small"
+              type="primary"
+            >重新发送({{countNum}}s)</van-button>
           </van-field>
           <van-field
             clearable
@@ -46,8 +61,8 @@
             @input="validateInvitecode"
             :error-message="validateMsg.invite_code"
           />
-          <div class="l_btn" @click="handleSubmit()">注 册</div>
-          <div class="r_btn" @click="handleCancle()">取 消</div>
+          <div class="l_btn" @click.passive="handleSubmit()">注 册</div>
+          <div class="r_btn" @click.passive="handleCancle()">取 消</div>
         </div>
       </section>
     </div>
@@ -60,13 +75,19 @@ export default {
   name: "register",
   data() {
     return {
+      timer: null,
+      countNum: "", // 倒计时
+      showCount: true,
+
       userForm: {
+        account: "",
         mobile: "",
         pwd: "",
         re_password: "",
         invite_code: ""
       },
       validateMsg: {
+        account: "",
         mobile: "",
         pwd: "",
         re_password: "",
@@ -78,6 +99,32 @@ export default {
     this.userForm.invite_code = this.$route.query.code || "";
   },
   methods: {
+    // 倒计时计算
+    countVerifyNum() {
+      if (!this.timer) {
+        this.countNum = 60;
+        this.showCount = false;
+        this.timer = setInterval(() => {
+          if (this.countNum > 1 && this.countNum <= 60) {
+            this.countNum--;
+          } else {
+            this.showCount = true;
+            clearInterval(this.timer);
+            this.timer = null;
+          }
+        }, 1000);
+      }
+    },
+    validateAccount() {
+      if (this.userForm.account == "") {
+        this.validateMsg.account = "请输入用户名";
+      } else if(/^[0-9]+$/.test(this.userForm.account)) {
+        this.validateMsg.account = "用户名不能全为数字"
+      } else {
+        this.validateMsg.account = "";
+        return true;
+      }
+    },
     validateMobile() {
       if (this.userForm.mobile == "") {
         this.validateMsg.mobile = "请输入手机号码";
@@ -136,20 +183,23 @@ export default {
         let queryObj = {
           mobile: this.userForm.mobile,
           platform: "2c",
-          is_repeat: true,
           type: 2
         };
         let res = await sendVerify(queryObj);
-        if (res && res.error.errno == 200)
+        if (res && res.error.errno == 200) {
           this.$toast.success("验证码发送成功！请在手机上查看");
+          this.countVerifyNum();
+        }
       }
     },
     async handleSubmit() {
+      this.validateAccount();
       this.validateMobile();
       this.validatePassword();
       this.validateRepassword();
       this.validateInvitecode();
       if (
+        this.validateMsg.account == "" &&
         this.validateMsg.mobile == "" &&
         this.validateMsg.pwd == "" &&
         this.validateMsg.re_password == ""
@@ -214,7 +264,7 @@ export default {
         .van-cell {
           padding-right: 0; 
           input {
-            padding: 10px 0;
+            padding: 6px 0;
           }
           &::after {
             position: absolute;

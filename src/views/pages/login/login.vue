@@ -124,7 +124,7 @@ export default {
         // 忘记密码
         .tips {
           padding-left: 10px;
-          font-size: 12px;
+          font-size: 14px;
           color: #ff5500;
         }
         .van-cell {

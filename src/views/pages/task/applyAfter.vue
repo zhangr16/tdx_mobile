@@ -212,12 +212,19 @@ export default {
     // 提交按钮
     async handleSubmit() {
       if (!this.form.sale_type) return this.$toast.fail("请选择申请原因");
+      if (
+        this.form.sale_type == "资金问题" &&
+        this.form.reality_price == this.entity.price
+      )
+        return this.$toast.fail("实拍价不能等于任务金额");
 
       let arr = [];
       let queryObj;
       this.fileList.map(el => {
         arr.push(el.url);
       });
+      if (arr.length <= 0) return this.$toast.fail("请上传售后凭证");
+
       if (this.isEdit) {
         queryObj = {
           action: 6,
