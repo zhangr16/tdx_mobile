@@ -26,21 +26,27 @@
         </div>
       </div>
       <!-- free -->
-      <div class="content" v-else>
-        <div class="content_price">￥{{entity.price}}</div>
-        <div class="content_desc">
-          <van-progress
-            pivot-text
-            color="#ff5500"
-            :percentage="100 * (1 - entity.order_count/entity.task_count)"
-          />
-          <span class="word">
-            已抢
-            <i>{{entity.order_count}}</i>
-            件 共{{entity.task_count}}件
-          </span>
+      <template v-else>
+        <div class="two_icons">
+          <i class="two_icons_first" v-if="entity.is_img">需晒图</i>
+          <i class="two_icons_last" v-if="entity.integral">积分奖励{{entity.integral}}</i>
         </div>
-      </div>
+        <div class="content">
+          <div class="content_price">￥{{entity.price}}</div>
+          <div class="content_desc">
+            <van-progress
+              pivot-text
+              color="#ff5500"
+              :percentage="entity.task_count ? 100 * (1 - entity.order_count/entity.task_count) : 100"
+            />
+            <span class="word">
+              已抢
+              <i>{{entity.order_count}}</i>
+              件 共{{entity.task_count}}件
+            </span>
+          </div>
+        </div>
+      </template>
       <div class="btn">马上抢</div>
     </main>
   </div>
@@ -153,6 +159,24 @@ export default {
           width: 20px;
           color: #ff464f;
         }
+      }
+    }
+    .two_icons {
+      padding: 5px 0;
+      i {
+        display: inline-block;
+        color: #fff;
+        padding: 3px 5px;
+        border-radius: 3px;
+        &:first-child {
+          margin-right: 8px;
+        }
+      }
+      &_first {
+        background: linear-gradient(-90deg, #ff0c46 0%, #ff797d 100%);
+      }
+      &_last {
+        background: linear-gradient(90deg, #769dff 0%, #316ded 100%);
       }
     }
     .content {

@@ -1,19 +1,15 @@
 <template>
   <div class="purchase">
     <!-- 回退按钮 -->
-    <i class="backBtn" @click.passive="$router.go(-1)">
+    <i class="backBtn" @click.passive="$router.push('/')">
       <van-icon class="left_arrow" name="arrow-left" />
     </i>
-
-    <van-swipe class="img_banner" :initial-swipe="0" :autoplay="3000" ref="swiper">
-      <van-swipe-item>
-        <van-image :src="entity.img">
-          <template v-slot:loading>
-            <van-loading type="spinner" size="20" />
-          </template>
-        </van-image>
-      </van-swipe-item>
-    </van-swipe>
+    <img class="main_img" :src="entity.img" alt="" />
+    <!-- <van-image :src="entity.img">
+      <template v-slot:loading>
+        <van-loading type="spinner" size="20" />
+      </template>
+    </van-image> -->
 
     <van-cell-group v-if="isloading">
       <van-skeleton title :row="2" />
@@ -110,7 +106,7 @@
       </div>
     </section>
     <!-- 温馨提示 -->
-    <section class="purchase_tip" style="margin-bottom:0">
+    <section class="purchase_tip" style="margin-bottom:50px">
       <header>
         <span class="iconfont iconwenxintishi"></span> 温馨提示
       </header>
@@ -176,22 +172,22 @@ export default {
       this.isloading = false;
     },
     async handleConfirm() {
+      sessionStorage.setItem('t_id', this.$route.query.t_id)
+
       let res = await tReceive({
         t_id: this.$route.query.t_id,
         is_family: this.$route.query.isFamily == "true" ? 1 : null
       });
       if (res && res.error.errno == 200) {
-        this.$toast.success("领取成功！");
         this.$router.push("/getStart?o_id=" + res.order_id);
       }
-    }
+    },
   }
 };
 </script>
 <style lang="scss">
 .purchase {
   position: relative;
-  margin-bottom: 50px;
   .backBtn {
     display: flex;
     justify-content: center;
@@ -220,10 +216,9 @@ export default {
     }
   }
   // 图片样式
-  .img_banner img {
+  .main_img{
     display: block;
     width: 100vw;
-    height: 100vw;
   }
 
   &_info {

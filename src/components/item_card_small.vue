@@ -9,7 +9,7 @@
           <van-progress
             pivot-text
             color="#ff5500"
-            :percentage="100 * (1 - entity.order_count/entity.task_count)"
+            :percentage="entity.task_count ? 100 * (1 - entity.order_count/entity.task_count) : 100"
           />
           <span>已抢<i>{{entity.order_count}}</i>件共{{entity.task_count || 1}}件</span>
         </div>
@@ -47,11 +47,11 @@ export default {
   width: 100%;
   & > img {
     width: 100%;
+    height: calc((100vw - 60px) / 3);
     background: gainsboro;
     border-radius: 5px;
   }
   & > main {
-    width: calc((100vw - 60px) / 3);
     .title {
       font-size: 12px;
       text-align: left;

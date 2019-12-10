@@ -41,14 +41,14 @@ export default [
         component: () => import('@/views/pages/classify'),
         meta: { title: '淘大熊' }
       },
-      // 问题集
-      {
-        path: '/questions',
-        name: 'questions',
-        component: () => import('@/views/pages/mine/questions'),
-        meta: { title: '' }
-      },
     ]
+  },
+  // 问题集
+  {
+    path: '/questions',
+    name: 'questions',
+    component: () => import('@/views/pages/mine/questions'),
+    meta: { title: '' }
   },
   // 马上抢
   {
@@ -182,6 +182,13 @@ export default [
     name: 'certification',
     component: () => import('@/views/pages/mine/certification'),
     meta: { title: '' }
+  },
+  // 客服信息微信
+  {
+    path: '/kefuInfo',
+    name: 'kefuInfo',
+    component: () => import('@/views/pages/mine/kefuInfo'),
+    meta: { title: '客服信息' }
   },
   // 个人基本资料
   {

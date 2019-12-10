@@ -35,7 +35,7 @@
           <article>
             <ul>
               <li style="color:#666">
-                请打开淘宝APP使用账号<i style="color:#f7687c">小熊</i>登录。如果已登录请点击“我的淘宝”“头像”，确认会员名是否一致
+                请打开淘宝APP使用账号<i style="color:#f7687c">{{entity.user_ww}}</i>登录。如果已登录请点击“我的淘宝”“头像”，确认会员名是否一致
               </li>
               <li>* 复制关键词切换到淘宝APP搜索</li>
               <li>
@@ -69,7 +69,6 @@
           </header>
           <article style="border:none">
             <ul>
-              <li style="color:#666">货比三家，每个商品页从上到下浏览三分钟左右</li>
               <li>* 店铺名称：{{entity.shop_name}}</li>
               <li>* 商品价格：合计{{entity.price*entity.order_number}}元（{{entity.price + '元/*' + entity.order_number + '件'}}）</li>
               <li>* 发货地：{{entity.area}}</li>
@@ -301,7 +300,7 @@ export default {
   & > header {
     width: 100%;
     position: fixed;
-    z-index: 999999;
+    z-index: 999;
     height: 40px;
     line-height: 40px;
     background: #fff;

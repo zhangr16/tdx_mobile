@@ -211,3 +211,12 @@ export default {
   }
 }
 </style>
+<style lang="scss">
+.nut-calendar {
+  z-index: 99999;
+  .nut-calendar-months {
+    z-index: 100;
+    overflow: scroll;
+  }
+}
+</style>

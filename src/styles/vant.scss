@@ -53,3 +53,11 @@
 .van-skeleton__content {
   margin: 30px 0;
 }
+
+.van-stepper__input[disabled] {
+  color: #333;
+  background-color: #fff;
+}
+.van-stepper__input {
+  background-color: #fff;
+}

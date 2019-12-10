@@ -17,7 +17,7 @@
           </van-image>
         </div>
         <div class="text">
-          <div class="desc_top">用户名:{{entity.mobile}}</div>
+          <div class="desc_top">用户名:{{entity.account}}</div>
           <div class="desc_bottom">
             <span>邀请码：{{invited_code}}</span>
             <span>免单30天总单量：{{entity.order_month_num || 0}}单</span>
@@ -151,7 +151,7 @@
             <img src="@/assets/mine/wd_icon_fenxianghaoyou@2x.png" alt />
             <span>分享给好友</span>
           </li>
-          <li class="br_none" @click="$router.push('/certification')">
+          <li class="br_none" @click="entity.verified_status == 2 ? $router.push('/kefuInfo') : $router.push('/certification')">
             <img src="@/assets/mine/wd_icon_shimingrenzheng@2x.png" alt />
             <span>实名认证</span>
           </li>

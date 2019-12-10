@@ -6,14 +6,34 @@
     <main>
       <van-field v-model="entity.account" label="用户账号" disabled />
       <van-field v-model="entity.mobile" label="联系号码" disabled />
-      <van-field v-model="entity.qq" label="qq" clearable type="number" :disabled="!isReadonly" />
-
+      <van-field
+        v-model="entity.qq"
+        placeholder="请输入QQ"
+        label="QQ"
+        clearable
+        type="number"
+        :disabled="!isReadonly"
+      />
       <van-cell
         v-model="bankText"
         is-link
         @click="openBankSelect"
         title="银行卡类型"
-        placeholder="请输入银行卡类型"
+        placeholder="请选择银行卡类型"
+      />
+      <van-cell is-link @click="openAreaSelect" title="开户地区" placeholder="请输入开户地区">
+        <span
+          v-if="entity.regist_province || entity.regist_city"
+        >{{entity.regist_province}}/{{entity.regist_city}}</span>
+        <span v-else>暂无</span>
+      </van-cell>
+      <van-field
+        is-link
+        v-model="entity.sub_branch_name"
+        label="开户支行"
+        placeholder="请选择银行支行"
+        :disabled="!isReadonly"
+        @click="openBankBranch"
       />
       <van-field
         v-model="entity.bank_card"
@@ -44,21 +64,22 @@
           type="primary"
         >重新发送({{countNum}}s)</van-button>
       </van-field>
-      <van-cell is-link @click="openAreaSelect" title="开户地区" placeholder="请输入开户地区">
-        <span
-          v-if="entity.regist_province || entity.regist_city"
-        >{{entity.regist_province}}/{{entity.regist_city}}</span>
-        <span v-else>暂无</span>
-      </van-cell>
       <van-cell v-if="isReadonly">
         <div class="submit_btn" @click="handleSubmit">提交申请</div>
       </van-cell>
+      <van-notice-bar v-if="!isReadonly" text="您的账户已绑定银行卡，如需更改银行卡信息，请联系客服处理！" />
     </main>
 
-    <van-notice-bar
-      text="您的账户已绑定银行卡，如需更改银行卡信息，请联系客服处理！"
-    />
-
+    <!-- 弹出层-银行支行类型 -->
+    <van-popup v-model="showBranch" position="bottom">
+      <van-picker
+        show-toolbar
+        :columns="bankBranchArr"
+        :default-index="bankBranchArr.indexOf(entity.sub_branch_name)"
+        @cancel="showBranch = false"
+        @confirm="(val) => { entity.sub_branch_name = val; showBranch = false; }"
+      />
+    </van-popup>
     <!-- 弹出层-银行卡类型 -->
     <van-popup v-model="showBank" position="bottom">
       <van-picker
@@ -83,7 +104,7 @@
 </template> 
 <script>
 import { sendVerify } from "@/api/index.js";
-import { ubankInfo } from "@/api/mine.js";
+import { ubankInfo, getBankBranch } from "@/api/mine.js";
 import areaList from "@/utils/area.js";
 
 export default {
@@ -97,12 +118,12 @@ export default {
       showCount: true,
 
       bankArr: [
-        { value: "10806309", label: "中国建设银行" },
-        { value: "10806310", label: "中国农业银行" },
-        { value: "10806311", label: "中国工商银行" },
-        { value: "10806312", label: "中国银行" },
-        { value: "10806313", label: "交通银行" },
-        { value: "10806325", label: "招商银行" },
+        { value: "中国建设银行", label: "中国建设银行" },
+        { value: "中国农业银行", label: "中国农业银行" },
+        { value: "中国工商银行", label: "中国工商银行" },
+        { value: "中国银行", label: "中国银行" },
+        { value: "交通银行", label: "交通银行" },
+        { value: "招商银行", label: "招商银行" },
         { value: "", label: "暂无" }
       ],
       bankNameArr: [
@@ -112,9 +133,9 @@ export default {
         "中国银行",
         "交通银行",
         "招商银行"
-      ],
+      ], // 银行名称
       bankText: "暂无",
-
+      bankBranchArr: [], // 银行支行
       areaList: {},
       area_code: "", // 城市编码
       entity: {
@@ -122,7 +143,8 @@ export default {
         regist_city: ""
       },
       showBank: false,
-      showArea: false
+      showArea: false,
+      showBranch: false
     };
   },
   computed: {
@@ -145,7 +167,7 @@ export default {
         "暂无";
     } else if (res.error.errno == 434) {
       setTimeout(() => {
-        this.$router.push('/certification')
+        this.$router.push("/certification");
       }, 1500);
     }
   },
@@ -179,13 +201,28 @@ export default {
     openAreaSelect() {
       if (this.isReadonly) this.showArea = true;
     },
+    openBankBranch() {
+      if (this.isReadonly) this.showBranch = true;
+    },
+    async getbranchData() {
+      if(this.entity.regist_province && this.entity.regist_city && this.bankText) {
+        let res = await getBankBranch({
+          province: this.entity.regist_province,
+          city: this.entity.regist_city,
+          bank_name: this.bankText
+        })
+        if(res && res.error.errno == 200) {
+          this.bankBranchArr = res.data
+        }
+      }
+    },
     // 发送验证码功能
     async handleSendVerify() {
       if (this.entity.mobile) {
         let queryObj = {
           mobile: this.entity.mobile,
           platform: "2c",
-          is_repeat: 'false',
+          is_repeat: "false",
           type: 4
         };
         let res = await sendVerify(queryObj);
@@ -207,6 +244,7 @@ export default {
         this.entity.regist_city = "北京市";
       }
       this.showArea = false;
+      this.getbranchData()
     },
     async handleSubmit() {
       let res = await ubankInfo(this.entity);
@@ -231,7 +269,7 @@ export default {
     width: 100%;
     position: fixed;
     top: 0;
-    z-index: 999999;
+    z-index: 999;
     height: 40px;
     line-height: 40px;
     background: linear-gradient(-90deg, #fc5303 0%, #fa8e05 100%);

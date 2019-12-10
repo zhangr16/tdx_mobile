@@ -1,14 +1,18 @@
 <template>
   <div class="screenShots">
+    <van-image-preview v-model="showImg" :images="form.img" />
+
     <header>
       <van-icon class="left_arrow" name="arrow-left" @click="$router.go(-1)" />
-      <span v-if="isEdit">上传</span>
+      <span v-if="isEdit == 1">上传</span>
+      <span v-else-if="isEdit == 2">修改</span>
       <span v-else>查看</span>好评截图
     </header>
     <main>
       <van-cell-group>
         <van-field readonly v-model="form.user_ww" label="买家旺旺" placeholder="买家旺旺" />
         <van-field readonly v-model="form.order_sn" label="订单编号" placeholder="订单编号" />
+        <!-- 新建，修改 -->
         <van-cell v-if="isEdit" class="uploads" title="上传截图" label="（最多3张）">
           <van-uploader
             :after-read="afterRead"
@@ -18,11 +22,13 @@
             :max-count="3"
           />
         </van-cell>
+        <!-- 查看 -->
         <van-cell v-else class="uploads" title="好评截图">
-          <img v-for="(item, key) in form.img" :key="key" :src="item" alt />
+          <img v-for="(item, key) in form.img" :key="key" :src="item" alt @click="showImg = true" />
         </van-cell>
       </van-cell-group>
-      <div class="submit_btn" v-if="isEdit" @click="handleSubmit">提交好评截图</div>
+      <div class="submit_btn" v-if="isEdit == 1" @click="handleSubmit">提交好评截图</div>
+      <div class="submit_btn" v-if="isEdit == 2" @click="handleSubmit">修改好评截图</div>
     </main>
   </div>
 </template> 
@@ -34,14 +40,18 @@ export default {
   components: {},
   data() {
     return {
-      isEdit: null,
+      showImg: false,
       fileList: [],
       form: { user_ww: "", order_sn: "", img: [] }
     };
   },
   mounted() {
-    if (this.$route.query.e) this.isEdit = true;
     this.getData();
+  },
+  computed: {
+    isEdit() {
+      return this.$route.query.e
+    }
   },
   methods: {
     async getData() {
@@ -55,9 +65,28 @@ export default {
           order_sn: res.order_sn,
           img: res.img
         };
+        // 修改图片时
+        if(res.img) {
+          res.img.map(el => {
+            this.fileList.push({
+              url: el
+            })
+          })
+        }
       }
     },
-    async afterRead(content) {
+    // 前端上传之前处理
+    afterRead(content) {
+      if(content.length) {
+        content.map(async el => {
+          this.uploadAjax(el)
+        })
+      } else {
+        this.uploadAjax(content)
+      }
+    },
+    // 图片上传方法
+    async uploadAjax(content) {
       let form = new FormData();
       form.append("img", content.file);
       let res = await uploadImg(form);
@@ -80,7 +109,7 @@ export default {
       this.fileList.map(el => {
         arr.push(el.url);
       });
-      if (arr.length <= 0) return this.$toast.fail("请上传支付宝截图");
+      if (arr.length <= 0) return this.$toast.fail("请上传好评截图");
       
       let res = await order_action({
         type: 2,
@@ -106,7 +135,7 @@ export default {
     width: 100%;
     position: fixed;
     top: 0;
-    z-index: 999999;
+    z-index: 999;
     height: 40px;
     line-height: 40px;
     background: #fff;

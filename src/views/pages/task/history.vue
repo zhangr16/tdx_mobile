@@ -55,13 +55,12 @@
 
       <!-- 礼品，资金问题 -->
       <template v-if="entity.sale_type == 3 || entity.sale_type == 1">
-        <van-cell>
+        <van-cell v-if="entity.dispose_time">
           <ul class="sale_ul">
-            <li>
+            <li v-if="entity.dispose_time">
               <span v-if="entity.sale_type == 3">平台：大淘客</span>
               <span v-else-if="entity.platform == '2b'" class="isFans">粉丝：{{entity.mobile}}</span>
               <span v-else>商家：{{entity.account}}</span>
-
               <span style="color:#999">处理时间：{{entity.dispose_time}}</span>
             </li>
             <li class="flex_li" v-if="entity.sale_type == 1">
@@ -99,7 +98,7 @@
         </van-cell>
       </template>
     </main>
-    <footer v-if="entity.platform == '2c' && (entity.sale_type == 2 || entity.sale_type == 4)">
+    <footer v-if="entity.platform == '2c' && (entity.sale_type == 2 || entity.sale_type == 4) && entity.is_finish == -1">
       <van-field
         v-model="msg"
         rows="2"
@@ -169,7 +168,7 @@ export default {
     width: 100%;
     position: fixed;
     top: 0;
-    z-index: 999999;
+    z-index: 999;
     height: 40px;
     line-height: 40px;
     background: #fff;

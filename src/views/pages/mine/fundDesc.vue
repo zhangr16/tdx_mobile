@@ -21,7 +21,7 @@
         <li v-for="(item, index) in entitys.data" :key="index">
           <div class="time">{{item.create_time}}</div>
           <div class="type">{{item.type}}</div>
-          <div class="order">{{item.order_sn}}</div>
+          <div class="order" @click="showOrderSn(item.order_sn)">{{item.order_sn}}</div>
           <div class="amount">{{item.money}}</div>
         </li>
       </ul>
@@ -29,6 +29,8 @@
         <img src="@/assets/empty/img_zijinmingxi@2x.png" alt />
       </div>
     </main>
+
+    <van-popup v-model="showDetail">{{content}}</van-popup>
   </div>
 </template> 
 <script>
@@ -41,6 +43,8 @@ export default {
   data() {
     return {
       isloading: false,
+      showDetail: false,
+      content: "",
       entitys: {
         data: [],
         amount: 0
@@ -57,7 +61,14 @@ export default {
     if(res && res.error.errno == 200) this.entitys = res
     this.isloading = false
   },
-  methods: {}
+  methods: {
+    showOrderSn(val) {
+      if(val.length > 10) {
+        this.showDetail = true
+        this.content = val
+      }
+    }
+  }
 };
 </script>
 <style lang="scss" scope>
@@ -70,7 +81,7 @@ export default {
     width: 100%;
     position: fixed;
     top: 0;
-    z-index: 999999;
+    z-index: 999;
     height: 40px;
     line-height: 40px;
     background: linear-gradient(-90deg, #fc5303 0%, #fa8e05 100%);
@@ -115,9 +126,17 @@ export default {
         & > div {
           flex: 1;
           text-align: center;
+          overflow: hidden;
+          text-overflow: ellipsis;/*文字隐藏后添加省略号*/
+          white-space: nowrap;/*强制不换行*/
         }
       }
     }
+  }
+
+  .van-popup {
+    padding: 50px;
+    font-size: 16px;
   }
 }
 </style>

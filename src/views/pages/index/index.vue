@@ -337,7 +337,7 @@ export default {
         display: flex;
         flex-wrap: wrap;
         li {
-          width: calc((100% - 6px) / 2);
+          width: calc((100vw - 36px) / 2);
           margin-bottom: 5px;
         }
         .margin_right {

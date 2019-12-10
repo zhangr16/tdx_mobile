@@ -126,3 +126,12 @@ export function ubankInfo(obj) {
     })
   }
 }
+
+// 获取银行分支
+export function getBankBranch(obj) {
+  return request({
+    url: '/u/Bankbranchcondition',
+    method: 'post',
+    params: obj
+  })
+}

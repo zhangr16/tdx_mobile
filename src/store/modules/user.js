@@ -41,6 +41,7 @@ const user = {
         commit('SET_NAME', '')
         removeName()
         removeToken()
+        sessionStorage.removeItem('t_id')
         return true
       } else {
         return false

@@ -8,7 +8,7 @@
       <van-cell-group v-if="isloading">
         <van-skeleton title :row="3" />
       </van-cell-group>
-      
+
       <van-cell-group v-else>
         <!-- 状态层 -->
         <van-cell
@@ -32,10 +32,9 @@
                 </template>
               </ul>
               <template v-else>
-                <div class="sale_tips">粉丝已成功发起售后申请，请及时处理</div>
-                <ul>
-                  <li>1、如果同意系统将自动补差给用户任务</li>
-                  <li>2、如果用户36小时内未处理，平台将自动介入处理</li>
+                <div class="sale_tips">商家已成功发起售后申请，等待处理中</div>
+                <ul v-if="entity.sale_type == 3">
+                  <li>礼品问题将自动转入平台处理</li>
                 </ul>
               </template>
             </div>
@@ -99,82 +98,85 @@
       </van-cell-group>
       <template v-else>
         <section>
-        <div class="_title">售后信息</div>
-        <div class="viewAfterDesc_body">
-          <img :src="entity.img" alt />
-          <!-- 限量免单 -->
-          <ul v-if="entity.module_type != 'xqg'">
-            <li>{{entity.title}}</li>
-            <li class="scale_num">订单编号：{{entity.order_sn}}</li>
-            <li>
-              原价：
-              <i>¥{{entity.price}}</i>
-            </li>
-            <li>
-              实拍：
-              <i>¥{{entity.reality_price}}</i>
-            </li>
-            <li>账号：{{entity.mobile}}</li>
-          </ul>
-          <!-- 熊抢购 -->
-          <ul v-else>
-            <li>{{entity.title}}</li>
-            <li class="scale_num">订单编号：{{entity.order_sn}}</li>
-            <li>账号：{{entity.mobile}}</li>
-            <li>
-              <span>
-                优惠价：
-                <i>¥{{entity.current_price}}</i>
-              </span>
-              <span>
-                返利：
-                <i>¥{{entity.reality_price - entity.current_price}}</i>
-              </span>
-            </li>
-            <li>
-              <span>
-                原&nbsp;&nbsp;&nbsp;价：
-                <i>¥{{entity.task_price}}</i>
-              </span>
-              <span>
+          <div class="_title">售后信息</div>
+          <div class="viewAfterDesc_body">
+            <img :src="entity.img" alt />
+            <!-- 限量免单 -->
+            <ul v-if="entity.module_type != 'xqg'">
+              <li>{{entity.title}}</li>
+              <li class="scale_num">订单编号：{{entity.order_sn}}</li>
+              <li>
+                原价：
+                <i>¥{{entity.price}}</i>
+              </li>
+              <li>
                 实拍：
                 <i>¥{{entity.reality_price}}</i>
-              </span>
-            </li>
-          </ul>
-        </div>
-      </section>
+              </li>
+              <li v-if="entity.get_integral">
+                奖励积分：
+                <i>{{entity.get_integral}}</i>
+              </li>
+            </ul>
+            <!-- 熊抢购 -->
+            <ul v-else>
+              <li>{{entity.title}}</li>
+              <li class="scale_num">订单编号：{{entity.order_sn}}</li>
+              <li v-if="entity.integral">抵扣积分：{{entity.integral}}</li>
+              <li>
+                <span>
+                  优惠价：
+                  <i>¥{{entity.current_price}}</i>
+                </span>
+                <span>
+                  返利：
+                  <i>¥{{entity.reality_price - entity.current_price}}</i>
+                </span>
+              </li>
+              <li>
+                <span>
+                  原&nbsp;&nbsp;&nbsp;价：
+                  <i>¥{{entity.price}}</i>
+                </span>
+                <span>
+                  实拍：
+                  <i>¥{{entity.reality_price}}</i>
+                </span>
+              </li>
+            </ul>
+          </div>
+        </section>
 
-      <van-cell-group>
-        <van-cell class="desc_ul">
-          <ul>
-            <li>
-              <i>售后原因：</i>
-              {{columns[entity.sale_type - 1]}}
-            </li>
-            <li v-if="entity.sale_type == 1">
-              <i>任务原价：</i>
-              ￥{{entity.price}}
-            </li>
-            <li v-if="entity.sale_type == 1">
-              <i>实拍价：</i>
-              ￥{{entity.reality_price}}
-            </li>
-            <li v-if="entity.sale_type == 1">
-              <i>差价金额：</i>
-              ￥{{entity.differ_price}}
-            </li>
-            <li>
-              <i>售后说明：</i>
-              {{entity.comment}}
-            </li>
-            <li>
-              <i>申请时间：</i>
-              {{entity.create_time}}
-            </li>
-          </ul>
-        </van-cell>
-      </van-cell-group>
+        <van-cell-group>
+          <van-cell class="desc_ul">
+            <ul>
+              <li>
+                <i>售后原因：</i>
+                {{columns[entity.sale_type - 1]}}
+              </li>
+              <li v-if="entity.sale_type == 1">
+                <i>任务原价：</i>
+                ￥{{entity.price}}
+              </li>
+              <li v-if="entity.sale_type == 1">
+                <i>实拍价：</i>
+                ￥{{entity.reality_price}}
+              </li>
+              <li v-if="entity.sale_type == 1">
+                <i>差价金额：</i>
+                ￥{{entity.differ_price}}
+              </li>
+              <li>
+                <i>售后说明：</i>
+                {{entity.comment}}
+              </li>
+              <li>
+                <i>申请时间：</i>
+                {{entity.create_time}}
+              </li>
+            </ul>
+          </van-cell>
+        </van-cell-group>
       </template>
     </main>
   </div>
@@ -192,11 +194,11 @@ export default {
       columns: ["资金问题", "物流问题", "礼品问题", "其他"],
       fileList: [],
       entity: {},
-      countDownList: "还剩00天00时00分00秒"
+      countDownList: ""
     };
   },
   async mounted() {
-    this.isloading = true
+    this.isloading = true;
     let res = await saleApply({
       sale_id: this.$route.query.id,
       action: 3
@@ -205,7 +207,7 @@ export default {
       this.entity = res.data;
       this.countDown();
     }
-    this.isloading = false
+    this.isloading = false;
   },
   computed: {
     // 是否为粉丝 --> 申请方
@@ -239,22 +241,24 @@ export default {
     },
     status_label() {
       if (this.entity.sale_status == 1) {
-        // 倒计时
+        // 待处理状态--倒计时
         return this.countDownList;
       } else if (this.entity.sale_status == 3) {
         return "该售后申请已经过双方协商完成";
       } else {
-        return "";
+        return ""
       }
     }
   },
   methods: {
     chexiaoApply() {
-      this.$dialog.confirm({
-        message: '确认撤销申请吗?'
-      }).then(() => {
-        this.handleClickBtns(-1)
-      })
+      this.$dialog
+        .confirm({
+          message: "确认撤销申请吗?"
+        })
+        .then(() => {
+          this.handleClickBtns(-1);
+        });
     },
     timeFormat(param) {
       return param < 10 ? "0" + param : param;
@@ -265,7 +269,9 @@ export default {
         let obj = null; // 如果活动未结束，对时间进行处理
         // 获取当前时间，同时得到活动结束时间数组
         let newTime = new Date().getTime(); // 对结束时间进行处理渲染到页面
-        let endTime = new Date(this.entity.finally_time).getTime();
+        let endTime = new Date(
+          this.entity.finally_time.replace(/-/g, "/")
+        ).getTime();
         if (endTime - newTime > 0) {
           let time = (endTime - newTime) / 1000; // 获取天、时、分、秒
           let day = parseInt(time / (60 * 60 * 24));
@@ -280,7 +286,7 @@ export default {
           };
         } else {
           clearInterval(interval);
-          return (this.countDownList = ""); 
+          return (this.countDownList = "12");
         }
         this.countDownList =
           "还剩" +
@@ -328,7 +334,7 @@ export default {
     width: 100%;
     position: fixed;
     top: 0;
-    z-index: 999999;
+    z-index: 999;
     height: 40px;
     line-height: 40px;
     background: #fff;
@@ -361,7 +367,6 @@ export default {
     .top_content {
       font-size: 14px;
       .sale_tips {
-        border-bottom: 1px solid #ccc;
         color: #000;
         margin-bottom: 10px;
         padding-bottom: 5px;

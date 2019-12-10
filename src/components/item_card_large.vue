@@ -65,7 +65,7 @@ export default {
     },
     isFamily: {
       default: false,
-      type: [Object, String]
+      type: [Object, String, Boolean]
     }
   },
   data() {

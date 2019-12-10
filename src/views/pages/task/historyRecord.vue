@@ -12,22 +12,22 @@
       <van-cell v-for="(item, key) in items" :key="key">
         <ul class="fans_ul">
           <li>
-            <span style="color:#ff5500">修改人：15871700567</span>
+            <span style="color:#ff5500">修改人：{{item.mobile}}</span>
             &nbsp;&nbsp;
-            <span style="color:#999">修改时间：2019-07-07 00:00:00</span>
+            <span style="color:#999">修改时间：{{item.create_time}}</span>
           </li>
-          <li class="flex_li" v-if="$route.query.type == 0">
+          <li class="flex_li" v-if="item.sale_type == 1">
             <span>
               实拍金额：
-              <i>¥3</i>
+              <i>¥{{item.reality_price}}</i>
             </span>
             <span>
               任务金额：
-              <i>¥2</i>
+              <i>¥{{item.price}}</i>
             </span>
             <span>
               差价：
-              <i>¥1</i>
+              <i>¥{{item.differ_price}}</i>
             </span>
           </li>
           <li>售后说明：{{item.comment}}</li>
@@ -88,7 +88,7 @@ export default {
     width: 100%;
     position: fixed;
     top: 0;
-    z-index: 999999;
+    z-index: 999;
     height: 40px;
     line-height: 40px;
     background: #fff;

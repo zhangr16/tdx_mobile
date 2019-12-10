@@ -77,7 +77,11 @@ export default {
       if (this.validateMsg.user == "" && this.validateMsg.pwd == "") {
         this.$store.dispatch("Login", this.userForm).then(res => {
           if (res) {
-            this.$router.push({ path: "/" });
+            if(sessionStorage.getItem('t_id')) {
+              this.$router.push({ path: "/purchase?t_id=" + sessionStorage.getItem('t_id') });
+            } else {
+              this.$router.push({ path: "/" });
+            }
             this.$toast.success("登录成功！");
           }
         });

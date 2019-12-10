@@ -1,7 +1,7 @@
 <template>
   <div class="certification">
     <header>
-      <van-icon class="left_arrow" name="arrow-left" @click="$router.push('/mine')" />实名认证
+      <van-icon class="left_arrow" name="arrow-left" @click="$router.go(-1)" />实名认证
     </header>
     <main>
       <van-field
@@ -44,6 +44,7 @@
           v-model="fileList"
           :max-count="1"
           :disabled="!entity.is_submit"
+          :class="{'hideDelIcon': !entity.is_submit}"
         />
       </van-cell>
       <van-cell v-if="entity.is_submit">
@@ -78,7 +79,12 @@ export default {
     }
   },
   methods: {
-    async afterRead(content) {
+    // 前端上传之前处理
+    afterRead(content) {
+      this.uploadAjax(content)
+    },
+    // 图片上传方法
+    async uploadAjax(content) {
       let form = new FormData();
       form.append("img", content.file);
       let res = await uploadImg(form);
@@ -103,7 +109,6 @@ export default {
     },
 
     async handleSubmit() {
-      console.log(this.entity);
       if (this.fileList.length <= 0) {
         this.$toast.fail("请上传支付宝截图");
       } else if (!this.entity.real_name) {
@@ -119,12 +124,11 @@ export default {
           })
           .then(async () => {
             this.entity.prove_img = this.fileList[0].url;
-            // delete this.entity.is_submit
             let res = await verifyProve(this.entity);
             if (res && res.error.errno == 200) {
               this.$toast.success("认证申请成功！");
               setTimeout(() => {
-                this.$router.push("/mine");
+                this.$router.push("/kefuInfo");
               }, 500);
             }
           })
@@ -144,7 +148,7 @@ export default {
     width: 100%;
     position: fixed;
     top: 0;
-    z-index: 999999;
+    z-index: 999;
     height: 40px;
     line-height: 40px;
     background: linear-gradient(-90deg, #fc5303 0%, #fa8e05 100%);
@@ -191,6 +195,12 @@ export default {
     ._tips {
       font-size: 12px;
       color: #fa3950;
+    }
+  }
+
+  .hideDelIcon {
+    .van-icon-delete {
+      display: none;
     }
   }
 }

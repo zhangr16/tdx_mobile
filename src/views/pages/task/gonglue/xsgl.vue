@@ -33,7 +33,7 @@
           系统将购物款返还到您平台的<i>账单</i>里
         </template>
       </van-cell>
-      <van-cell title="14、绑定提现银行卡" is-link />
+      <van-cell title="14、绑定提现银行卡" is-link to="bindCard" />
       <van-cell title="15、申请提现" is-link to="zhtx" />
       <van-cell title="16、24:00前平台打款到银行卡" />
       <van-cell title="17、完成" />
@@ -67,7 +67,7 @@ export default {
     width: 100%;
     position: fixed;
     top: 0;
-    z-index: 999999;
+    z-index: 999;
     height: 40px;
     line-height: 40px;
     background: linear-gradient(-90deg, #fc5303 0%, #fa8e05 100%);

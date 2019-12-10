@@ -11,7 +11,7 @@
           <!-- 图片 -->
           <img :src="entity.img" alt />
           <!-- 限量免单 -->
-          <ul v-if="entity.order_type != 3">
+          <ul v-if="entity.module_type == 'free'">
             <li>{{entity.title}}</li>
             <li class="scale_num">订单编号：{{entity.order_sn}}</li>
             <li>
@@ -25,18 +25,19 @@
                 实拍：
                 <i>¥{{entity.reality_price}}</i>
               </span>
+            </li>
+            <li>
               <span>
-                可获积分：
+                奖励积分：
                 <i>{{entity.get_integral}}</i>
               </span>
             </li>
-            <li>账号：{{entity.mobile}}</li>
           </ul>
           <!-- 熊抢购 -->
           <ul v-else>
             <li>{{entity.title}}</li>
             <li class="scale_num">订单编号：{{entity.order_sn}}</li>
-            <li>账号：{{entity.mobile}}</li>
+            <li v-if="entity.integral">抵扣积分：<i>{{entity.integral}}</i></li>
             <li>
               <span>
                 优惠价：
@@ -56,10 +57,6 @@
                 实拍：
                 <i>¥{{entity.reality_price}}</i>
               </span>
-              <span>
-                积分：
-                <i>{{-entity.integral}}</i>
-              </span>
             </li>
           </ul>
         </div>
@@ -78,16 +75,11 @@
           <van-cell v-if="form.sale_type == '资金问题'" class="uploads" title="实拍金额">
             <div class="_funds">
               ¥
-              <van-stepper v-model="form.reality_price" step="0.01" :decimal-length="2" min="0" />
-              <br />任务金额: ¥
-              <van-stepper disabled :value="entity.price" step="0.01" :decimal-length="2" />差价金额: ¥
-              <van-stepper
-                disabled
-                :value="(form.reality_price - entity.price) || 0"
-                step="0.01"
-                :decimal-length="2"
-                min="-99999"
-              />
+              <van-stepper class="edit_stepper" v-model="form.reality_price" step="0.01" :decimal-length="2" min="0" />
+              <br />
+              任务金额: ¥ {{entity.price}}
+              <br />
+              差价金额: ¥ {{(form.reality_price - entity.price) || 0}}
             </div>
           </van-cell>
           <van-field
@@ -168,11 +160,13 @@ export default {
             comment: res.saleInfo.comment
           };
           // 图片
-          res.saleInfo.apply_img.map(el => {
-            this.fileList.push({
-              url: el
+          if(res.saleInfo.apply_img) {
+            res.saleInfo.apply_img.map(el => {
+              this.fileList.push({
+                url: el
+              });
             });
-          });
+          }
         }
       } else {
         let res = await saleApply({
@@ -190,8 +184,18 @@ export default {
       this.form.sale_type = value;
       this.showPicker = false;
     },
-    // 图片操作
-    async afterRead(content) {
+    // 前端上传之前处理
+    afterRead(content) {
+      if(content.length) {
+        content.map(async el => {
+          this.uploadAjax(el)
+        })
+      } else {
+        this.uploadAjax(content)
+      }
+    },
+    // 图片上传方法
+    async uploadAjax(content) {
       let form = new FormData();
       form.append("img", content.file);
       let res = await uploadImg(form);
@@ -266,7 +270,7 @@ export default {
     width: 100%;
     position: fixed;
     top: 0;
-    z-index: 999999;
+    z-index: 999;
     height: 40px;
     line-height: 40px;
     background: linear-gradient(-90deg, #fc5303 0%, #fa8e05 100%);
@@ -340,6 +344,13 @@ export default {
 
   ._funds {
     color: #333;
+    .edit_stepper {
+      margin-bottom: 5px;
+      border-bottom: 1px solid #ccc;
+       .van-stepper__input {
+        width: 100px !important;
+      }
+    }
     .van-stepper {
       display: inline-flex;
       .van-stepper__input {

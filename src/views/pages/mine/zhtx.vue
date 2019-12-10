@@ -11,7 +11,7 @@
         </van-radio-group>
       </van-cell>
       <van-field v-model="entity.real_name" label="姓名" placeholder="请输入姓名" disabled />
-      <van-field v-model="entity.bank" label="所属银行" placeholder="请输入所属银行" disabled />
+      <van-field v-model="bankName" label="所属银行" placeholder="请输入所属银行" disabled />
       <van-field v-model="entity.bank_card" label="银行卡号" placeholder="请输入银行卡号" disabled />
       <van-cell>
         <div class="submit_btn" @click="handleSubmit">提交申请</div>
@@ -28,7 +28,7 @@
   </div>
 </template> 
 <script>
-import {withdraw} from "@/api/mine.js"
+import { withdraw } from "@/api/mine.js";
 
 export default {
   // 定制评价攻略
@@ -37,19 +37,35 @@ export default {
   data() {
     return {
       entity: {},
+      bankName: "暂无",
+      bankArr: [
+        { value: "中国建设银行", label: "中国建设银行" },
+        { value: "中国农业银行", label: "中国农业银行" },
+        { value: "中国工商银行", label: "中国工商银行" },
+        { value: "中国银行", label: "中国银行" },
+        { value: "交通银行", label: "交通银行" },
+        { value: "招商银行", label: "招商银行" },
+        { value: "", label: "暂无" }
+      ]
     };
   },
   async mounted() {
-    let res = await withdraw()
-    if(res && res.error.errno == 200) this.entity = res.data
+    let res = await withdraw();
+    if (res && res.error.errno == 200) {
+      this.entity = res.data;
+      this.bankName =
+        this.bankArr.filter(el => res.data.bank == el.value)[0].label || "暂无";
+    }
   },
   methods: {
     async handleSubmit() {
-      let res = await withdraw(this.entity)
-      if(res && res.error.errno == 200) this.$toast.success('提现成功！')
-      setTimeout(() => {
-        this.$router.push('/mine')
-      }, 500);
+      let res = await withdraw(this.entity);
+      if (res && res.error.errno == 200) {
+        this.$toast.success("提现成功！");
+        setTimeout(() => {
+          this.$router.push("/mine");
+        }, 500);
+      }
     }
   }
 };
@@ -65,7 +81,7 @@ export default {
     width: 100%;
     position: fixed;
     top: 0;
-    z-index: 999999;
+    z-index: 999;
     height: 40px;
     line-height: 40px;
     background: linear-gradient(-90deg, #fc5303 0%, #fa8e05 100%);

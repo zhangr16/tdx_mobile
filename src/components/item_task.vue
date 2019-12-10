@@ -1,5 +1,6 @@
 <template>
   <div class="item_task">
+
     <!-- 商品信息 -->
     <van-dialog v-model="showImg" title="商品信息" :closeOnClickOverlay="true">
       <img style="width:100%;" :src="entity.img" alt />
@@ -9,9 +10,9 @@
       <van-field :value="remarkEntity.mc_comment" label="备注" type="textarea" autosize disabled />
     </van-dialog>
     <!-- 查看定制评价 -->
-    <van-dialog class="uploads" v-model="showEvaluate" title="定制评价" :closeOnClickOverlay="true">
+    <van-dialog class="uploads" v-model="showEvaluate" title="定制评价" width="95%" :closeOnClickOverlay="true">
       <van-cell title="评价说明" :value="evaluateEntity.m_eva_explain" />
-      <van-cell title="好评截图">
+      <van-cell title="好评截图" label="(长按保存图片)">
         <img v-for="(img, key) in evaluateEntity.imgs" :key="key" :src="img" alt />
       </van-cell>
     </van-dialog>
@@ -33,15 +34,15 @@
         </li>
         <li>
           实拍：
-          <i>¥{{entity.price}}</i>
+          <i>¥{{entity.reality_price}}</i>
         </li>
-        <li>账号：{{entity.mobile}}</li>
+        <li v-if="entity.get_integral">奖励积分：{{entity.get_integral}}</li>
       </ul>
       <!-- 熊抢购 -->
       <ul v-else>
         <li style="font-weight:bold">{{ entity.title }}</li>
         <li class="scale_num">订单编号：{{ entity.order_sn }}</li>
-        <li>账号：{{entity.mobile}}</li>
+        <li v-if="entity.integral">抵扣积分：{{entity.integral}}</li>
         <li>
           <span>
             优惠价：
@@ -59,7 +60,7 @@
           </span>
           <span>
             实拍：
-            <i>¥{{entity.price}}</i>
+            <i>¥{{entity.reality_price}}</i>
           </span>
         </li>
       </ul>
@@ -75,14 +76,19 @@
         >申请售后</span>
         <span
           style="background:#fa3950"
-          v-if="entity.status >= 2"
+          v-if="entity.status >= 2 && entity.is_sale > 0"
           @click="$router.push('/viewAfter?id=' + entity.id)"
         >查看售后</span>
         <span
-          v-if="entity.status == 2 || entity.status == 3"
+          v-if="entity.status == 2"
           style="background:#5784ff"
           @click="$router.push('/screenShots?id=' + entity.id + '&e=1')"
         >上传好评截图</span>
+        <span
+          v-if="entity.status == 3"
+          style="background:#5784ff"
+          @click="$router.push('/screenShots?id=' + entity.id + '&e=2')"
+        >修改好评截图</span>
         <span
           v-if="entity.status == 4 || entity.status == 3"
           style="background:#ff6137"
@@ -95,7 +101,9 @@
         <span>申请时间：{{entity.create_time}}</span>
         <span v-if="entity.finish_time">完成时间：{{entity.finish_time}}</span>
         <!-- 待审核显示：最后审核时间 -->
-        <span v-if="entity.status == 3 && entity.audit_time">最后审核时间：{{entity.audit_time}}</span>
+      </div>
+      <div class="times" v-if="entity.status == 3 && entity.audit_time">
+        <span>最后审核时间：{{entity.audit_time}}</span>
       </div>
       <div class="two_btns">
         <span v-if="entity.status == 1">
@@ -138,6 +146,9 @@ export default {
   },
   computed: {},
   methods: {
+    ssss() {
+      alert(222)
+    },
     async viewEvaluation() {
       let res = await order_action({
         id: this.entity.id,
@@ -267,20 +278,22 @@ export default {
       }
     }
   }
-  .uploads {
-    .van-cell {
-      padding-right: 5px;
+  .van-dialog {
+    z-index: 9999999 !important;
+    top: 45%;
+    width: 90%;
+    .van-dialog__content {
+      max-height: 60vh;
+      overflow: scroll;
     }
+  }
+  .uploads {
     .van-cell__value {
-      flex: 3;
+      flex: 2.5;
       text-align: left;
       img {
-        width: 70px;
-        height: 70px;
-        margin-right: 5px;
-        &:last-child {
-          margin-right: 0;
-        }
+        border: 1px solid #ccc;
+        width: 100%;
       }
     }
   }
