@@ -17,11 +17,11 @@
     </header>
     <main>
       <!-- 限量免单，熊抢购title -->
-      <div class="top2">
+      <!-- <div class="top2">
         <span :class="{'is_active': isActive == 1}" @click="handleTabClick(1)">限量免单</span>
         <i></i>
         <span :class="{'is_active': isActive == 2}" @click="handleTabClick(2)">熊抢购</span>
-      </div>
+      </div> -->
       <!-- tabber栏 -->
       <van-tabs v-model="activeTab">
         <van-tab title="全部"></van-tab>
@@ -72,7 +72,7 @@ export default {
       isVisible: false,
       myDate: null,
 
-      isActive: this.$store.state.task.isActive, // free或者xqg
+      isActive: this.$store.state.task.isActive || '1', // free或者xqg
       activeTab: this.$store.state.task.activeTab, // 状态标签
 
       total_count: 0,
@@ -81,24 +81,24 @@ export default {
         task_end: "",
         page_num: 20,
         page: 1,
-        order_type: this.$store.state.task.isActive,
+        order_type: this.$store.state.task.isActive || '1',
         status: this.$store.state.task.activeTab
       },
       taskList: []
     };
   },
   watch: {
-    isActive: function(val) {
-      console.log(val)
-      if (val) {
-        // 改变状态缓存store
-        this.$store.dispatch("setTemp", {
-          isActive: val,
-          activeTab: this.activeTab
-        });
-        this.formData.order_type = val + "";
-      }
-    },
+    // isActive: function(val) {
+    //   console.log(val)
+    //   if (val) {
+    //     // 改变状态缓存store
+    //     this.$store.dispatch("setTemp", {
+    //       isActive: val,
+    //       activeTab: this.activeTab
+    //     });
+    //     this.formData.order_type = val + "";
+    //   }
+    // },
     activeTab: function(val) {
       // 改变状态缓存store
       this.$store.dispatch("setTemp", {

@@ -16,10 +16,10 @@
         <span slot="icon" class="iconfont iconfudaihoutai_miandanguanli"></span>
         限量免单
       </van-tabbar-item>
-      <van-tabbar-item replace to="/bearBuy">
+      <!-- <van-tabbar-item replace to="/bearBuy">
         <span slot="icon" class="iconfont iconxiongqianggou"></span>
         熊抢购
-      </van-tabbar-item>
+      </van-tabbar-item> -->
       <van-tabbar-item replace to="/task">
         <span slot="icon" class="iconfont iconrenwuzhongxin"></span>
         任务中心

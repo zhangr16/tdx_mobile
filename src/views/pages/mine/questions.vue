@@ -29,7 +29,7 @@
             <li class="_bold">* 请大家严格按照任务流程下单，不得互相分享宝贝链接！发现分享宝贝链接者和商家反映不按要求下单者，一经发现，冻结账号！</li>
           </ul>
         </van-collapse-item>
-        <van-collapse-item name="2">
+        <!-- <van-collapse-item name="2">
           <template slot="title">
             <span></span>平台介绍
           </template>
@@ -41,7 +41,7 @@
               可以使用积分抵扣，100积分抵扣1元，积分越多，抵扣越多，最高可抵扣到免费购买。
             </li>
           </ul>
-        </van-collapse-item>
+        </van-collapse-item> -->
         <van-collapse-item name="3">
           <template slot="title">
             <span></span>限量免单问题集
@@ -190,7 +190,7 @@
           </ul>
         </van-collapse-item>
 
-        <van-collapse-item name="4">
+        <!-- <van-collapse-item name="4">
           <template slot="title">
             <span></span>熊抢购问题集
           </template>
@@ -226,7 +226,7 @@
               </div>
             </li>
           </ul>
-        </van-collapse-item>
+        </van-collapse-item> -->
       </van-collapse>
     </main>
   </div>
@@ -238,7 +238,7 @@ export default {
   components: {},
   data() {
     return {
-      activeNames: ["1", "2", "3", "4"]
+      activeNames: ["1", "3"]
     };
   },
   methods: {}

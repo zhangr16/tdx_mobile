@@ -16,12 +16,12 @@ export default [
         component: () => import('@/views/pages/classify'),
         meta: { title: '限量免单' }
       },
-      {
-        path: '/bearBuy',
-        name: 'bearBuy',
-        component: () => import('@/views/pages/classify'),
-        meta: { title: '熊抢购' }
-      },
+      // {
+      //   path: '/bearBuy',
+      //   name: 'bearBuy',
+      //   component: () => import('@/views/pages/classify'),
+      //   meta: { title: '熊抢购' }
+      // },
       {
         path: '/task',
         name: 'task',

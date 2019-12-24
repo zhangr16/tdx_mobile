@@ -27,15 +27,15 @@
       
       <div class="nums">
         <span @click="$router.push('/zhtx')">账户余额：{{entity.balance || 0}}</span>
-        <span @click="$router.push('/score')">积分：{{entity.integral || 0}}</span>
+        <!-- <span @click="$router.push('/score')">积分：{{entity.integral || 0}}</span> -->
       </div>
     </header>
     <main>
       <section>
-        <div class="tabs">
+        <!-- <div class="tabs">
           <span :class="{'is_active': is_active == 0}" @click="is_active = 0">免单任务</span>
           <span :class="{'is_active': is_active == 1}" @click="is_active = 1">熊抢购任务</span>
-        </div>
+        </div> -->
         <div class="states" v-if="is_active == 0">
           <span @click="handleGoTask(1)">
             <span style="font-weight:500" class="iconfont iconyilingqu"></span>
@@ -143,19 +143,19 @@
             <img src="@/assets/mine/wd_icon_zijinmingxi@2x.png" alt />
             <span>资金明细</span>
           </li>
-          <li @click="$router.push('/score')">
+          <!-- <li @click="$router.push('/score')">
             <img src="@/assets/mine/wd_icon_jifenmingxi@2x.png" alt />
             <span>积分明细</span>
-          </li>
+          </li> -->
           <li @click="$router.push('/share')">
             <img src="@/assets/mine/wd_icon_fenxianghaoyou@2x.png" alt />
             <span>分享给好友</span>
           </li>
-          <li class="br_none" @click="entity.verified_status == 2 ? $router.push('/kefuInfo') : $router.push('/certification')">
+          <li @click="entity.verified_status == 2 ? $router.push('/kefuInfo') : $router.push('/certification')">
             <img src="@/assets/mine/wd_icon_shimingrenzheng@2x.png" alt />
             <span>实名认证</span>
           </li>
-          <li @click="$router.push('/personal')">
+          <li class="br_none" @click="$router.push('/personal')">
             <img src="@/assets/mine/wd_icon_jibenziliao@2x.png" alt />
             <span>基本资料</span>
           </li>
@@ -163,23 +163,23 @@
             <img src="@/assets/mine/wd_icon_wentiji@2x.png" alt />
             <span>问题集</span>
           </li>
-          <li class="br_none" @click="$router.push('/suggestions')">
+          <li @click="$router.push('/suggestions')">
             <img src="@/assets/mine/wd_icon_tousujianyi@2x.png" alt />
             <span>投诉与建议</span>
           </li>
-          <li @click="$router.push('/resetPassword')">
+          <li class="br_none" @click="$router.push('/resetPassword')">
             <img src="@/assets/mine/wd_icon_xiugaimima@2x.png" alt />
             <span>修改密码</span>
           </li>
-          <li v-if="entity.is_family > 0" @click="$router.push('/friendShip')">
+          <li class="bb_none" v-if="entity.is_family > 0" @click="$router.push('/friendShip')">
             <img src="@/assets/mine/wd_icon_qinyoutuan@2x.png" alt />
             <span>亲友团</span>
           </li>
-          <li :class="{'br_none': entity.is_family > 0}" @click="$router.push('/hdjl')">
+          <li class="bb_none" @click="$router.push('/hdjl')">
             <img src="@/assets/mine/wd_icon_huodongjiangli@2x.png" alt />
             <span>活动奖励</span>
           </li>
-          <li :class="{'br_none': entity.is_family < 0}" @click="$router.push('/update')">
+          <li :class="{'br_none': entity.is_family > 0}" class="bb_none" @click="$router.push('/update')">
             <img src="@/assets/mine/wd_icon_gengxin@2x.png" alt />
             <span>更新说明</span>
           </li>
@@ -236,7 +236,8 @@ export default {
     handleGoTask(val) {
       // 改变状态缓存store
       this.$store.dispatch("setTemp", {
-        isActive: this.is_active + 1,
+        // isActive: this.is_active + 1,
+        isActive: 1,
         activeTab: val
       });
       this.$router.push('/task')
@@ -406,7 +407,7 @@ export default {
       }
       .icons_ul {
         display: flex;
-        justify-content: space-between;
+        // justify-content: space-between;
         flex-wrap: wrap;
         & > li {
           width: calc(100vw / 3);

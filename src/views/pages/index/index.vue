@@ -24,10 +24,10 @@
             @change="onChange"
           >
             <van-swipe-item>
-              <img src="@/assets/banner1.png" alt />
+              <img src="@/assets/m_banner1.png" alt />
             </van-swipe-item>
             <van-swipe-item>
-              <img src="@/assets/banner2.png" alt />
+              <img src="@/assets/m_banner2.png" alt />
             </van-swipe-item>
           </van-swipe>
         </div>
@@ -42,7 +42,7 @@
         </van-swipe-item>
       </van-swipe>
 
-      <ul class="two_parts">
+      <!-- <ul class="two_parts">
         <li @click="$router.push('/limitFree')">
           <img src="@/assets/sy_icon_xianliangmiandan@2x.png" alt />
           <span>限量免单</span>
@@ -51,8 +51,9 @@
           <img src="@/assets/sy_icon_xiongqianggou@2x.png" alt />
           <span>熊抢购</span>
         </li>
-      </ul>
-      <van-notice-bar text="滚动播报淘大熊实时, 滚动播报淘大熊实时, 滚动播报淘大熊实时" background="#fff">
+      </ul> -->
+
+      <van-notice-bar text="淘小熊上线啦" background="#fff">
         <div slot="left-icon" class="notice_title">商城头条</div>
       </van-notice-bar>
     </header>
