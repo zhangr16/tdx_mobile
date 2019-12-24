@@ -1,5 +1,5 @@
 # taodaxiong
-  淘大熊mobile公众号<br>
+  淘小熊mobile公众号<br>
   技术栈主要使用vue-cli3.0 + vue + vantUI + vuex + axios<br>
 
 ### 测试地址（暂定）

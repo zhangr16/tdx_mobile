@@ -32,14 +32,14 @@ export default [
         path: '/mine',
         name: 'mine',
         component: () => import('@/views/pages/mine'),
-        meta: { title: '我的淘大熊' }
+        meta: { title: '我的淘小熊' }
       },
       // 亲友团
       {
         path: '/friendShip',
         name: 'friendShip',
         component: () => import('@/views/pages/classify'),
-        meta: { title: '淘大熊' }
+        meta: { title: '淘小熊' }
       },
     ]
   },

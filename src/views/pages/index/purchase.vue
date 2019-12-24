@@ -93,7 +93,7 @@
       <ul>
         <li>
           1、与商家旺旺聊天时禁止提及
-          <i>“淘大熊、试客、试单、刷单”</i>等信息，否则取消平台任务合作机会!
+          <i>“淘小熊、试客、试单、刷单”</i>等信息，否则取消平台任务合作机会!
         </li>
         <li>
           2、禁止使用
@@ -105,7 +105,7 @@
         </li>
       </ul>
       <div class="scale">
-        <span>* 以上由于买家违规下单所产生的费用，由买家承担。淘大熊有权冻结其帐号,限制提现操作，IP列入黑名单。</span>
+        <span>* 以上由于买家违规下单所产生的费用，由买家承担。淘小熊有权冻结其帐号,限制提现操作，IP列入黑名单。</span>
       </div>
     </section>
     <!-- 温馨提示 -->
@@ -146,7 +146,7 @@
     <!-- 服务弹窗 -->
     <van-dialog v-model="showService" title="客服信息" :closeOnClickOverlay="true">
       <ul>
-        <li style="font-size:14px">注：如有疑问，请及时联系淘大熊客服</li>
+        <li style="font-size:14px">注：如有疑问，请及时联系淘小熊客服</li>
       </ul>
     </van-dialog>
   </div>
