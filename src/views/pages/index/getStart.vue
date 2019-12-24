@@ -69,8 +69,8 @@
           </header>
           <article style="border:none">
             <ul>
-              <li>* 店铺名称：{{entity.shop_name}}</li>
-              <li>* 商品价格：合计{{entity.price*entity.order_number}}元（{{entity.price + '元/*' + entity.order_number + '件'}}）</li>
+              <li>* 店铺名称：{{shopEncode(entity.shop_name)}}</li>
+              <li>* 商品价格：合计<i style="color:#f7687c">{{entity.price*entity.order_number}}</i>元（{{entity.price + '元/*' + entity.order_number + '件'}}）</li>
               <li>* 发货地：{{entity.area}}</li>
               <li>* 价格区间：{{entity.price_start}}~{{entity.price_end}}元</li>
               <li>* 注意事项：麻烦货比三家后下单。海外，港澳台，新疆，西藏，内蒙，青海，海南，宁夏不发。</li>
@@ -225,6 +225,10 @@ export default {
         this.key_word = this.entity.keyword;
         this.activityForm.user_ww = this.entity.user_ww;
       }
+    },
+    // 店铺打码 ※
+    shopEncode(str) {
+      if(str) return str.substr(0, 1) + new Array(str.length - 1).join('※') + str.substr(-1);
     },
     changeKeyword() {
       this.key_word =

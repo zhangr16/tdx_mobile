@@ -26,8 +26,8 @@
       </div>
       
       <div class="nums">
-        <span>账户余额：{{entity.balance || 0}}</span>
-        <span>积分：{{entity.integral || 0}}</span>
+        <span @click="$router.push('/zhtx')">账户余额：{{entity.balance || 0}}</span>
+        <span @click="$router.push('/score')">积分：{{entity.integral || 0}}</span>
       </div>
     </header>
     <main>
@@ -37,35 +37,35 @@
           <span :class="{'is_active': is_active == 1}" @click="is_active = 1">熊抢购任务</span>
         </div>
         <div class="states" v-if="is_active == 0">
-          <span>
+          <span @click="handleGoTask(1)">
             <span style="font-weight:500" class="iconfont iconyilingqu"></span>
             <a>
               已领取
               <i>({{entity.order_num.free.received_num}})</i>
             </a>
           </span>
-          <span>
+          <span @click="handleGoTask(2)">
             <span class="iconfont iconyitijiao"></span>
             <a>
               已提交
               <i>({{entity.order_num.free.submitted_num}})</i>
             </a>
           </span>
-          <span>
+          <span @click="handleGoTask(3)">
             <span class="iconfont icondaishenhe"></span>
             <a>
               待审核
               <i>({{entity.order_num.free.pending_review_num}})</i>
             </a>
           </span>
-          <span>
+          <span @click="handleGoTask(4)">
             <span class="iconfont iconyiwancheng"></span>
             <a>
               已完成
               <i>({{entity.order_num.free.completed_num}})</i>
             </a>
           </span>
-          <span>
+          <span @click="handleGoTask(5)">
             <span class="iconfont iconshouhou"></span>
             <a>
               售后
@@ -74,35 +74,35 @@
           </span>
         </div>
         <div class="states" v-else-if="is_active == 1">
-          <span>
+          <span @click="handleGoTask(1)">
             <span style="font-weight:500" class="iconfont iconyilingqu"></span>
             <a>
               已领取
               <i>({{entity.order_num.xqg.received_num}})</i>
             </a>
           </span>
-          <span>
+          <span @click="handleGoTask(2)">
             <span class="iconfont iconyitijiao"></span>
             <a>
               已提交
               <i>({{entity.order_num.xqg.submitted_num}})</i>
             </a>
           </span>
-          <span>
+          <span @click="handleGoTask(3)">
             <span class="iconfont icondaishenhe"></span>
             <a>
               待审核
               <i>({{entity.order_num.xqg.pending_review_num}})</i>
             </a>
           </span>
-          <span>
+          <span @click="handleGoTask(4)">
             <span class="iconfont iconyiwancheng"></span>
             <a>
               已完成
               <i>({{entity.order_num.xqg.completed_num}})</i>
             </a>
           </span>
-          <span>
+          <span @click="handleGoTask(5)">
             <span class="iconfont iconshouhou"></span>
             <a>
               售后
@@ -233,6 +233,14 @@ export default {
     this.isloading = false
   },
   methods: {
+    handleGoTask(val) {
+      // 改变状态缓存store
+      this.$store.dispatch("setTemp", {
+        isActive: this.is_active + 1,
+        activeTab: val
+      });
+      this.$router.push('/task')
+    },
     handleLogout() {
       this.$dialog
         .confirm({
@@ -254,6 +262,16 @@ export default {
   }
 };
 </script>
+<style lang="scss">
+  .mine {
+    .van-skeleton__avatar+.van-skeleton__content {
+      padding: 0;
+    }
+    .van-skeleton__content {
+      margin: 0;
+    }
+  }
+</style>
 <style lang="scss" scope>
 .mine {
   width: 100%;

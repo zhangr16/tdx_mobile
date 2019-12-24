@@ -98,12 +98,12 @@
       </div>
       <!-- 时间 -->
       <div class="times">
-        <span>申请时间：{{entity.create_time}}</span>
-        <span v-if="entity.finish_time">完成时间：{{entity.finish_time}}</span>
+        <span>申请时间: {{entity.create_time}}</span>
+        <span v-if="entity.finish_time">完成时间: {{entity.finish_time}}</span>
         <!-- 待审核显示：最后审核时间 -->
       </div>
       <div class="times" v-if="entity.status == 3 && entity.audit_time">
-        <span>最后审核时间：{{entity.audit_time}}</span>
+        <span>最后审核时间: {{entity.audit_time}}</span>
       </div>
       <div class="two_btns">
         <span v-if="entity.status == 1">

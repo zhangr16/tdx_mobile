@@ -88,7 +88,7 @@ export default {
 
     this.queryData.module_type = this.isBearbuy ? 2 : 1;
     this.queryData.is_family = this.isFamily ? 1 : null;
-    this.classicTabs = JSON.parse(window.localStorage.getItem("tpyeArr"));
+    this.classicTabs = JSON.parse(window.sessionStorage.getItem("tpyeArr"));
 
     if (this.$route.query.cid) {
       this.queryData.cid = this.$route.query.cid;

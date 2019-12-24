@@ -120,6 +120,14 @@ export default [
     component: () => import('@/views/pages/task/gonglue/dzpjgl'),
     meta: { title: '' }
   },
+  // 售后攻略
+  {
+    path: '/shgl',
+    name: 'shgl',
+    component: () => import('@/views/pages/task/gonglue/shgl'),
+    meta: { title: '' }
+  },
+  
   // 新手攻略
   {
     path: '/xsgl',

@@ -41,9 +41,9 @@ const router = new VueRouter({
 })
 
 // 全局获取分类
-if (!JSON.parse(window.localStorage.getItem('tpyeArr'))) {
+if (!JSON.parse(window.sessionStorage.getItem('tpyeArr'))) {
   cateTitle().then(res => {
-    window.localStorage.setItem('tpyeArr', JSON.stringify(res.data))
+    window.sessionStorage.setItem('tpyeArr', JSON.stringify(res.data))
   })
 }
 

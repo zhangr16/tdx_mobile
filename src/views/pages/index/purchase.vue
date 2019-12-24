@@ -58,6 +58,9 @@
             </span>
           </div>
         </template>
+        <div class="time" v-if="showStartTime">
+          <span>开始日期：{{entity.start_time}}</span>
+        </div>
         <div class="time">
           <span>截止日期：{{entity.end_time}}</span>
         </div>
@@ -143,7 +146,7 @@
     <!-- 服务弹窗 -->
     <van-dialog v-model="showService" title="客服信息" :closeOnClickOverlay="true">
       <ul>
-        <li style="font-size:14px">注：如有疑问，请及时联系淘大熊客服（晴天或熊大）</li>
+        <li style="font-size:14px">注：如有疑问，请及时联系淘大熊客服</li>
       </ul>
     </van-dialog>
   </div>
@@ -160,6 +163,13 @@ export default {
       showConfirm: false,
       entity: {}
     };
+  },
+  computed: {
+    showStartTime() {
+      if(this.entity.start_time) {
+        return Date.parse(new Date(this.entity.start_time)) > Date.parse(new Date())
+      }
+    }
   },
   mounted() {
     this.getData();

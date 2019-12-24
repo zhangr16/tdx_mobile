@@ -34,29 +34,26 @@
       <!-- 攻略 -->
       <div class="strategy">
         <i></i>
-        <span @click="$router.push('/xsgl')" style="border-right:none">新手攻略</span>
-        <span @click="$router.push('/dzpjgl')">定制评价攻略</span>
+        <span @click="$router.push('/xsgl')">新手攻略</span>
+        <span @click="$router.push('/dzpjgl')" style="border-right:none;border-left:none">定制评价攻略</span>
+        <span @click="$router.push('/shgl')">售后攻略</span>
         <i></i>
       </div>
       <!-- 任务卡 -->
-
-      <ul class="ul_items">
-        <template v-if="isloading">
-          <div class="no_data">
-            <van-loading type="spinner" />
-          </div>
-        </template>
-        <template v-else-if="taskList.length > 0">
+      <section>
+        <ul v-if="taskList.length > 0" class="ul_items">
           <li v-for="(item, key) in taskList" :key="key">
             <itemTask :entity="item" @update="getData" />
           </li>
-        </template>
-        <template v-else>
-          <div class="empty">
-            <img src="@/assets/empty/img_renwuzhongxin@2x.png" alt />
-          </div>
-        </template>
-      </ul>
+          <div class="no_more" v-if="isfinished">没有更多数据了</div>
+        </ul>
+        <div class="empty" v-else-if="!isloading">
+          <img src="@/assets/empty/img_renwuzhongxin@2x.png" alt />
+        </div>
+        <div v-if="isloading" class="no_data">
+          <van-loading type="spinner" />
+        </div>
+      </section>
     </main>
   </div>
 </template>
@@ -71,16 +68,18 @@ export default {
   data() {
     return {
       isloading: false,
+      isfinished: false,
       isVisible: false,
       myDate: null,
-      
+
       isActive: this.$store.state.task.isActive, // free或者xqg
       activeTab: this.$store.state.task.activeTab, // 状态标签
 
+      total_count: 0,
       formData: {
         task_start: "",
         task_end: "",
-        page_num: 100,
+        page_num: 20,
         page: 1,
         order_type: this.$store.state.task.isActive,
         status: this.$store.state.task.activeTab
@@ -90,28 +89,38 @@ export default {
   },
   watch: {
     isActive: function(val) {
+      console.log(val)
       if (val) {
         // 改变状态缓存store
-        this.$store.dispatch('setTemp', {
+        this.$store.dispatch("setTemp", {
           isActive: val,
           activeTab: this.activeTab
-        })
+        });
         this.formData.order_type = val + "";
       }
     },
     activeTab: function(val) {
       // 改变状态缓存store
-      this.$store.dispatch('setTemp', {
+      this.$store.dispatch("setTemp", {
         isActive: this.isActive,
         activeTab: val
-      })
+      });
       this.formData.status = val;
       this.getData();
     }
   },
   mounted() {
+    this.$nextTick(() => {
+      window.addEventListener("scroll", this.handleScroll);
+    });
+
     this.getData();
   },
+  // 离开时销毁监听scroll
+  beforeDestroy() {
+    window.removeEventListener("scroll", this.handleScroll);
+  },
+
   methods: {
     setChooseValue(param) {
       this.formData.task_start = param[0][3];
@@ -121,15 +130,36 @@ export default {
     async getData() {
       this.isloading = true;
       let res = await order_list(this.formData);
-      if (res && res.error.errno == 200) this.taskList = res.orderList || [];
+      if (res && res.error.errno == 200) {
+        this.taskList = res.orderList || [];
+        this.total_count = res.count;
+      }
       this.isloading = false;
     },
     handleTabClick(num) {
       if (num != this.isActive) {
         this.isActive = num;
+        this.formData.page_num = 20;
         this.getData();
       }
     },
+    handleScroll() {
+      let scrollTop =
+        window.pageYOffset ||
+        document.documentElement.scrollTop ||
+        document.body.scrollTop; // 滚动条偏移量
+      let innerHeight = document.querySelector(".task").clientHeight; // 滚动ul的高度
+      let viewHeight = window.innerHeight; // 视口高度
+
+      if (scrollTop + viewHeight >= innerHeight && !this.isloading) {
+        if (this.total_count > this.formData.page_num) {
+          this.formData.page_num += 20;
+          this.getData();
+        } else {
+          this.isfinished = true;
+        }
+      }
+    }
   }
 };
 </script>

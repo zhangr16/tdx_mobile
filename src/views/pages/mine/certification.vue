@@ -7,7 +7,7 @@
       <van-field
         v-model.trim="entity.real_name"
         label="真实姓名"
-        placeholder="请输入注册账户"
+        placeholder="请输入真实姓名"
         clearable
         :disabled="!entity.is_submit"
       />

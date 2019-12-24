@@ -1,12 +1,13 @@
 import axios from 'axios'
-import {Toast} from 'vant';
+import { Toast } from 'vant';
 
 // 创建axios实例
 const service = axios.create({
     timeout: 10000 // 请求超时时间
 })
 
-if(process.env.NODE_ENV != 'development') service.baseURL = "http://106.54.237.151"
+// if(process.env.NODE_ENV != 'development') service.baseURL = "http://106.54.237.151"
+service.baseURL = process.env.NODE_ENV == 'production' ? "http://106.54.237.151" : null
 
 // request拦截器
 service.interceptors.request.use(

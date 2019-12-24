@@ -22,9 +22,12 @@
         placeholder="请选择银行卡类型"
       />
       <van-cell is-link @click="openAreaSelect" title="开户地区" placeholder="请输入开户地区">
-        <span
-          v-if="entity.regist_province || entity.regist_city"
-        >{{entity.regist_province}}/{{entity.regist_city}}</span>
+        <span v-if="entity.regist_province">
+          {{entity.regist_province}}
+        </span>
+        <span v-if="entity.regist_city">
+          {{entity.regist_city}}
+        </span>
         <span v-else>暂无</span>
       </van-cell>
       <van-field

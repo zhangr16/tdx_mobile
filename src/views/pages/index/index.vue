@@ -118,7 +118,7 @@
 <script>
 import itemCardSmall from "@/components/item_card_small";
 import itemCardMid from "@/components/item_card_mid";
-import { indexSearch, cateSearch } from "@/api";
+import { indexSearch, cateSearch, cateTitle } from "@/api";
 
 export default {
   name: "home",
@@ -176,11 +176,18 @@ export default {
       this.isWhite = scrollTop > 0;
     }
   },
-  mounted() {
+  async mounted() {
     this.$nextTick(() => {
       window.addEventListener("scroll", this.handleScroll);
     });
-    this.classicTabs = JSON.parse(window.localStorage.getItem("tpyeArr"));
+    // 处理第一次进入session为空情况
+    if (!JSON.parse(window.sessionStorage.getItem('tpyeArr'))) {
+      let res = await cateTitle()
+      this.classicTabs = res.data
+      window.sessionStorage.setItem('tpyeArr', JSON.stringify(res.data))
+    } else {
+      this.classicTabs = JSON.parse(window.sessionStorage.getItem("tpyeArr"));
+    }
     this.getData();
     this.getCateData();
   }

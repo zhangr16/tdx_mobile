@@ -1,12 +1,9 @@
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
-const path = require('path');
+const CompressionPlugin = require('compression-webpack-plugin')
 
-function resolve(dir) {
-    return path.join(__dirname, dir)
-}
 module.exports = {
     publicPath: './',
-    outputDir: 'dist',
+    outputDir: 'uh5',
     assetsDir: '',
     // 是否在保存的时候使用 `eslint-loader` 进行检查。
     // 有效的值：`ture` | `false` | `"error"`
@@ -77,9 +74,12 @@ module.exports = {
         if (process.env.NODE_ENV === 'production') {
             // 为生产环境修改配置...
             if (process.env.npm_lifecycle_event === 'analyze') {
-                config.plugins.push(
-                    new BundleAnalyzerPlugin()
-                );
+                config.plugins.push(new CompressionPlugin({
+                    test: /\.js$|\.html$|.\css/, // 匹配文件名
+                    threshold: 10240, // 对超过10k的数据压缩
+                    deleteOriginalAssets: false // 不删除源文件
+                }))
+                config.plugins.push(new BundleAnalyzerPlugin());
             }
         } else {
             // 为开发环境修改配置...

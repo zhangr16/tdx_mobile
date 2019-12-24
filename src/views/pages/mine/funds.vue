@@ -19,7 +19,7 @@
     <main>
       <ul class="title_ul">
         <li>
-          总收入
+          总金额
           <br />
           <span>¥{{topList.income}}</span>
         </li>
@@ -62,8 +62,8 @@
       <van-popup v-model="showType" position="bottom">
         <van-picker
           show-toolbar
-          :default-index="4"
-          :columns="[{text: '任务金额', value: 1}, {text: '定制金额', value: 2}, {text: '售后金额', value: 3}, {text: '提现记录', value: 4}]"
+          :default-index="3"
+          :columns="[{text: '任务金额', value: 1}, {text: '定制金额', value: 2}, {text: '售后金额', value: 3}, {text: '提现记录', value: 4}, {text: '订单变更', value: 5}]"
           @cancel="showType = false"
           @confirm="(val) => { type_label = val.text; queryForm.type = val.value; showType = false; getData() }"
         />
@@ -88,6 +88,9 @@
             <span class="_title">
               <span>
                 {{item.type}}<template v-if="queryForm.type == 4">--{{item.status}}</template>
+              </span>
+              <span v-if="item.order_sn">
+                {{item.order_sn || '-'}}
               </span>
               <i>{{item.money > 0 ? '+' + item.money : item.money}}</i>
             </span>
