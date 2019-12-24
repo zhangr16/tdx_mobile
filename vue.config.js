@@ -3,7 +3,7 @@ const CompressionPlugin = require('compression-webpack-plugin')
 
 module.exports = {
     publicPath: './',
-    outputDir: 'uh5',
+    outputDir: 'dist',
     assetsDir: '',
     // 是否在保存的时候使用 `eslint-loader` 进行检查。
     // 有效的值：`ture` | `false` | `"error"`
