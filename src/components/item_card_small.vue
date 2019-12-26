@@ -11,7 +11,7 @@
             color="#ff5500"
             :percentage="entity.task_count ? 100 * (1 - entity.order_count/entity.task_count) : 100"
           />
-          <span>已抢<i>{{entity.order_count}}</i>件共{{entity.task_count || 1}}件</span>
+          <span>已抢<i>{{entity.order_count}}</i> 共{{entity.task_count || 1}}</span>
         </div>
       </div>
       <div class="btn">马上抢</div>
@@ -75,7 +75,7 @@ export default {
         // display: flex;
         // flex-direction: column;
         transform: scale(0.75);
-        margin-left: -8%;
+        margin-left: -10%;
         color: #999;
         & > span {
           display: block;

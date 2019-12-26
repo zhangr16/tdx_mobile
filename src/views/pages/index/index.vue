@@ -42,16 +42,16 @@
         </van-swipe-item>
       </van-swipe>
 
-      <!-- <ul class="two_parts">
-        <li @click="$router.push('/limitFree')">
+      <ul class="two_parts">
+        <!-- <li @click="$router.push('/limitFree')">
           <img src="@/assets/sy_icon_xianliangmiandan@2x.png" alt />
           <span>限量免单</span>
         </li>
         <li @click="$router.push('/bearBuy')">
           <img src="@/assets/sy_icon_xiongqianggou@2x.png" alt />
           <span>熊抢购</span>
-        </li>
-      </ul> -->
+        </li> -->
+      </ul>
 
       <van-notice-bar text="淘小熊上线啦" background="#fff">
         <div slot="left-icon" class="notice_title">商城头条</div>
@@ -242,9 +242,9 @@ export default {
     }
     // 限量免单+熊抢购
     .two_parts {
-      height: 100px;
+      // height: 100px;
       margin-top: 50px;
-      border-bottom: 1px solid #ccc;
+      // border-bottom: 1px solid #ccc;
       display: flex;
       font-size: 12px;
       background: #fff;

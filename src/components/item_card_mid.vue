@@ -8,8 +8,8 @@
         <span>{{entity.title}}</span>
       </div>
       <div class="two_icons">
-        <i class="two_icons_first" v-if="entity.is_img">需晒图</i>
-        <i class="two_icons_last" v-if="entity.integral">积分奖励{{entity.integral}}</i>
+        <!-- <i class="two_icons_first" v-if="entity.is_img">需晒图</i> -->
+        <!-- <i class="two_icons_last" v-if="entity.integral">积分奖励{{entity.integral}}</i> -->
       </div>
       <div class="content">
         <div class="content_price">¥{{entity.price}}</div>
