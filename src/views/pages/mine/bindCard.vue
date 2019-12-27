@@ -31,12 +31,12 @@
         <span v-else>暂无</span>
       </van-cell>
       <van-field
-        is-link
+        right-icon="arrow"
         v-model="entity.sub_branch_name"
         label="开户支行"
         placeholder="请选择银行支行"
         :disabled="!isReadonly"
-        @click="openBankBranch"
+        @click-right-icon="openBankBranch"
       />
       <van-field
         v-model="entity.bank_card"
@@ -205,14 +205,21 @@ export default {
       if (this.isReadonly) this.showArea = true;
     },
     openBankBranch() {
-      if (this.isReadonly) this.showBranch = true;
+      if (this.isReadonly) {
+        this.showBranch = true;
+        this.getbranchData()
+      } 
     },
     async getbranchData() {
+      if(!this.bankText || this.bankText == '暂无') {
+        return this.$toast.fail("请填写银行卡类型");
+      }
       if(this.entity.regist_province && this.entity.regist_city && this.bankText) {
         let res = await getBankBranch({
           province: this.entity.regist_province,
           city: this.entity.regist_city,
-          bank_name: this.bankText
+          bank_name: this.bankText,
+          sub_branch_name: this.entity.sub_branch_name
         })
         if(res && res.error.errno == 200) {
           this.bankBranchArr = res.data

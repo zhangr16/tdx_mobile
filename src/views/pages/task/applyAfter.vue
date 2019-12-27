@@ -79,7 +79,7 @@
               <br />
               任务金额: ¥ {{entity.price}}
               <br />
-              差价金额: ¥ {{(form.reality_price - entity.price) || 0}}
+              差价金额: ¥ {{(form.reality_price - entity.price).toFixed(2) || 0}}
             </div>
           </van-cell>
           <van-field
