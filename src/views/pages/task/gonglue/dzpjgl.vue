@@ -7,29 +7,36 @@
       <van-cell>
         1、收到定制评价的短信提醒后进入
         <i>任务中心</i>
+        <img class="dzz" src="@/assets/dzpjgl/dzz1.png" alt="" />
       </van-cell>
       <van-cell>
         2、点击
-        <i>定制任务</i>，找到需要定制评价的订单
+        <i>已提交</i>，找到下方有一行红字的任务
+        <img class="dzz" src="@/assets/dzpjgl/dzz2.png" alt="" />
       </van-cell>
-      <van-cell>3、查看评价内容，按商家要求填写评价及晒图</van-cell>
+      <van-cell>3、收到礼品后，
+        <i>点击红字</i>查看商家定制文字及图片，按照要求评价</van-cell>
+        <img class="dzz" src="@/assets/dzpjgl/dzz3.png" alt="" />
       <van-cell>
-        4、评价完之后提交
-        <i>评价截图</i>
+        4、评价完之后点击
+        <i>提交好评截图</i>
+        <img class="dzz" src="@/assets/dzpjgl/dzz4.png" alt="" />
       </van-cell>
       <van-cell>
-        5、卖家确认无误后，平台奖励
-        <i>1元</i>到您的账户中供您提现
+        5、商家确认无误后审核通过，平台奖励
+        <i>1元</i>到您的余额供您提现，可在<i>定制金返款</i>查询记录
+        <img class="dzz" src="@/assets/dzpjgl/dzz5.png" alt="" />
+        <img class="dzz" src="@/assets/dzpjgl/dzz6.png" alt="" />
       </van-cell>
       <van-cell>
         <div>6、温馨提示</div>
         <ul class="tips">
-          <li>① 如未按卖家要求评价，评价将被商家退回并取消奖励金</li>
-          <li>② 如果定制评价任务超过<i>10天</i>仍未完成将无法抢单哦</li>
+          <li>① 如未按商家要求评价，评价将被商家退回并取消奖励金</li>
+          <li>② 如定制评价任务超过<i>10天</i>仍未完成将无法继续抢单哦</li>
         </ul>
       </van-cell>
       <van-cell>
-        <span class="scale">如有问题可以随时联系我们的客服人员！</span>
+        <span class="scale">如有问题，可随时联系小熊客服人员！</span>
       </van-cell>
     </main>
   </div>
@@ -57,6 +64,9 @@ export default {
   position: relative;
   width: 100%;
   padding-top: 50px;
+  .dzz {
+    width: 100%;
+  }
   & > header {
     width: 100%;
     position: fixed;

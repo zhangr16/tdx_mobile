@@ -28,7 +28,8 @@
       <!-- free -->
       <template v-else>
         <div class="two_icons">
-          <!-- <i class="two_icons_first" v-if="entity.is_img">需晒图</i> -->
+          <i class="two_icons_first" v-if="entity.is_remote > 0">偏远地区不发货</i>
+          <i class="two_icons_last" v-else style="color:white">偏远地区不发货</i>
           <!-- <i class="two_icons_last" v-if="entity.integral">积分奖励{{entity.integral}}</i> -->
         </div>
         <div class="content">
@@ -47,7 +48,8 @@
           </div>
         </div>
       </template>
-      <div class="btn">马上抢</div>
+      <div class="btn" v-if="entity.sell_type == 2 || entity.sell_type == 0">预告中</div>
+      <div class="btn" v-else>马上抢</div>
     </main>
   </div>
 </template>
@@ -162,7 +164,7 @@ export default {
       }
     }
     .two_icons {
-      padding: 5px 0;
+      padding: 3px 0;
       i {
         display: inline-block;
         color: #fff;
@@ -176,7 +178,7 @@ export default {
         background: linear-gradient(-90deg, #ff0c46 0%, #ff797d 100%);
       }
       &_last {
-        background: linear-gradient(90deg, #769dff 0%, #316ded 100%);
+        // background: linear-gradient(90deg, #769dff 0%, #316ded 100%);
       }
     }
     .content {

@@ -62,11 +62,8 @@ export default {
   methods: {
     // 验证原始密码
     validateOldpassword() {
-      if (
-        this.userForm.old_pwd.length < 5 ||
-        this.userForm.old_pwd.length > 13
-      ) {
-        this.validateMsg.old_pwd = "原密码长度不能小于5位或大于13位";
+      if (this.userForm.old_pwd.length < 5) {
+        this.validateMsg.old_pwd = "原密码长度不能小于5位";
       } else if (escape(this.userForm.old_pwd).indexOf("%u") >= 0) {
         this.validateMsg.old_pwd = "原密码不能有中文";
       } else {
@@ -75,11 +72,8 @@ export default {
       }
     },
     validatePassword() {
-      if (
-        this.userForm.new_pwd.length < 5 ||
-        this.userForm.new_pwd.length > 13
-      ) {
-        this.validateMsg.new_pwd = "新密码长度不能小于5位或大于13位";
+      if (this.userForm.new_pwd.length < 5) {
+        this.validateMsg.new_pwd = "新密码长度不能小于5位";
       } else if (escape(this.userForm.new_pwd).indexOf("%u") >= 0) {
         this.validateMsg.new_pwd = "新密码不能有中文";
       } else if(this.userForm.new_pwd == this.userForm.old_pwd) {
@@ -93,8 +87,8 @@ export default {
       }
     },
     validateRepassword() {
-      if (this.userForm.re_pwd.length < 5 || this.userForm.re_pwd.length > 13) {
-        this.validateMsg.re_pwd = "密码长度不能小于5位或大于13位";
+      if (this.userForm.re_pwd.length < 5) {
+        this.validateMsg.re_pwd = "密码长度不能小于5位";
       } else if (escape(this.userForm.re_pwd).indexOf("%u") >= 0) {
         this.validateMsg.re_pwd = "密码不能有中文";
       } else {

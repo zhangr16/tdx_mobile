@@ -94,6 +94,7 @@
               <span style="color:#999">处理时间：{{item.dispose_time}}</span>
             </li>
             <li>处理说明：{{item.info}}</li>
+            <li v-if="entity.sale_type == 2">物流单号：{{entity.logistics_num}}</li>
           </ul>
         </van-cell>
       </template>

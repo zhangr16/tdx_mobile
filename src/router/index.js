@@ -8,7 +8,7 @@ export default [
         path: '/index',
         name: 'index',
         component: () => import('@/views/pages/index'),
-        meta: { title: '首页' }
+        meta: { title: '淘小熊-让天下有免费的午餐' }
       },
       {
         path: '/limitFree',

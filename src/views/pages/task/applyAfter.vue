@@ -90,7 +90,7 @@
             label="售后说明"
             placeholder="请填写售后说明"
           />
-          <van-cell class="uploads" title="售后凭证" label="（最多3张）">
+          <van-cell class="uploads" title="售后凭证" label="(最多3张)">
             <van-uploader
               :after-read="afterRead"
               :before-delete="beforeDel"
@@ -98,7 +98,9 @@
               multiple
               :max-count="3"
             />
+            <div style="color:#ff5500">付款截图需显示店铺名称及订单号</div>
           </van-cell>
+          <!-- <van-tag plain style="font-size:18px"></van-tag> -->
         </van-cell-group>
 
         <div class="submit_btn" @click="handleSubmit">提 交</div>
@@ -126,7 +128,8 @@ export default {
     return {
       showPicker: false,
       isloading: false,
-      columns: ["资金问题", "物流问题", "礼品问题", "其他"],
+      // columns: ["资金问题", "物流问题", "礼品问题", "其他"],
+      columns: ["资金问题"],
       fileList: [], // 图片
       form: { comment: "", sale_type: null, reality_price: null },
       _id: null,
@@ -196,13 +199,18 @@ export default {
     },
     // 图片上传方法
     async uploadAjax(content) {
+      content.status = 'uploading';
+      content.message = '上传中...';
+
       let form = new FormData();
       form.append("img", content.file);
+      
       let res = await uploadImg(form);
       if (res && res.error.errno == 200) {
         this.$toast.success("图片上传成功");
         content.url = res.url;
       }
+      content.status = '';
     },
     async beforeDel(content) {
       let res = await deleteUpload({

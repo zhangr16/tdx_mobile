@@ -19,19 +19,20 @@
       <!-- 顶部 -->
       <div class="_top">
         <div class="title">{{entity.title}}</div>
+        <div class="remote" v-if="entity.is_remote > 0">偏远地区不发货</div>
       </div>
       <!-- 中部 -->
       <div class="_mid">
         <template v-if="entity.module_type == 'free'">
           <div class="num">
             <span>任务金额:</span>
-            &nbsp;{{entity.price * entity.order_number}}元&nbsp;&nbsp;&nbsp;
+            &nbsp;{{(entity.price * entity.order_number).toFixed(2)}}元&nbsp;&nbsp;&nbsp;
             <span>返还金额:</span>
-            &nbsp;{{entity.price * entity.order_number}}元
+            &nbsp;{{(entity.price * entity.order_number).toFixed(2)}}元
           </div>
           <div class="num">
             <span>商品价值:</span>
-            &nbsp;{{entity.price * entity.order_number}}元&nbsp;&nbsp;&nbsp;
+            &nbsp;{{(entity.price * entity.order_number).toFixed(2)}}元&nbsp;&nbsp;&nbsp;
             <span>剩余份数:</span>
             &nbsp;{{entity.remain_count}}/{{entity.task_count}}份
           </div>
@@ -48,7 +49,7 @@
             <span>任务金额: {{entity.price}}元</span>
             <div>
               <span>返利</span>
-              <span>¥ {{entity.price - entity.current_price}}</span>
+              <span>¥ {{(entity.price - entity.current_price).toFixed(2)}}</span>
             </div>
           </div>
           <div class="xqg">
@@ -59,7 +60,7 @@
           </div>
         </template>
         <div class="time" v-if="showStartTime">
-          <span>开始日期：{{entity.start_time}}</span>
+          <span>开始日期：{{entity.task_start}}</span>
         </div>
         <div class="time">
           <span>截止日期：{{entity.end_time}}</span>
@@ -69,7 +70,7 @@
       <div
         class="_bottom"
         v-if="entity.module_type == 'free'"
-      >商家已存入保证金{{entity.price * entity.order_number}}元平台担保返款</div>
+      >商家已存入保证金{{(entity.price * entity.order_number).toFixed(2)}}元平台担保返款</div>
       <div class="_bottom2" v-else>熊抢购非免单任务，返款金额 = 任务金额 - 最低价 + 积分金额</div>
     </section>
     <!-- 任务流程 -->
@@ -79,10 +80,10 @@
       </header>
       <ul>
         <li>1、点击“立即领取”,获取免单资格</li>
-        <li>2、点击"开始任务",按照任务提示，以￥{{entity.price * entity.order_number}}元价格去指定平台</li>
+        <li>2、点击"开始任务",按照任务提示，以￥{{(entity.price * entity.order_number).toFixed(2)}}元价格去指定平台</li>
         <li>3、复制宝贝链接，点击验证通过之后，填写订单号，并提交任务</li>
         <li>4、卖家发货→收到快递后到淘宝确认收货→给予五星好评并上传好评截图到平台→等待卖家确认</li>
-        <li>5、卖家确认无误后，平台返款￥{{ entity.module_type == 'free' ? entity.price * entity.order_number : entity.price - entity.current_price}}元到您的账户中供您提现</li>
+        <li>5、卖家确认无误后，平台返款￥{{ entity.module_type == 'free' ? (entity.price * entity.order_number).toFixed(2) : (entity.price - entity.current_price).toFixed(2)}}元到您的账户中供您提现</li>
       </ul>
     </section>
     <!-- 注意事项 -->
@@ -166,8 +167,10 @@ export default {
   },
   computed: {
     showStartTime() {
-      if(this.entity.start_time) {
-        return Date.parse(new Date(this.entity.start_time)) > Date.parse(new Date())
+      if(this.entity.task_start) {
+        // ios下兼容
+        let ios_time = this.entity.task_start.replace(/-/g, '/');
+        return Date.parse(new Date(ios_time)) > Date.parse(new Date())
       }
     }
   },
@@ -242,6 +245,11 @@ export default {
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
+      }
+      .remote {
+        color: #fa2742;
+        padding-top: 10px;
+        font-size: 14px;
       }
     }
     & > ._mid {

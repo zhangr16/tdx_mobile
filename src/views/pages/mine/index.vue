@@ -1,6 +1,5 @@
 <template>
   <div class="mine">
-
     <header>
       <div class="msg">
         <span class="iconfont iconxiaoxi" @click="$router.push('/msg')"></span>
@@ -9,7 +8,7 @@
       <van-skeleton v-if="isloading" title avatar :row="1" />
       <!-- <div v-if="isloading">
         <van-loading type="spinner" />
-      </div> -->
+      </div>-->
       <div v-else class="desc">
         <div class="img">
           <van-image :src="entity.avatar" use-error-slot>
@@ -24,7 +23,7 @@
           </div>
         </div>
       </div>
-      
+
       <div class="nums">
         <span @click="$router.push('/zhtx')">账户余额：{{entity.balance || 0}}</span>
         <!-- <span @click="$router.push('/score')">积分：{{entity.integral || 0}}</span> -->
@@ -35,7 +34,7 @@
         <!-- <div class="tabs">
           <span :class="{'is_active': is_active == 0}" @click="is_active = 0">免单任务</span>
           <span :class="{'is_active': is_active == 1}" @click="is_active = 1">熊抢购任务</span>
-        </div> -->
+        </div>-->
         <div class="states" v-if="is_active == 0">
           <span @click="handleGoTask(1)">
             <span style="font-weight:500" class="iconfont iconyilingqu"></span>
@@ -146,12 +145,14 @@
           <!-- <li @click="$router.push('/score')">
             <img src="@/assets/mine/wd_icon_jifenmingxi@2x.png" alt />
             <span>积分明细</span>
-          </li> -->
+          </li>-->
           <li @click="$router.push('/share')">
             <img src="@/assets/mine/wd_icon_fenxianghaoyou@2x.png" alt />
             <span>分享给好友</span>
           </li>
-          <li @click="entity.verified_status == 2 ? $router.push('/kefuInfo') : $router.push('/certification')">
+          <li
+            @click="entity.verified_status == 2 ? $router.push('/kefuInfo') : $router.push('/certification')"
+          >
             <img src="@/assets/mine/wd_icon_shimingrenzheng@2x.png" alt />
             <span>实名认证</span>
           </li>
@@ -179,7 +180,11 @@
             <img src="@/assets/mine/wd_icon_huodongjiangli@2x.png" alt />
             <span>活动奖励</span>
           </li>
-          <li :class="{'br_none': entity.is_family > 0}" class="bb_none" @click="$router.push('/update')">
+          <li
+            :class="{'br_none': entity.is_family > 0}"
+            class="bb_none"
+            @click="$router.push('/update')"
+          >
             <img src="@/assets/mine/wd_icon_gengxin@2x.png" alt />
             <span>更新说明</span>
           </li>
@@ -211,26 +216,26 @@ export default {
   },
   computed: {
     invited_code() {
-      if(this.$store.state.user.name) {
-        return this.$store.state.user.name.invite_code 
+      if (this.$store.state.user.name) {
+        return this.$store.state.user.name.invite_code;
       } else {
-        return ''
+        return "";
       }
     }
   },
   async mounted() {
-    this.isloading = true
+    this.isloading = true;
     let res = await userIndex();
     if (res && res.error.errno == 200) {
       this.entity = res.data;
       // 计算免单
-      let sum = 0
+      let sum = 0;
       Object.keys(this.entity.order_num.free).map(el => {
-        if(el != 'after_sale_num') sum += this.entity.order_num.free[el]
-      })
-      this.free_total = sum
+        if (el != "after_sale_num") sum += this.entity.order_num.free[el];
+      });
+      this.free_total = sum;
     }
-    this.isloading = false
+    this.isloading = false;
   },
   methods: {
     handleGoTask(val) {
@@ -240,7 +245,7 @@ export default {
         isActive: 1,
         activeTab: val
       });
-      this.$router.push('/task')
+      this.$router.push("/task");
     },
     handleLogout() {
       this.$dialog
@@ -264,14 +269,14 @@ export default {
 };
 </script>
 <style lang="scss">
-  .mine {
-    .van-skeleton__avatar+.van-skeleton__content {
-      padding: 0;
-    }
-    .van-skeleton__content {
-      margin: 0;
-    }
+.mine {
+  .van-skeleton__avatar + .van-skeleton__content {
+    padding: 0;
   }
+  .van-skeleton__content {
+    margin: 0;
+  }
+}
 </style>
 <style lang="scss" scope>
 .mine {
@@ -292,7 +297,12 @@ export default {
       }
     }
     .desc {
-      display: flex;
+      display: -webkit-box; /* Chrome 4+, Safari 3.1, iOS Safari 3.2+ */
+      display: -moz-box; /* Firefox 17- */
+      display: -webkit-flex; /* Chrome 21+, Safari 6.1+, iOS Safari 7+, Opera 15/16 */
+      display: -moz-flex; /* Firefox 18+ */
+      display: -ms-flexbox; /* IE 10 */
+      display: flex; /* Chrome 29+, Firefox 22+, IE 11+, Opera 12.1/17/18, Android 4.4+ */
       align-items: center;
       padding-right: 30px;
       & > .img {
@@ -315,14 +325,24 @@ export default {
         }
         .desc_bottom {
           margin-top: 5px;
-          display: flex;
+          display: -webkit-box; /* Chrome 4+, Safari 3.1, iOS Safari 3.2+ */
+          display: -moz-box; /* Firefox 17- */
+          display: -webkit-flex; /* Chrome 21+, Safari 6.1+, iOS Safari 7+, Opera 15/16 */
+          display: -moz-flex; /* Firefox 18+ */
+          display: -ms-flexbox; /* IE 10 */
+          display: flex; /* Chrome 29+, Firefox 22+, IE 11+, Opera 12.1/17/18, Android 4.4+ */
           justify-content: space-between;
         }
       }
     }
     .nums {
       padding: 15px;
-      display: flex;
+      display: -webkit-box; /* Chrome 4+, Safari 3.1, iOS Safari 3.2+ */
+      display: -moz-box; /* Firefox 17- */
+      display: -webkit-flex; /* Chrome 21+, Safari 6.1+, iOS Safari 7+, Opera 15/16 */
+      display: -moz-flex; /* Firefox 18+ */
+      display: -ms-flexbox; /* IE 10 */
+      display: flex; /* Chrome 29+, Firefox 22+, IE 11+, Opera 12.1/17/18, Android 4.4+ */
       justify-content: space-between;
       span {
         font-size: 14px;
@@ -339,7 +359,12 @@ export default {
       background: #fff;
       margin-top: 15px;
       .tabs {
-        display: flex;
+        display: -webkit-box; /* Chrome 4+, Safari 3.1, iOS Safari 3.2+ */
+        display: -moz-box; /* Firefox 17- */
+        display: -webkit-flex; /* Chrome 21+, Safari 6.1+, iOS Safari 7+, Opera 15/16 */
+        display: -moz-flex; /* Firefox 18+ */
+        display: -ms-flexbox; /* IE 10 */
+        display: flex; /* Chrome 29+, Firefox 22+, IE 11+, Opera 12.1/17/18, Android 4.4+ */
         font-size: 14px;
         .is_active {
           border-bottom: 2px solid #fb6e04;
@@ -354,11 +379,21 @@ export default {
         }
       }
       .states {
-        display: flex;
+        display: -webkit-box; /* Chrome 4+, Safari 3.1, iOS Safari 3.2+ */
+        display: -moz-box; /* Firefox 17- */
+        display: -webkit-flex; /* Chrome 21+, Safari 6.1+, iOS Safari 7+, Opera 15/16 */
+        display: -moz-flex; /* Firefox 18+ */
+        display: -ms-flexbox; /* IE 10 */
+        display: flex; /* Chrome 29+, Firefox 22+, IE 11+, Opera 12.1/17/18, Android 4.4+ */
         & > span {
           flex: 1;
           text-align: center;
-          display: flex;
+          display: -webkit-box; /* Chrome 4+, Safari 3.1, iOS Safari 3.2+ */
+          display: -moz-box; /* Firefox 17- */
+          display: -webkit-flex; /* Chrome 21+, Safari 6.1+, iOS Safari 7+, Opera 15/16 */
+          display: -moz-flex; /* Firefox 18+ */
+          display: -ms-flexbox; /* IE 10 */
+          display: flex; /* Chrome 29+, Firefox 22+, IE 11+, Opera 12.1/17/18, Android 4.4+ */
           flex-direction: column;
           & > span {
             color: #fa2a44;
@@ -380,17 +415,32 @@ export default {
       }
       .fans {
         padding: 10px 0;
-        display: flex;
+        display: -webkit-box; /* Chrome 4+, Safari 3.1, iOS Safari 3.2+ */
+        display: -moz-box; /* Firefox 17- */
+        display: -webkit-flex; /* Chrome 21+, Safari 6.1+, iOS Safari 7+, Opera 15/16 */
+        display: -moz-flex; /* Firefox 18+ */
+        display: -ms-flexbox; /* IE 10 */
+        display: flex; /* Chrome 29+, Firefox 22+, IE 11+, Opera 12.1/17/18, Android 4.4+ */
         & > div {
           flex: 1;
-          display: flex;
+          display: -webkit-box; /* Chrome 4+, Safari 3.1, iOS Safari 3.2+ */
+          display: -moz-box; /* Firefox 17- */
+          display: -webkit-flex; /* Chrome 21+, Safari 6.1+, iOS Safari 7+, Opera 15/16 */
+          display: -moz-flex; /* Firefox 18+ */
+          display: -ms-flexbox; /* IE 10 */
+          display: flex; /* Chrome 29+, Firefox 22+, IE 11+, Opera 12.1/17/18, Android 4.4+ */
           flex-direction: column;
           &:first-child {
             border-right: 1px solid #e5e5e5;
           }
           & > span {
             font-size: 14px;
-            display: flex;
+            display: -webkit-box; /* Chrome 4+, Safari 3.1, iOS Safari 3.2+ */
+            display: -moz-box; /* Firefox 17- */
+            display: -webkit-flex; /* Chrome 21+, Safari 6.1+, iOS Safari 7+, Opera 15/16 */
+            display: -moz-flex; /* Firefox 18+ */
+            display: -ms-flexbox; /* IE 10 */
+            display: flex; /* Chrome 29+, Firefox 22+, IE 11+, Opera 12.1/17/18, Android 4.4+ */
             align-items: center;
             justify-content: center;
             .iconfont {
@@ -406,7 +456,12 @@ export default {
         }
       }
       .icons_ul {
-        display: flex;
+        display: -webkit-box; /* Chrome 4+, Safari 3.1, iOS Safari 3.2+ */
+        display: -moz-box; /* Firefox 17- */
+        display: -webkit-flex; /* Chrome 21+, Safari 6.1+, iOS Safari 7+, Opera 15/16 */
+        display: -moz-flex; /* Firefox 18+ */
+        display: -ms-flexbox; /* IE 10 */
+        display: flex; /* Chrome 29+, Firefox 22+, IE 11+, Opera 12.1/17/18, Android 4.4+ */
         // justify-content: space-between;
         flex-wrap: wrap;
         & > li {
@@ -414,7 +469,12 @@ export default {
           height: 80px;
           border-bottom: 1px solid #e5e5e5;
           border-right: 1px solid #e5e5e5;
-          display: flex;
+          display: -webkit-box; /* Chrome 4+, Safari 3.1, iOS Safari 3.2+ */
+          display: -moz-box; /* Firefox 17- */
+          display: -webkit-flex; /* Chrome 21+, Safari 6.1+, iOS Safari 7+, Opera 15/16 */
+          display: -moz-flex; /* Firefox 18+ */
+          display: -ms-flexbox; /* IE 10 */
+          display: flex; /* Chrome 29+, Firefox 22+, IE 11+, Opera 12.1/17/18, Android 4.4+ */
           justify-content: center;
           align-items: center;
           flex-direction: column;

@@ -12,7 +12,7 @@
           <van-field
             clearable
             v-model.trim="userForm.user"
-            placeholder="请输入用户名"
+            placeholder="请输入用户名或手机号"
             @input="validateMobile"
             :error-message="validateMsg.user"
           />
@@ -55,15 +55,15 @@ export default {
   methods: {
     validateMobile() {
       if (this.userForm.user == "") {
-        this.validateMsg.user = "请输入用户名";
+        this.validateMsg.user = "请输入用户名或手机号";
       } else {
         this.validateMsg.user = "";
         return true;
       }
     },
     validatePassword() {
-      if (this.userForm.pwd.length < 5 || this.userForm.pwd.length > 13) {
-        this.validateMsg.pwd = "密码长度不能小于5位或大于13位";
+      if (this.userForm.pwd.length < 5) {
+        this.validateMsg.pwd = "密码长度不能小于5位";
       } else if (escape(this.userForm.pwd).indexOf("%u") >= 0) {
         this.validateMsg.pwd = "密码不能有中文";
       } else {

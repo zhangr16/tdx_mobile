@@ -5,13 +5,13 @@
     </header>
     <span>
       实名认证已提交，微信扫码找客服“
-      <template v-if="$store.state.user.name.prove_group == 'A'">嘟嘟</template>
-      <template v-else-if="$store.state.user.name.prove_group == 'B'">蹦蹦</template>”，发手机号审核。否则无法领取任务，谢谢！
+      <template v-if="$store.state.user.name.prove_group == 'A'">跳跳</template>
+      <template v-else-if="$store.state.user.name.prove_group == 'B'">晴天</template>”，发手机号审核。否则无法领取任务，谢谢！
     </span>
-    <img v-if="$store.state.user.name.prove_group == 'A'" src="@/assets/mine/kefu2.png" alt />
+    <img v-if="$store.state.user.name.prove_group == 'A'" src="@/assets/mine/跳跳.jpg" alt />
     <img
       v-else-if="$store.state.user.name.prove_group == 'B'"
-      src="@/assets/mine/kefu1.png"
+      src="@/assets/mine/晴天.jpg"
       alt
     />
   </div>
@@ -75,6 +75,9 @@ export default {
     color: red;
     font-size: 16px;
     padding: 10px;
+  }
+  img {
+    width: 75%;
   }
 }
 </style>

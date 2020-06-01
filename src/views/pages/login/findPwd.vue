@@ -107,8 +107,8 @@ export default {
       }
     },
     validatePassword() {
-      if (this.userForm.pwd.length < 5 || this.userForm.pwd.length > 13) {
-        this.validateMsg.pwd = "密码长度不能小于5位或大于13位";
+      if (this.userForm.pwd.length < 5) {
+        this.validateMsg.pwd = "密码长度不能小于5位";
       } else if (escape(this.userForm.pwd).indexOf("%u") >= 0) {
         this.validateMsg.pwd = "密码不能有中文";
       } else {
@@ -120,11 +120,8 @@ export default {
       }
     },
     validateRepassword() {
-      if (
-        this.userForm.re_password.length < 5 ||
-        this.userForm.re_password.length > 13
-      ) {
-        this.validateMsg.re_password = "密码长度不能小于5位或大于13位";
+      if (this.userForm.re_password.length < 5) {
+        this.validateMsg.re_password = "密码长度不能小于5位";
       } else if (escape(this.userForm.re_password).indexOf("%u") >= 0) {
         this.validateMsg.re_password = "密码不能有中文";
       } else {

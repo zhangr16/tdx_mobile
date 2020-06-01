@@ -62,7 +62,8 @@ module.exports = {
         proxy: {
             '/': {
                 ws: false, // proxy websockets
-                target: 'http://106.54.237.151',
+                // target: 'http://106.54.237.151',
+                target: 'http://www.taoxiaoxiong.cn',
                 // target: 'http://192.168.0.169:8123',
                 // target: 'http://192.168.0.145',
                 changeOrigin: true

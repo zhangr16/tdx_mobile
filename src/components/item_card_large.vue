@@ -18,10 +18,8 @@
           </div>
           <!-- <div class="content_price1"><span>商品价值:</span> 99元&nbsp;&nbsp;<span>剩余份数:</span> 1/9份</div> -->
           <div class="content_price2">
-            <span>任务金额:</span>
-            {{entity.price}}元&nbsp;&nbsp;
-            <span>返还金额:</span>
-            {{entity.price - entity.current_price}}元
+            <span>任务金额:</span>{{(entity.price * entity.order_number).toFixed(2)}}元
+            <span>返还金额:</span>{{((entity.price - entity.current_price) * entity.order_number).toFixed(2)}}元
           </div>
           <div class="content_time">
             <span>截止日期：{{entity.task_end}}</span>
@@ -46,7 +44,7 @@
         </template>
         <div
           class="content_insure"
-        >商家已存入保证金{{entity.activity_type == 1 ? entity.price*entity.order_number : entity.price - entity.current_price }}元平台担保返款</div>
+        >商家已存入保证金{{entity.module_type == 'free' ? (entity.price*entity.order_number).toFixed(2) : (entity.price - entity.current_price).toFixed(2) }}元平台担保返款</div>
         <div class="content_btn">
           <span>马上抢</span>
         </div>
@@ -84,7 +82,7 @@ export default {
 .item_card_large {
   width: 100%;
   display: flex;
-  padding: 10px 15px;
+  padding: 10px;
   & > img {
     width: 130px;
     height: 130px;
@@ -149,7 +147,7 @@ export default {
       }
       &_price1,
       &_price2 {
-        font-size: 14px;
+        font-size: 12px;
         padding: 3px 0;
         color: #ff5500;
       }

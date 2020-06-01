@@ -70,15 +70,18 @@
           <article style="border:none">
             <ul>
               <li>* 店铺名称：{{shopEncode(entity.shop_name)}}</li>
-              <li>* 商品价格：合计<i style="color:#f7687c">{{entity.price*entity.order_number}}</i>元（{{entity.price + '元/*' + entity.order_number + '件'}}）</li>
+              <li>* 商品价格：合计<i style="color:#f7687c">
+                {{(entity.price*entity.order_number).toFixed(2)}}</i>元
+              （{{entity.price + '元/*' + entity.order_number + '件'}}）
+              </li>
               <li>* 发货地：{{entity.area}}</li>
               <li>* 价格区间：{{entity.price_start}}~{{entity.price_end}}元</li>
-              <li>* 注意事项：麻烦货比三家后下单。海外，港澳台，新疆，西藏，内蒙，青海，海南，宁夏不发。</li>
+              <li>* 注意事项：{{entity.mc_comment}}</li>
               <li>
                 * 商品主图：
                 <img class="main_img" :src="entity.img" alt />
               </li>
-              <template v-if="entity.verify_url < 0">
+              <template>
                 <li>* 核对宝贝，请提交宝贝链接或淘口令</li>
                 <li>
                   <van-icon
@@ -118,8 +121,8 @@
         <van-field
           v-model.trim="activityForm.pay_amount"
           type="number"
-          label="实际支付金额"
-          placeholder="请输入实际支付金额"
+          label="任务金额"
+          placeholder="请输入任务金额"
         />
         <van-cell class="_exchanger" title="积分抵换" v-if="entity.module_type == 'xqg'">
           <van-radio-group v-model="is_integral" :checked-color="`#ff5500`">
@@ -138,13 +141,13 @@
           v-model.trim="activityForm.order_sn"
           label="订单编号"
           placeholder="请输入订单编号"
-          maxlength="18"
+          maxlength="19"
           clearable
         />
         <van-field
           v-model.trim="activityForm.user_comment"
           label="买家备注"
-          placeholder="20字以内(可不填)"
+          placeholder="20字以内(可备注尺码)"
           maxlength="20"
         />
       </van-cell-group>
@@ -270,10 +273,10 @@ export default {
       if (!this.activityForm.pay_amount) {
         this.$toast.fail("请输入支付金额");
       } else if (
-        this.activityForm.pay_amount !=
-        this.entity.price * this.entity.order_number
+        (this.activityForm.pay_amount * 1).toFixed(2) !=
+        (this.entity.price * this.entity.order_number).toFixed(2)
       ) {
-        this.$toast.fail("实际支付金额不一致");
+        this.$toast.fail("任务金额不一致");
       } else if (
         this.is_integral == 1 &&
         !this.activityForm.integral &&
@@ -282,8 +285,8 @@ export default {
         this.$toast.fail("请输入积分兑换数量");
       } else if (!this.activityForm.order_sn) {
         this.$toast.fail("请输入订单编号");
-      } else if (this.activityForm.order_sn.length != 18) {
-        this.$toast.fail("请订单编号输入18位订单编号");
+      } else if (this.activityForm.order_sn.length != 18 && this.activityForm.order_sn.length != 19) {
+        this.$toast.fail("请输入18或19位订单编号");
       } else {
         let res = await oSubmit({
           order_id: this.$route.query.o_id,

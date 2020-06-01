@@ -14,7 +14,8 @@
           <span>已抢<i>{{entity.order_count}}</i> 共{{entity.task_count || 1}}</span>
         </div>
       </div>
-      <div class="btn">马上抢</div>
+      <div class="btn" v-if="type == 2">预告中</div>
+      <div class="btn" v-else>马上抢</div>
     </main>
   </div>
 </template>
@@ -26,6 +27,10 @@ export default {
     entity: {
       default: {},
       type: Object
+    },
+    type: {
+      default: 0,
+      type: Number
     }
   },
   data() {

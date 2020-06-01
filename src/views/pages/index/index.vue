@@ -24,10 +24,10 @@
             @change="onChange"
           >
             <van-swipe-item>
-              <img src="@/assets/m_banner1.png" alt />
+              <img src="https://taodaxiong-1259123353.cos.ap-shanghai.myqcloud.com/tdxWeb/m_banner1.png" alt />
             </van-swipe-item>
             <van-swipe-item>
-              <img src="@/assets/m_banner2.png" alt />
+              <img src="https://taodaxiong-1259123353.cos.ap-shanghai.myqcloud.com/tdxWeb/m_banner2.png" alt />
             </van-swipe-item>
           </van-swipe>
         </div>
@@ -35,10 +35,10 @@
 
       <van-swipe class="bg_banner" :show-indicators="false" ref="swiper2">
         <van-swipe-item>
-          <img src="@/assets/banner1_bg.png" alt />
+          <img src="https://taodaxiong-1259123353.cos.ap-shanghai.myqcloud.com/tdxWeb/banner1_bg.png" alt />
         </van-swipe-item>
         <van-swipe-item>
-          <img src="@/assets/banner2_bg.png" alt />
+          <img src="https://taodaxiong-1259123353.cos.ap-shanghai.myqcloud.com/tdxWeb/banner2_bg.png" alt />
         </van-swipe-item>
       </van-swipe>
 
@@ -79,7 +79,7 @@
 
         <ul v-else-if="topList.length > 0">
           <li v-for="(item, x) in topList" :key="x">
-            <item-card-small :entity="item" />
+            <item-card-small :entity="item" :type="active_type" />
           </li>
         </ul>
         <div class="no_data" v-else>暂无数据</div>

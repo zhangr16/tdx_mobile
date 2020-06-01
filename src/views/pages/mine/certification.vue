@@ -85,6 +85,9 @@ export default {
     },
     // 图片上传方法
     async uploadAjax(content) {
+      content.status = 'uploading';
+      content.message = '上传中...';
+
       let form = new FormData();
       form.append("img", content.file);
       let res = await uploadImg(form);
@@ -92,6 +95,7 @@ export default {
         this.$toast.success("图片上传成功");
         content.url = res.url;
       }
+      content.status = '';
     },
     async beforeDel(content) {
       if (!this.entity.is_submit) {

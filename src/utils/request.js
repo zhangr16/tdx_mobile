@@ -3,11 +3,10 @@ import { Toast } from 'vant';
 
 // 创建axios实例
 const service = axios.create({
-    timeout: 10000 // 请求超时时间
+    timeout: 1200000 // 请求超时时间
 })
 
-// if(process.env.NODE_ENV != 'development') service.baseURL = "http://106.54.237.151"
-service.baseURL = process.env.NODE_ENV == 'production' ? "http://106.54.237.151" : null
+service.baseURL = process.env.NODE_ENV == 'production' ? "http://www.taoxiaoxiong.cn" : null
 
 // request拦截器
 service.interceptors.request.use(
@@ -37,6 +36,7 @@ service.interceptors.response.use(
         return res
     },
     error => {
+        Toast.fail('亲，网络不给力，请稍后再试');
         return Promise.reject(error)
     }
 )

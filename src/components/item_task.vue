@@ -1,9 +1,13 @@
 <template>
   <div class="item_task">
+    <!-- 图片信息 -->
+    <van-dialog v-model="showDescImg" title="图片信息" :closeOnClickOverlay="true">
+      <img style="width:100%" :src="tempDescImg" alt />
+    </van-dialog>
 
     <!-- 商品信息 -->
     <van-dialog v-model="showImg" title="商品信息" :closeOnClickOverlay="true">
-      <img style="width:100%;" :src="entity.img" alt />
+      <img style="width:100%" :src="entity.img" alt />
     </van-dialog>
     <!-- 商家备注 -->
     <van-dialog v-model="showRemark" title="商家备注" :closeOnClickOverlay="true">
@@ -11,14 +15,27 @@
     </van-dialog>
     <!-- 查看定制评价 -->
     <van-dialog class="uploads" v-model="showEvaluate" title="定制评价" width="95%" :closeOnClickOverlay="true">
-      <van-cell title="评价说明" :value="evaluateEntity.m_eva_explain" />
-      <van-cell title="好评截图" label="(长按保存图片)">
-        <img v-for="(img, key) in evaluateEntity.imgs" :key="key" :src="img" alt />
+      <van-cell title="评价说明" :value="evaluateEntity.m_eva_explain">
+        <template #label>
+          <!-- <input type="text" class="inp" readonly v-model="evaluateEntity.m_eva_explain" /> -->
+          <span class="search1" @click="handleCopykeyword">复 制</span>     
+        </template>
+      </van-cell>
+      <van-cell title="好评截图" v-if="evaluateEntity.imgs && evaluateEntity.imgs.length > 0">
+        <template #label>
+          (长按保存图片)<div><span style="color:#ff5500">商家提供的所有图片都要在淘宝晒图哦</span></div>
+        </template>
+        <ul>
+          <li v-for="(img, key) in evaluateEntity.imgs" :key="key" @click="handleClickDescImg(img)">
+            图{{key + 1}}: 点击查看
+          </li>
+        </ul>
+        <!-- <img  :src="img" alt /> -->
       </van-cell>
     </van-dialog>
 
     <div class="item_task_head">
-      <span>商家旺旺号：{{ entity.shop_ww || '' }}</span>
+      <span>商家店铺：{{ parseStringToStar(entity.shop_ww) || '' }}</span>
       <span>任务状态：{{ status_arr[entity.status - 1] }}</span>
     </div>
     <div class="item_task_body">
@@ -36,6 +53,10 @@
           实拍：
           <i>¥{{entity.reality_price}}</i>
         </li>
+        <li>
+          买家旺旺：
+          <i>{{entity.user_ww}}</i>
+        </li>
         <li v-if="entity.get_integral">奖励积分：{{entity.get_integral}}</li>
       </ul>
       <!-- 熊抢购 -->
@@ -50,7 +71,7 @@
           </span>
           <span>
             返利：
-            <i>¥{{entity.price - entity.current_price}}</i>
+            <i>¥{{(entity.reality_price - entity.current_price).toFixed(2)}}</i>
           </span>
         </li>
         <li>
@@ -80,10 +101,15 @@
           @click="$router.push('/viewAfter?id=' + entity.id)"
         >查看售后</span>
         <span
-          v-if="entity.status == 2"
+          v-if="entity.status == 2 && entity.make_status == 0"
           style="background:#5784ff"
           @click="$router.push('/screenShots?id=' + entity.id + '&e=1')"
         >上传好评截图</span>
+        <span
+          v-if="entity.status == 2 && entity.make_status != 0"
+          style="background:#5784ff"
+          @click="$router.push('/screenShots?id=' + entity.id + '&e=1')"
+        >上传定制评价截图</span>
         <span
           v-if="entity.status == 3"
           style="background:#5784ff"
@@ -94,7 +120,7 @@
           style="background:#ff6137"
           @click="$router.push('/screenShots?id=' + entity.id)"
         >查看好评截图</span>
-        <span style="background:#ccc" @click="viewRemarks">查看商家备注</span>
+        <span style="background:#E6A23C" @click="viewRemarks">查看商家备注</span>
       </div>
       <!-- 时间 -->
       <div class="times">
@@ -113,9 +139,9 @@
           <i class="gray" @click="chargeBack">我要退单</i>
         </span>
       </div>
-      <div class="two_btns" v-if="entity.make_status != 0">
+      <div class="two_btns" v-if="entity.make_status != 0 && entity.make_status != -2">
         <span>
-          <i class="red" @click="viewEvaluation">查看定制评价</i>
+          <i class="red" @click="viewEvaluation">点击此处查看定制评价内容（按商家要求评价奖励1元）</i>
         </span>
       </div>
     </div>
@@ -137,8 +163,10 @@ export default {
     return {
       showRemark: false,
       showImg: false,
+      showDescImg: false,
       showEvaluate: false,
 
+      tempDescImg: null,
       evaluateEntity: {},
       remarkEntity: {},
       status_arr: ["已领取", "已提交", "待审核", "已完成", "售后"]
@@ -146,8 +174,14 @@ export default {
   },
   computed: {},
   methods: {
-    ssss() {
-      alert(222)
+    handleCopykeyword() {
+      this.$copyText(this.evaluateEntity.m_eva_explain).then(
+        () => this.$toast.success("成功复制关键词到剪贴板！"),
+        e => this.$toast.success(e)
+      )
+    },
+    parseStringToStar(str) {
+      return str.length > 2 ? str.substr(0, 1) + new Array(str.length - 2).join('※') + str.substr(-1) : str
     },
     async viewEvaluation() {
       let res = await order_action({
@@ -188,6 +222,10 @@ export default {
             this.$emit("update");
           }
         });
+    },
+    handleClickDescImg(img) {
+      this.tempDescImg = img
+      this.showDescImg = true
     }
   }
 };
@@ -195,6 +233,16 @@ export default {
 <style lang="scss" scope>
 .item_task {
   width: 100%;
+  .search1 {
+    display: inline-block;
+    text-align: center;
+    background: linear-gradient(-90deg, #fc5504 0%, #fa8d05 100%);
+    color: #fff;
+    width: 50px;
+    height: 25px;
+    line-height: 25px;
+    font-size: 14px;
+  }
   &_head {
     display: flex;
     justify-content: space-between;
@@ -221,7 +269,7 @@ export default {
         color: #999;
       }
       li {
-        height: 25%;
+        height: 22%;
         display: flex;
         font-size: 12px;
         &:first-child {
@@ -279,11 +327,11 @@ export default {
     }
   }
   .van-dialog {
-    z-index: 9999999 !important;
+    // z-index: 999999 !important;
     top: 45%;
     width: 90%;
     .van-dialog__content {
-      max-height: 60vh;
+      max-height: 70vh;
       overflow: scroll;
     }
   }
@@ -291,11 +339,28 @@ export default {
     .van-cell__value {
       flex: 2.5;
       text-align: left;
+      -moz-user-select:none; /* Firefox私有属性 */
+      -webkit-user-select:none; /* WebKit内核私有属性 */
+      -ms-user-select:none; /* IE私有属性(IE10及以后) */
+      -khtml-user-select:none; /* KHTML内核私有属性 */
+      -o-user-select:none; /* Opera私有属性 */
+      user-select:none; /* CSS3属性 */
       img {
-        border: 1px solid #ccc;
-        width: 100%;
+        border: 1px solid #ff5500;
+        width: 98%;
+      }
+      ul {
+        padding-left: 20px;
+        li {
+          font-size: 16px;
+          color: #409EFF;
+          padding-bottom: 20px;
+        }
       }
     }
+    // .van-dialog__footer {
+    //   border-top: 1px solid #999;
+    // }
   }
 }
 </style>

@@ -32,7 +32,7 @@
                 </template>
               </ul>
               <template v-else>
-                <div class="sale_tips">商家已成功发起售后申请，等待处理中</div>
+                <div class="sale_tips">超时将会自动审核通过，请及时处理商家发起的售后，如有争议可申请平台介入，谢谢配合~</div>
                 <ul v-if="entity.sale_type == 3">
                   <li>礼品问题将自动转入平台处理</li>
                 </ul>

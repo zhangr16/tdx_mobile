@@ -4,39 +4,20 @@
       <van-icon class="left_arrow" name="arrow-left" @click="$router.go(-1)" />新手攻略
     </header>
     <main>
-      <van-cell title="1、注册账号" />
-      <van-cell title="2、实名认证" label="需要提供：真实姓名、淘宝账号、对应支付宝截图" is-link to="certification" />
-      <van-cell title="3、等待实名认证通过" />
-      <van-cell title="4、进入宝贝大厅挑选商品" is-link to="index" />
-      <van-cell title="5、商品详情页" />
-      <van-cell title="6、商品详情页点击立即购买">
-        <template slot="label">
-          按照任务流程输入关键词，找到后加<i>购物车</i>并付款
-        </template>
-      </van-cell>
-      <van-cell title="7、开始做任务" label="在淘宝订单页复制订单号并在平台提交" />
-      <van-cell title="8、提交订单号">
-        <template slot="label">
-          等待<i>两天</i>后出现上传好评的入口
-        </template>
-      </van-cell>
-      <van-cell title="9、等待买家发货">
-        <template slot="label">
-          收到宝贝后对<i>任务宝贝</i>进行评价
-        </template>
-      </van-cell>
-      <van-cell title="10、五星10字以上好评" />
-      <van-cell title="11、等待商家审核" />
-      <van-cell title="12、商家审核通过" />
-      <van-cell title="13、系统返任务款">
-        <template slot="label">
-          系统将购物款返还到您平台的<i>账单</i>里
-        </template>
-      </van-cell>
-      <van-cell title="14、绑定提现银行卡" is-link to="bindCard" />
-      <van-cell title="15、申请提现" is-link to="zhtx" />
-      <van-cell title="16、24:00前平台打款到银行卡" />
-      <van-cell title="17、完成" />
+      <van-cell title="1、注册账号" label="邀请码需介绍人提供，在介绍人的会员中心可以看到" />
+      <van-cell title="2、实名认证" label="会员中心-“实名认证”模块里填写实名，需要提供：真实姓名、淘宝账号、对应支付宝截图" is-link to="certification" />
+      <van-cell title="3、联系客服等待实名认证通过" />
+      <van-cell title="4、绑定银行卡" label="会员中心-绑定银行卡模块填写对应信息" is-link to="bindCard" />
+      <van-cell title="5、通过审核选取任务" label="进入首页领取任务，限量免单模块为免单任务；熊抢购模块为真实购买" is-link to="index" />
+      <van-cell title="6、任务中心点击“开始任务”" label="查看任务流程及注意事项，将提供的关键词复制到淘宝首页搜索，找不到对应商品联系客服可更换关键词" />
+      <van-cell title="7、验证链接" label="找到对应宝贝后复制宝贝链接在平台验证" />
+      <van-cell title="8、淘宝付款" label="验证成功后浏览宝贝，拍下与平台价格一致的商品，价格不一致可按照任务金额提交后在平台申请售后" />
+      <van-cell title="9、提交订单号" label="将淘宝的订单编号复制，粘贴到平台验证链接的下方，填写金额，点击提交" />
+      <van-cell title="10、收货好评" label="收到礼品后，在淘宝收货好评" />
+      <van-cell title="11、上传好评截图" label="在任务中心-“已提交”-点击“上传好评截图”" />
+      <van-cell title="12、等待商家审核" label="审核时间最长为36小时" />
+      <van-cell title="13、返本金及提现" label="审核完成，返还本金到余额，点击申请提现" />
+      <van-cell title="14、对本操作有任何疑问均可联系淘小熊客服哦"  />
     </main>
   </div>
 </template> 

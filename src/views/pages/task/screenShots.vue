@@ -21,14 +21,15 @@
             multiple
             :max-count="3"
           />
+          <div v-if="form.is_make_status" style="font-size:12px">此单为定制评价，请按照商家要求评价图片及文字</div>
         </van-cell>
         <!-- 查看 -->
         <van-cell v-else class="uploads" title="好评截图">
           <img v-for="(item, key) in form.img" :key="key" :src="item" alt @click="showImg = true" />
         </van-cell>
       </van-cell-group>
-      <div class="submit_btn" v-if="isEdit == 1" @click="handleSubmit">提交好评截图</div>
-      <div class="submit_btn" v-if="isEdit == 2" @click="handleSubmit">修改好评截图</div>
+      <div class="submit_btn" :class="{'disable_color': isloading}" v-if="isEdit == 1" @click="handleSubmit">提交好评截图</div>
+      <div class="submit_btn" :class="{'disable_color': isloading}" v-if="isEdit == 2" @click="handleSubmit">修改好评截图</div>
     </main>
   </div>
 </template> 
@@ -40,8 +41,10 @@ export default {
   components: {},
   data() {
     return {
+      timer: '',
       showImg: false,
       fileList: [],
+      isloading: false,
       form: { user_ww: "", order_sn: "", img: [] }
     };
   },
@@ -63,7 +66,8 @@ export default {
         this.form = {
           user_ww: res.user_ww,
           order_sn: res.order_sn,
-          img: res.img
+          img: res.img,
+          is_make_status: res.is_make_status > 0
         };
         // 修改图片时
         if(res.img) {
@@ -77,6 +81,8 @@ export default {
     },
     // 前端上传之前处理
     afterRead(content) {
+      console.log(56, content)
+
       if(content.length) {
         content.map(async el => {
           this.uploadAjax(el)
@@ -87,40 +93,57 @@ export default {
     },
     // 图片上传方法
     async uploadAjax(content) {
+      this.isloading = true;
+      
+      content.status = 'uploading';
+      content.message = '上传中...';
       let form = new FormData();
       form.append("img", content.file);
+      // this.timer = setTimeout(() => {
+      //   this.$toast.fail('亲，网络不给力，请稍后再试')
+      //   return false
+      // }, 500);
       let res = await uploadImg(form);
+      console.log(res)
       if (res && res.error.errno == 200) {
-        this.$toast.success("图片上传成功");
+        // this.$toast.success("图片上传成功");
         content.url = res.url;
       }
+      content.status = '';
+      this.isloading = false;
     },
     async beforeDel(content) {
+      this.isloading = true;
       let res = await deleteUpload({
         url: content.url
       });
       if (res && res.error.errno == 200) {
-        this.$toast.success("图片删除成功");
+        // this.$toast.success("图片删除成功");
+        this.isloading = false;
         return true;
       }
     },
     async handleSubmit() {
-      let arr = [];
-      this.fileList.map(el => {
-        arr.push(el.url);
-      });
-      if (arr.length <= 0) return this.$toast.fail("请上传好评截图");
-      
-      let res = await order_action({
-        type: 2,
-        id: this.$route.query.id,
-        img: arr
-      });
-      if (res && res.error.errno == 200) {
-        this.$toast.success(res.error.usermsg);
-        setTimeout(() => {
-          this.$router.push("/task");
-        }, 500);
+      if(!this.isloading) {
+        let arr = [];
+        this.fileList.map(el => {
+          arr.push(el.url);
+        });
+        if (arr.length <= 0) return this.$toast.fail("请上传好评截图");
+        
+        let res = await order_action({
+          type: 2,
+          id: this.$route.query.id,
+          img: arr
+        });
+        if (res && res.error.errno == 200) {
+          this.$toast.success(res.error.usermsg);
+          setTimeout(() => {
+            this.$router.push("/task");
+          }, 500);
+        }
+      } else {
+        return
       }
     }
   }
@@ -176,6 +199,11 @@ export default {
       background-color: #ff5500;
       border-radius: 22px;
     }
+    .disable_color {
+      background-color: gray;
+    }
   }
+
+  
 }
 </style>
